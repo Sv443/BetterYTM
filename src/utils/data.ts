@@ -1,43 +1,29 @@
-import { DataStore, fetchAdvanced } from "@sv443-network/coreutils";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { DataStore, GMStorageEngine, fetchAdvanced } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
-import { repo, scriptInfo } from "@/constants.ts";
+import { registerStore } from "@/core/storeRegistry.ts";
+import { branch, mode, repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
-import { info, warn } from "@util/logging.ts";
-import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getterifyObj } from "@util/pure.ts";
+import { getDomain } from "@util/domain.ts";
+import { getStaticDataRef, setStaticData, type StaticData } from "@util/staticData.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import type { Domain, Translatable } from "@/types.ts";
-import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
+import { getFeature } from "@/config.ts";
+import { emitSiteEvent } from "@/siteEvents.ts";
+import defaultStaticData from "@asset/data.json" with { type: "json" };
+import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
 
 //#region types
 
-// TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
-/** Union of all selector identifiers defined in the static data JSON. */
-export type StaticSelector = string;
+export type { SelectorGroup, SelectorByGroup, StaticDataStringID, StaticData } from "@util/staticData.ts";
 
-/** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
-export type StaticData = {
-  /** Format version for future compatibility checks. */
-  formatVersion: number;
-  /** List of supported domains, used for resolving hostnames to domain identifiers. */
-  domains: Array<{
-    /** A supported domain with a unique identifier and its associated hostnames. */
-    id: Domain;
-    /** List of hostnames that map to this domain identifier. */
-    hostnames: string[];
-  }>;
-  /** List of alerts to potentially display to users. May be empty. */
-  alerts: GlobalAlert[];
-  /** Mapping of selector identifiers to per-domain selector strings. */
-  selectors: Record<StaticSelector, {
-    /** DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\"). */
-    [domain in Domain]?: string;
-  }>;
-};
-
-/** Alert to be shown globally on the supported sites. */
+/**
+ * Alert to be shown globally on the supported sites.
+ * - `update-preview-version-hint-v3.1.0-rc.1`
+ */
 export type GlobalAlert = {
   /** Unique identifier for the alert. */
   id: string;
@@ -69,20 +55,25 @@ export type GlobalAlert = {
 //#region vars
 
 /** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json` as const;
+const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch}/assets/data.json` as const;
 
 /** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-const staticDataFormatVersion = 0;
+const staticDataFormatVersion = 1;
 
-let staticData: StaticData | undefined;
 
 //#region get data
 
 /** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
 export async function getStaticData(): Promise<StaticData> {
   try {
-    if(staticData)
-      return staticData;
+    const cached = getStaticDataRef();
+    if(cached)
+      return cached;
+
+    if(mode === "development") {
+      loggers.data.info("Development mode is active. Initializing with static data.json:", defaultStaticData, LogLevel.Info);
+      return setStaticData(defaultStaticData as StaticData);
+    }
 
     const res = await fetchAdvanced(remoteDataUrl, {
       timeout: 10_000,
@@ -91,18 +82,18 @@ export async function getStaticData(): Promise<StaticData> {
     if(res.ok) {
       const data = await res.json();
       if(isStaticData(data)) {
-        info("Successfully fetched remote static data:", data);
-        return staticData = data;
+        loggers.data.info("Successfully loaded remote static data:", data, LogLevel.Info);
+        return setStaticData(data);
       }
       else
-        warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
+        loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
     }
-    return staticData = defaultStaticData as StaticData;
+    return setStaticData(defaultStaticData as StaticData);
   }
   catch(e) {
-    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
-    info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
-    return staticData = defaultStaticData as StaticData;
+    loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
+    loggers.data.info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
+    return setStaticData(defaultStaticData as StaticData);
   }
 }
 
@@ -150,15 +141,22 @@ export const alertsStore = new DataStore<AlertsStoreData, false>({
   engine: new GMStorageEngine(),
   memoryCache: false,
   compressionFormat: null,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
+registerStore(alertsStore);
 
 /** Checks if there are active alerts and shows a prompt for each of them. */
-async function checkActiveAlerts({ alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
+async function checkActiveAlerts(alertMode: FeatureConfig["globalAlertMode"], { alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
   const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
 
   for(const alert of activeAlerts) {
+    if(alertMode === "importantOnly" && !alert.important)
+      continue;
     const dlg = createAlertDialog(alert);
-    await dlg.open();
+    dlg.open();
     await dlg.once("close");
     alertsData = await alertsStore.loadData();
     await alertsStore.setData({
@@ -229,6 +227,7 @@ export function createAlertDialog(alert: GlobalAlert) {
       footer.classList.add("bytm-dialog-footer", "align-right");
     
       const closeBtn = document.createElement("button");
+      closeBtn.classList.add("bytm-btn");
       closeBtn.type = "button";
       closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
       onInteraction(closeBtn, () => {
@@ -236,7 +235,7 @@ export function createAlertDialog(alert: GlobalAlert) {
         if(titleCloseBtn)
           titleCloseBtn.click();
         else
-          warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+          loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
       });
     
       footer.appendChild(closeBtn);
@@ -260,7 +259,13 @@ export async function initStaticData() {
     alertsStore.loadData(),
   ]);
 
-  return await Promise.allSettled([
-    checkActiveAlerts(staticData, alertsData),
+  const alertMode = getFeature("globalAlertMode", "importantOnly");
+
+  const result = await Promise.allSettled([
+    ...(alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
   ]);
+
+  emitSiteEvent("staticDataInitialized");
+
+  return result;
 }

@@ -113,11 +113,8 @@ Generally, these are the ways to interact with the BetterYTM API:
     - Also [check out the full API Reference](./api.md) for a detailed overview of all functions, classes and constants, including code examples for each.
 3. **Libraries**:  
   BetterYTM exposes a set of libraries that can be used without having to include them in your plugin:  
-    - `unsafeWindow.BYTM.CoreUtils` contains all exported members from [the CoreUtils library.](https://github.com/Sv443-Network/CoreUtils)  
-      It will soon be the main dependency of UserUtils, and contains some more utility functions and updated features from UserUtils, as well as updated versions of the classes and functions from `UserUtils`.
-    - `unsafeWindow.BYTM.UserUtils` contains all exported members from [the UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
-      This DOM- & UserScript-specific library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.  
-      Large parts of it will soon be replaced by the CoreUtils library, so it is recommended to use the CoreUtils library where possible.
+    - `unsafeWindow.BYTM.UserUtils` contains all exported members from [the UserUtils library](https://github.com/Sv443-Network/UserUtils), which itself also contains the entire [CoreUtils library.](https://github.com/Sv443-Network/CoreUtils)  
+      This DOM- & UserScript-specific library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.
     - `unsafeWindow.BYTM.compareVersions` has all functions from [the compare-versions library.](https://npmjs.com/package/compare-versions)  
       Use it to compare semver-compliant version strings, for example to check if BYTM or another installed plugin is compatible with your plugin.
 

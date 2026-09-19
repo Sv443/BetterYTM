@@ -18,3 +18,14 @@
 .bytm-hotkey-info[data-state="active"] {
   display: none;
 }
+
+.bytm-hotkey-input-modifier-container {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-hotkey-input-modifier-plus {
+  display: inline-block;
+  padding: 0px 5px;
+  height: auto;
+}

@@ -1,39 +1,20 @@
-import { autoPlural, compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
-import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
+import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, getUnsafeWindow, GMStorageEngine, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "@/constants.ts";
-import { enableDiscardBeforeUnload } from "@feat/behavior.ts";
+import { registerStore } from "@/core/storeRegistry.ts";
+import { getThumbnailUrl, millis, type ThumbQuality } from "@util/pure.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
+import { buildNumber, changelogUrl, compressionFormat, mode, scriptInfo, sessionStorageAvailable } from "@/constants.ts";
+import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { getFeature } from "@/config.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { sendRequest } from "@util/xhr.ts";
-import { getLocale, type TrLocale } from "@util/translations.ts";
-import { emitBroadcast } from "@util/broadcast.ts";
-import { getDefaultStaticData } from "@util/data.ts";
+import { getLocale } from "@util/translations.ts";
 import { getVideoElement, getVideoTime, sanitizeHtml } from "@util/dom.ts";
-import type { Domain, NumberLengthFormat, ResourceKey } from "@/types.ts";
-import langMapping from "@asset/locales.json" with { type: "json" };
-import resourcesJson from "@asset/resources.json" with { type: "json" };
+import type { NumberLengthFormat, ResourceKey } from "@/types.ts";
 
 //#region misc
 
-let domain: Domain;
-
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-export function getDomain(): Domain {
-  const staticData = getDefaultStaticData();
-  const staticDomainInfo = staticData.domains.find(dom => dom.hostnames.some(hn => location.hostname === hn));
-
-  if(domain)
-    return domain;
-  else if(staticDomainInfo)
-    return domain = staticDomainInfo.id as Domain;
-  else
-    throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
 
 /**
  * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.  
@@ -52,7 +33,7 @@ export function getSessionId(): string | null {
     return sesId;
   }
   catch(err) {
-    warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+    loggers.misc.warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
     return null;
   }
 }
@@ -73,77 +54,8 @@ export async function compressionSupported() {
   }
 }
 
-/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
-export function arrayWithSeparators<TArray>(array: TArray[], separator = ", ", lastSeparator?: string) {
-  const arr = [...array];
-  if(!lastSeparator)
-    lastSeparator = separator;
 
-  if(arr.length === 0)
-    return "";
-  else if(arr.length <= 2)
-    return arr.join(lastSeparator);
-  else
-    return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)!}`;
-}
 
-/** Returns the watch ID of the current video or null if not on a video page */
-export function getWatchId() {
-  const { searchParams, pathname } = new URL(location.href);
-  return pathname.includes("/watch") ? searchParams.get("v") : null;
-}
-
-/**
- * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
- * Returns null if the current page is not a channel page or there was an error parsing the URL
- */
-export function getCurrentChannelId() {
-  return parseChannelIdFromUrl(location.href);
-}
-
-/** Returns the channel ID from a URL or null if the URL is invalid */
-export function parseChannelIdFromUrl(url: string | URL) {
-  try {
-    const { pathname } = url instanceof URL ? url : new URL(url);
-    if(pathname.includes("/channel/"))
-      return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
-    else if(pathname.includes("/@"))
-      return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
-    else
-      return null;
-  }
-  catch {
-    return null;
-  }
-}
-
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-export function sanitizeChannelId(channelId: string) {
-  channelId = String(channelId).trim();
-  return isValidChannelId(channelId) || channelId.startsWith("@")
-    ? channelId
-    : `@${channelId}`;
-}
-
-/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
-export function isValidChannelId(channelId: string) {
-  return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
-}
-
-/** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
-export type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
-
-/** Numeric still frame thumbnail index */
-export type ThumbIndex = 0 | 1 | 2 | 3;
-
-/** Returns the thumbnail URL for a video with the given video ID and quality (defaults to "hqdefault") */
-export function getThumbnailUrl(videoID: string, quality?: ThumbQuality): string
-/** Returns the thumbnail URL for a video with the given video ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
-export function getThumbnailUrl(videoID: string, index?: ThumbIndex): string
-/** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(videoID: string, qualityOrIndex: ThumbQuality | ThumbIndex = "maxresdefault") {
-  return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
-}
 
 /** Returns the best available thumbnail URL for a video with the given video ID */
 export async function getBestThumbnailUrl(videoID: string) {
@@ -157,7 +69,7 @@ export async function getBestThumbnailUrl(videoID: string) {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
       }
       catch(err) {
-        error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+        loggers.misc.error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
         void err;
       }
       if(response && response.status < 300 && response.status >= 200)
@@ -169,15 +81,6 @@ export async function getBestThumbnailUrl(videoID: string) {
   }
 }
 
-/** Opens the given URL in a new tab, using GM.openInTab if available */
-export function openInTab(href: string, background = false) {
-  try {
-    openInNewTab(href, background);
-  }
-  catch {
-    window.open(href, "_blank", "noopener noreferrer");
-  }
-}
 
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: StringGen): Promise<TData | null> {
@@ -192,7 +95,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
       parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
-      error("Couldn't decompress and parse data.", err);
+      loggers.misc.error("Couldn't decompress and parse data.", err);
       return null;
     }
   }
@@ -203,12 +106,6 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   return parsed;
 }
 
-/** Very crude OS detection */
-export function getOS() {
-  if(navigator.userAgent.match(/mac(\s?os|intel)/i))
-    return "mac";
-  return "other";
-}
 
 /** Formats a number based on the config or the passed {@linkcode notation} */
 export function formatNumber(num: number, notation?: NumberLengthFormat): string {
@@ -245,6 +142,10 @@ const reloadTabStore = new DataStore<ReloadTabData, false>({
   defaultData: {
     entries: [],
   },
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
@@ -272,7 +173,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
     return sesEntry;
   }
   catch(err) {
-    error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+    loggers.misc.error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
     return null;
   }
 }
@@ -280,7 +181,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
+/** Reloads the own tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the {@linkcode reloadTabStore} DataStore (ID `bytm-reload-tab`) */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -315,33 +216,9 @@ export async function reloadTab() {
     win.location.reload();
   }
   catch(err) {
-    error("Couldn't save video time and volume before reloading tab:", err);
+    loggers.misc.error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
-}
-
-/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
-export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
-  info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
-
-  emitBroadcast({
-    type: "reloadTabs",
-  }, toTxIDs);
-
-  return reloadSelf
-    ? await (async () => {
-      await pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
-      return await reloadTab();
-    })()
-    : undefined;
-}
-
-/** Checks if the passed value is a {@linkcode StringGen} */
-export function isStringGen(val: unknown): val is StringGen {
-  return typeof val === "string"
-    || typeof val === "function"
-    || (typeof val === "object" && val !== null && "toString" in val && !val.toString().startsWith("[object"))
-    || val instanceof Promise;
 }
 
 /** Scrolls to the currently playing queue item in the queue once it's available */
@@ -354,124 +231,23 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
         inline: "center",
       });
 
-      log("Scrolled to active song in queue:", activeItem);
+      loggers.misc.log("Scrolled to active song in queue:", activeItem);
     }
   });
 }
 
-/** Makes the {@linkcode value} over- & underflow so it is always between {@linkcode min} and {@linkcode max}, if it's outside the range */
-export function overflowVal(value: number, min: number, max: number): number;
-/** Makes the {@linkcode value} over- & underflow so it is always between `0` and {@linkcode max}, if it's outside the range */
-export function overflowVal(value: number, max: number): number;
-/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
-export function overflowVal(value: number, minOrMax: number, max?: number): number {
-  const min = typeof max === "number" ? minOrMax : 0;
-  max = typeof max === "number" ? max : minOrMax;
 
-  if(min > max)
-    throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
 
-  if(isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
-    return NaN;
 
-  if(value >= min && value <= max)
-    return value;
-
-  const range = max - min + 1;
-  const wrappedValue = ((value - min) % range + range) % range + min;
-  return wrappedValue;
-}
-
-/** Transforms an object's own properties into getters that return the original values. */
-export function getterifyObj<TObj extends object>(obj: TObj): TObj {
-  const newObj = {} as ReturnType<typeof getterifyObj<TObj>>;
-
-  for(const key in obj) {
-    Object.defineProperty(newObj, key, {
-      get: () => obj[key],
-      enumerable: true,
-      configurable: true,
-    });
-  }
-
-  return newObj;
-}
-
-//#region version session counter
-
-type VersionSessions = Record<string, {
-  count: number;
-}>;
-
-let verSessions: VersionSessions | undefined;
-
-/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
-export async function initVersionSessionCounter(): Promise<number> {
-  verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}")) as VersionSessions | undefined;
-
-  if(typeof verSessions !== "object" || verSessions === null)
-    verSessions = {};
-
-  if(typeof verSessions?.[scriptInfo.version] !== "object" || typeof verSessions?.[scriptInfo.version]?.count !== "number")
-    verSessions![scriptInfo.version] = { count: 1 };
-  else
-    verSessions![scriptInfo.version]!.count++;
-
-  await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
-
-  return verSessions![scriptInfo.version]!.count;
-}
-
-/** Returns the number of sessions for the given version, or 0 if the version is not found in the session counter for whatever reason */
-export function getVersionSessionCount(version = scriptInfo.version): number {
-  if(!verSessions)
-    throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
-
-  if(typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number")
-    return 0;
-
-  return verSessions[version].count;
-}
 
 //#region resources
 
-/**
- * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.  
- * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.  
- * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
- * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
- */
-export async function getResourceUrl(name: ResourceKey | "_") {
-  const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
 
-  if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-    const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
-    const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
+/** Collection of remote fetch attempts per resource, for inclusion in the performance report. */
+export const resourceFetches = new Map<ResourceKey | "_", number[]>();
 
-    if(pathName) {
-      return pathName.startsWith("http")
-        ? pathName
-        : (() => {
-          let path = pathName;
-          if(path.startsWith("/"))
-            path = path.slice(1);
-          else
-            path = `assets/${path}`;
-          switch(assetSource) {
-          case "jsdelivr":
-            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-          case "github":
-            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-          case "local":
-            return `http://localhost:${devServerPort}/${path}`;
-          }
-        })();
-    }
-  }
-
-  warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
-  // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
-  return await GM.getResourceUrl(name, false);
+function logResourceFetch(key: ResourceKey | "_") {
+  resourceFetches.set(key, [...(resourceFetches.get(key) ?? []), millis()]);
 }
 
 type ResourceCache = {
@@ -496,7 +272,12 @@ export const resourceCacheStore = new DataStore({
     created: Date.now(),
     cacheKey: resourceCacheKey,
   } as ResourceCache,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
+registerStore(resourceCacheStore, { full: true });
 
 /** Resources with these prefixes are cached in the resource cache */
 const cachedResourcePrefixes = [
@@ -528,7 +309,6 @@ function resourceCacheGet(key: ResourceKey | "_") {
 async function resourceCacheSet(key: ResourceKey | "_", val: string) {
   const data = resourceCacheStore.getData();
   data.resources[key] = val;
-  data.created = Date.now();
   return await resourceCacheStore.setData(data);
 }
 
@@ -551,56 +331,25 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
     if(!resourceUrl)
       throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 
+    logResourceFetch(resourceKey);
     const res = await fetchAdvanced(resourceUrl);
+
     if(!res.ok)
       throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 
     const str = await res.text();
 
-    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey))
       await resourceCacheSet(resourceKey, str);
 
     return str;
   }
   catch(err) {
-    error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+    loggers.misc.error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
 
-//#region preferred locale
-
-/**
- * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
- * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
- */
-export function getPreferredLocale(): TrLocale {
-  /** Trimmed & case insensitive string equality check. */
-  const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-
-  const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
-    .map((v) => v.replace(/_/g, "-"));
-
-  for(const navLang of allNavLangs) {
-    const resolvedLoc = Object.entries(langMapping)
-      .find(([key, { altLocales }]) =>
-        sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang))
-      )?.[0];
-    if(resolvedLoc)
-      return resolvedLoc.trim() as TrLocale;
-
-    const navLangTrimmed = navLang.split("-")[0];
-    const resolvedFallbackLang = Object.entries(langMapping)
-      .find(([key, { altLocales }]) =>
-        sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed))
-      )?.[0];
-
-    if(resolvedFallbackLang)
-      return resolvedFallbackLang.trim() as TrLocale;
-  }
-
-  return "en-US";
-}
 
 // #region markdown
 
@@ -624,7 +373,7 @@ export async function parseMarkdown(mdString: string, sanitize = true) {
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
   const clRes = await fetchAdvanced(changelogUrl);
-  log("Fetched changelog:", clRes);
+  loggers.misc.log("Fetched changelog:", clRes);
   return await clRes.text();
 }
 
@@ -647,7 +396,7 @@ export async function getChangelogHtmlWithDetails() {
     return sanitizeHtml(changelogHtml);
   }
   catch(err) {
-    error("Couldn't fetch or parse changelog:", err);
+    loggers.misc.error("Couldn't fetch or parse changelog:", err);
     return `Error while preparing changelog: ${err}`;
   }
 }
