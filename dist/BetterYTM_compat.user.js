@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d2962bde/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d6139bf9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 18 Sep 2026 20:46:18 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 19 Sep 2026 13:15:06 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ d2962bde                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ d6139bf9                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ E7rM3tHS5Dwn                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ r9gBK2iTwriJ                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "d2962bde";
+	var buildNumber$1 = "d6139bf9";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789764378726;
+	var buildTimestamp = 1789823706550;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -6911,20 +6911,17 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				"listItem_genericShelves": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer" },
 				"genericSongListItems": { "ytm": "ytmusic-responsive-list-item-renderer, .card-content-container" },
 				"genericSongListItemPlayButton_sub_listItem": { "ytm": "ytmusic-play-button-renderer" },
-				"sharePanel": {
-					"yt": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer",
-					"ytm": "yt-unified-share-panel-renderer"
-				},
-				"sharePanelInput_sub_sharePanel": {
-					"yt": "input#share-url",
-					"ytm": "input#share-url"
-				},
+				"playerBarSubtitleContainer": { "ytm": ".content-info-wrapper .subtitle yt-formatted-string" },
+				"playerBarSubtitleAnchors_sub_playerBarInfo": { "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span" },
 				"popupListItemContainer_sub_popupContainer": { "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model" },
-				"popupListItemsAll_sub_popupContainer": { "ytm": "yt-list-view-model > toggleable-list-item-view-model" },
+				"popupListItemsAll_sub_popupContainer": { "yt": "yt-list-view-model > toggleable-list-item-view-model" },
 				"queueHeaderButtons_sub_sidePanel": { "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons" },
 				"queueHeaderRenderer_sub_sidePanel": { "ytm": "ytmusic-queue-header-renderer" },
-				"playerBarSubtitleContainer": { "ytm": ".content-info-wrapper .subtitle yt-formatted-string" },
-				"playerBarSubtitleAnchors_sub_playerBarInfo": { "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span" }
+				"sharePanel": {
+					"yt": "yt-unified-share-panel-renderer",
+					"ytm": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer"
+				},
+				"sharePanelInput_sub_sharePanel": "input#share-url"
 			},
 			"watchPage": {
 				"channelName": {
@@ -18967,7 +18964,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "d2962bde",
+				buildNumber: "d6139bf9",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
