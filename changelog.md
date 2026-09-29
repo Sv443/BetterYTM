@@ -52,6 +52,7 @@
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
     - `getSerializerStoresFull()` - Returns all `DataStore` instances, including those that are only used for caching.
+    - `async getStaticData()` - Returns the contents of the `assets/data.json` asset file currently in use by BYTM.
   - Added new events to the plugin interface:
     - `bytm:dataStoreSerializerLoaded` - Emitted after all memory-cached DataStore instances' data was lazy-loaded.
 - **Internal Changes:**

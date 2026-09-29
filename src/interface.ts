@@ -17,6 +17,7 @@ import { fetchVideoVotes, fetchITunesAlbumInfo } from "@util/xhr.ts";
 import { Logger } from "@util/Logger.ts";
 import { getSelector } from "@util/staticData.ts";
 import { setPluginPerf } from "@util/perf.ts";
+import { getStaticData } from "@util/data.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
@@ -693,5 +694,6 @@ export function getInternals(token: string | undefined) {
     disableDiscardBeforeUnload,
     broadcastTxID,
     emitBroadcast,
+    getStaticData,
   };
 }
