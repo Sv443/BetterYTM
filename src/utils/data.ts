@@ -246,7 +246,7 @@ export function createAlertDialog(alert: GlobalAlert) {
     modifyBodyElements(_bw, mdCont) {
       mdCont.ariaLive = "polite";
       mdCont.ariaAtomic = "true";
-    }
+    },
   });
 }
 

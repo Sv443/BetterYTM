@@ -163,11 +163,11 @@ async function renderBody() {
   searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
   searchbarEl.spellcheck = false;
 
+  const sanit = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
   searchbarEl.addEventListener("input", debounce(() => {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
-      const sanit = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
       const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
       const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
       row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));

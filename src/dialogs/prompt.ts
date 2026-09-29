@@ -6,6 +6,8 @@ import { t } from "@util/translations.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 import "@dialog/prompt.css";
 
+// TODO:FIXME: when chaining multiple "prompt"s, pressing enter erroneously immediately confirms the chained dialog(s)
+
 //#region types
 
 /** StringGen variant used by the {@linkcode showPrompt()} function - gets passed the type as a parameter */
