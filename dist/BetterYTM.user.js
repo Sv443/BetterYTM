@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d6139bf9/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c0b96c6c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 19 Sep 2026 13:15:05 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Tue, 29 Sep 2026 22:33:12 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ d6139bf9                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ c0b96c6c                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ nF10MfV5Urha                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ w1YMe92D7zfr                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -566,9 +566,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "d6139bf9";
+	var buildNumber$1 = "c0b96c6c";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789823705912;
+	var buildTimestamp = 1790721192996;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -5948,11 +5948,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		searchbarEl.autofocus = true;
 		searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
 		searchbarEl.spellcheck = false;
+		const sanit = (str) => str?.trim().toLowerCase().replace(/\s/g, "");
 		searchbarEl.addEventListener("input", (0, _sv443_network_userutils.debounce)(() => {
 			const searchVal = searchbarEl.value.trim().toLowerCase();
 			const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
 			for (const row of rows) {
-				const sanit = (str) => str?.trim().toLowerCase().replace(/\s/g, "");
 				const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
 				const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
 				row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
@@ -6271,6 +6271,116 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			await (0, _sv443_network_userutils.pauseFor)(30);
 			return await reloadTab();
 		})() : void 0;
+	}
+	//#endregion
+	//#region src/utils/data.ts
+	/** URL to the remote data JSON file on a CDN. */
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo$1}/refs/heads/${branch$1}/assets/data.json`;
+	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+	async function getStaticData() {
+		try {
+			const cached = getStaticDataRef();
+			if (cached) return cached;
+			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
+			return setStaticData(data_default);
+		} catch (e) {
+			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
+			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
+			return setStaticData(data_default);
+		}
+	}
+	var alertsStore = new _sv443_network_userutils.DataStore({
+		id: "bytm-alerts",
+		defaultData: { dismissed: [] },
+		formatVersion: 0,
+		engine: new _sv443_network_userutils.GMStorageEngine(),
+		memoryCache: false,
+		compressionFormat: null,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
+	});
+	registerStore(alertsStore);
+	/** Checks if there are active alerts and shows a prompt for each of them. */
+	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
+		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
+		for (const alert of activeAlerts) {
+			if (alertMode === "importantOnly" && !alert.important) continue;
+			const dlg = createAlertDialog(alert);
+			dlg.open();
+			await dlg.once("close");
+			alertsData = await alertsStore.loadData();
+			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
+		}
+	}
+	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
+	function isAlertActive(alert, alertsData) {
+		if (alertsData.dismissed.includes(alert.id)) return false;
+		if (alert.domains.length === 0) return false;
+		if (!alert.domains.includes(getDomain())) return false;
+		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
+		if ("versionMin" in alert && alert.versionMin && (0, compare_versions.compareVersions)(alert.versionMin, scriptInfo$1.version) > 0) return false;
+		if ("versionMax" in alert && alert.versionMax && (0, compare_versions.compareVersions)(alert.versionMax, scriptInfo$1.version) < 0) return false;
+		const now = /* @__PURE__ */ new Date();
+		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
+		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
+		return true;
+	}
+	/** Creates an alert dialog for the given alert data. */
+	function createAlertDialog(alert) {
+		return new MarkdownDialog({
+			id: "static-data-alert",
+			height: 500,
+			width: 600,
+			small: true,
+			destroyOnClose: true,
+			closeOnBgClick: !alert.important,
+			closeOnEscPress: !alert.important,
+			async renderHeader() {
+				const headerEl = document.createElement("div");
+				headerEl.id = "bytm-static-data-alert-dialog-header";
+				headerEl.classList.add("bytm-flex-row");
+				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+				headerEl.appendChild(header);
+				return headerEl;
+			},
+			renderFooter() {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const closeBtn = document.createElement("button");
+				closeBtn.classList.add("bytm-btn");
+				closeBtn.type = "button";
+				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+				onInteraction(closeBtn, () => {
+					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+					if (titleCloseBtn) titleCloseBtn.click();
+					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+				});
+				footer.appendChild(closeBtn);
+				return footer;
+			},
+			body: resolveTranslatable(alert.message),
+			sanitizeBody: true,
+			modifyBodyElements(_bw, mdCont) {
+				mdCont.ariaLive = "polite";
+				mdCont.ariaAtomic = "true";
+			}
+		});
+	}
+	/** Initializes the static data by fetching it and performing necessary checks and actions. */
+	async function initStaticData() {
+		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
+		const alertMode = getFeature("globalAlertMode", "importantOnly");
+		const result = await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
+		emitSiteEvent("staticDataInitialized");
+		return result;
 	}
 	//#endregion
 	//#region src/features/lyrics.ts
@@ -7330,7 +7440,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			enableDiscardBeforeUnload,
 			disableDiscardBeforeUnload,
 			broadcastTxID,
-			emitBroadcast
+			emitBroadcast,
+			getStaticData
 		};
 	}
 	//#endregion
@@ -11167,116 +11278,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		provide("getAutoLikeDialog", getAutoLikeDialog);
 	}
 	//#endregion
-	//#region src/utils/data.ts
-	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo$1}/refs/heads/${branch$1}/assets/data.json`;
-	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
-	async function getStaticData() {
-		try {
-			const cached = getStaticDataRef();
-			if (cached) return cached;
-			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
-			return setStaticData(data_default);
-		} catch (e) {
-			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
-			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
-			return setStaticData(data_default);
-		}
-	}
-	var alertsStore = new _sv443_network_userutils.DataStore({
-		id: "bytm-alerts",
-		defaultData: { dismissed: [] },
-		formatVersion: 0,
-		engine: new _sv443_network_userutils.GMStorageEngine(),
-		memoryCache: false,
-		compressionFormat: null,
-		nanoEmitterOptions: {
-			publicEmit: false,
-			catchUpEvents: ["loadData"]
-		}
-	});
-	registerStore(alertsStore);
-	/** Checks if there are active alerts and shows a prompt for each of them. */
-	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
-		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
-		for (const alert of activeAlerts) {
-			if (alertMode === "importantOnly" && !alert.important) continue;
-			const dlg = createAlertDialog(alert);
-			dlg.open();
-			await dlg.once("close");
-			alertsData = await alertsStore.loadData();
-			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
-		}
-	}
-	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
-	function isAlertActive(alert, alertsData) {
-		if (alertsData.dismissed.includes(alert.id)) return false;
-		if (alert.domains.length === 0) return false;
-		if (!alert.domains.includes(getDomain())) return false;
-		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
-		if ("versionMin" in alert && alert.versionMin && (0, compare_versions.compareVersions)(alert.versionMin, scriptInfo$1.version) > 0) return false;
-		if ("versionMax" in alert && alert.versionMax && (0, compare_versions.compareVersions)(alert.versionMax, scriptInfo$1.version) < 0) return false;
-		const now = /* @__PURE__ */ new Date();
-		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
-		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
-		return true;
-	}
-	/** Creates an alert dialog for the given alert data. */
-	function createAlertDialog(alert) {
-		return new MarkdownDialog({
-			id: "static-data-alert",
-			height: 500,
-			width: 600,
-			small: true,
-			destroyOnClose: true,
-			closeOnBgClick: !alert.important,
-			closeOnEscPress: !alert.important,
-			async renderHeader() {
-				const headerEl = document.createElement("div");
-				headerEl.id = "bytm-static-data-alert-dialog-header";
-				headerEl.classList.add("bytm-flex-row");
-				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
-				headerEl.appendChild(header);
-				return headerEl;
-			},
-			renderFooter() {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const closeBtn = document.createElement("button");
-				closeBtn.classList.add("bytm-btn");
-				closeBtn.type = "button";
-				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
-				onInteraction(closeBtn, () => {
-					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
-					if (titleCloseBtn) titleCloseBtn.click();
-					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
-				});
-				footer.appendChild(closeBtn);
-				return footer;
-			},
-			body: resolveTranslatable(alert.message),
-			sanitizeBody: true,
-			modifyBodyElements(_bw, mdCont) {
-				mdCont.ariaLive = "polite";
-				mdCont.ariaAtomic = "true";
-			}
-		});
-	}
-	/** Initializes the static data by fetching it and performing necessary checks and actions. */
-	async function initStaticData() {
-		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
-		const alertMode = getFeature("globalAlertMode", "importantOnly");
-		const result = await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
-		emitSiteEvent("staticDataInitialized");
-		return result;
-	}
-	//#endregion
 	//#region src/configInit.ts
 	/**
 	* Loads and migrates the feature config, and prompts the user to reopen the config menu if their
@@ -12794,7 +12795,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "d6139bf9",
+				buildNumber: "c0b96c6c",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
