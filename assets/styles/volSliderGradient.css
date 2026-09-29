@@ -1,0 +1,8 @@
+:root .bytm-vol-slider-label {
+  padding-left: 22px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-slider-label-bg-col) 20%
+  );
+}

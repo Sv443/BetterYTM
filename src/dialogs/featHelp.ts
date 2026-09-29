@@ -1,6 +1,8 @@
-import { getLocale, resourceAsString, setInnerHtml, t } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getLocale, t } from "@util/translations.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { featInfo } from "@feat/index.ts";
+import { featInfo } from "@feat/featInfo.ts";
 import type { FeatureKey } from "@/types.ts";
 import locales from "@asset/locales.json" with { type: "json" };
 

@@ -6,7 +6,7 @@ import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
-import { outputDir } from "../../rollup.config.mjs";
+import { outputDir } from "./vite-plugin-bytm.ts";
 
 /**
  * If set to true, requests for userscript files will be logged.  

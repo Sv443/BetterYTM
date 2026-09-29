@@ -1,4 +1,6 @@
-import { onInteraction, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { resourceAsString } from "@util/misc.ts";
 import { createRipple } from "@comp/ripple.ts";
 import type { ResourceKey } from "@/types.ts";
 

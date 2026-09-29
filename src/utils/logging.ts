@@ -1,219 +1,105 @@
-import { clamp, DatedError, debounce } from "@sv443-network/coreutils";
-import { showIconToast } from "@comp/toast.ts";
-import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import { getFeature } from "@/config.ts";
-import { scriptInfo } from "@/constants.ts";
-import { setGlobalProp } from "@/interface.ts";
-import { t } from "@util/translations.ts";
-import { onInteraction } from "@util/input.ts";
-import { downloadFile } from "@util/dom.ts";
+import { DatedError, debounce } from "@sv443-network/userutils";
+import { setGlobalProp } from "@/core/globals.ts";
+import { tryUse } from "@/core/hooks.ts";
 import { LogLevel } from "@/types.ts";
-import packageJson from "@root/package.json" with { type: "json" };
+import { Logger, loggerCategoryMapping, type LoggerOptions } from "@util/Logger.ts";
 
-//#region logging fns
+export type { LogLine } from "@util/Logger.ts";
 
-let curLogLevel = LogLevel.Info;
+//#region loggers
 
-/** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${scriptInfo.name}]`;
-const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+/**
+ * Whether a generic error should also be surfaced as a toast.  
+ * Pushed in by the config init instead of read from {@linkcode getFeature}, so this module doesn't
+ * have to depend on the config store.
+ */
+let errorToastsEnabled = false;
 
-/** Tuple representing a single log line, as stored in the {@linkcode logs} array. */
-export type LogLine = [type: string, time: number, ...args: unknown[]];
+/** Sets whether generic errors are surfaced as a toast - called by the config init */
+export const setErrorToastsEnabled = (enabled: boolean) => void (errorToastsEnabled = enabled);
 
-/** In dev mode, all logs are stored in this array for exporting */
-const logs = [] as LogLine[];
-let logLines = 0;
+const showErrToast = debounce(
+  (errName: string, args: unknown[]) => tryUse("reportError")?.(errName, args),
+  400,
+);
 
-const maxLogLines = 2_500; // prevent excessive memory usage
-
-/** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
-const pushLog = (type: string, time?: number, ...args: unknown[]) => {
-  logs.push([type, time ?? Date.now(), ...args]);
-  logLines++;
-
-  // remove oldest line from beginning of array if above limit
-  if(logs.length > maxLogLines)
-    logs.shift();
+const loggerOpts: LoggerOptions = {
+  onError(...args): void {
+    if(!errorToastsEnabled)
+      return;
+    const err = args.find(a => a instanceof Error);
+    // the message is localized by the provider in @/bindings.ts - this module has no translations
+    showErrToast(err?.name ?? "Error", args);
+  },
 };
 
-/** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
-export const getLogsTxt = () => {
-  /** Converts a value to a string for logging. */
-  const getVal = (val: unknown, primaryScope = true): string => {
-    if(typeof val === "undefined")
-      return primaryScope ? "[undefined]" : "(undefined)";
-    if(val === null)
-      return primaryScope ? "[null]" : "(null)";
-    if(Array.isArray(val))
-      return `[Array (${val.length}) <${val.map((v) => getVal(v, false)).join(", ")}>]`;
-    if(val instanceof Element)
-      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
-    if(typeof val === "function")
-      return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
-    if(val instanceof DatedError)
-      return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
-    if(val instanceof Error)
-      return `[${val.name}: ${val.message}]`;
-    if(val instanceof Date)
-      return `[Date <${val.toISOString()}>]`;
-    if(typeof val === "object") {
-      const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
-      try {
-        // objects that are impure or purified (no prototype chain) and can usually be serialized
-        if(val.constructor?.name === "Object" || val.constructor === undefined)
-          return JSON.stringify(val);
-        return unknownObj;
-      }
-      catch {
-        return "toString" in val ? val.toString() : unknownObj;
-      }
-    }
-    return primaryScope ? `${val}` : `"${val}"`;
-  };
+/** Pre-instantiated Logger instances, one per category. */
+export const loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
+  ...a,
+  [catId as keyof typeof loggerCategoryMapping]: new Logger(catName, loggerOpts),
+}), {} as Record<keyof typeof loggerCategoryMapping, Logger>);
 
-  const longestLogType = Math.max(...logs.map(([type]) => type.length));
+/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
+export const serializeLogs = Logger.serializeLogs.bind(Logger);
 
-  const hintLines = (logs.length >= maxLogLines ? `// Note: there were more than ${maxLogLines} lines, so the ${logLines} oldest lines were truncated.\n\n` : "");
-
-  return hintLines + logs.reduce((acc, [type, time, ...args]) => {
-    if(args.length === 0)
-      return acc;
-
-    const timestamp = new Date(time).toISOString();
-
-    try {
-      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
-    }
-    catch {
-      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
-    }
-  }, "");
-};
-
-/** Sets the current log level. 0 = Debug, 1 = Info */
+/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
 export function setLogLevel(level: LogLevel) {
-  curLogLevel = level;
   setGlobalProp("logLevel", level);
-  if(curLogLevel !== level)
-    log("Set the log level to", LogLevel[level]);
+  if(Logger.curLogLevel !== level)
+    loggers.misc.log("Set the log level to", LogLevel[level]);
+  Logger.curLogLevel = level;
 }
 
-/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
-function getLogLevel(args: unknown[]): number {
-  const minLogLvl = 0, maxLogLvl = 1;
-  const lastArg = args.at(-1);
-  if(typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
-    return clamp(
-      args.splice(args.length - 1)[0] as number,
-      minLogLvl,
-      maxLogLvl,
-    );
-  return LogLevel.Debug;
-}
+//#region legacy log functions
 
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function log(...args: unknown[]): void {
-  pushLog("LOG", Date.now(), ...args);
-  if(curLogLevel <= getLogLevel(args))
-    console.log(consPrefix, ...args);
+  loggers.uncategorized.log(...args);
 }
 
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function info(...args: unknown[]): void {
-  pushLog("INFO", Date.now(), ...args);
-  if(curLogLevel <= getLogLevel(args))
-    console.info(consPrefix, ...args);
+  loggers.uncategorized.info(...args);
 }
 
-/** Logs all passed values to the console as a warning, no matter the log level. */
+/**
+ * Logs all passed values to the console as a warning, no matter the log level.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
+ */
 export function warn(...args: unknown[]): void {
-  pushLog("WARN", Date.now(), ...args);
-  console.warn(consPrefix, ...args);
+  loggers.uncategorized.warn(...args);
 }
 
-const showErrToast = debounce(
-  (errName: string, ...args: unknown[]) =>
-    showIconToast({
-      message: t("generic_error_toast_encountered_error_type", errName),
-      subtitle: t("generic_error_toast_click_for_details"),
-      icon: "icon-error",
-      iconFill: "var(--bytm-error-col)",
-      onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    }),
-  1000,
-);
-
-/** Logs all passed values to the console as an error, no matter the log level. */
+/**
+ * Logs all passed values to the console as an error, no matter the log level.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
+ */
 export function error(...args: unknown[]): void {
-  pushLog("ERROR", Date.now(), ...args);
-  console.error(consPrefix, ...args);
-
-  try {
-    getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
-  }
-  catch(e) {
-    pushLog("ERROR", Date.now(), "Error while showing error toast:", e);
-    console.error(consPrefix, "Error while showing error toast:", e);
-  }
+  loggers.uncategorized.error(...args);
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
+/**
+ * Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
+ */
 export function errorNoToast(...args: unknown[]): void {
-  pushLog("ERROR", Date.now(), ...args);
-  console.error(consPrefix, ...args);
+  loggers.uncategorized.errorNoToast(...args);
 }
 
-/** Logs all passed values to the console with a debug-specific prefix */
+/**
+ * Logs all passed values to the console with a debug-specific prefix.
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
+ */
 export function dbg(...args: unknown[]): void {
-  pushLog("DBG", Date.now(), ...args);
-  console.log(consPrefixDbg, ...args);
-}
-
-//#region error dialog
-
-export function getErrorDialog(errName: string, args: unknown[]) {
-  return new MarkdownDialog({
-    id: "generic-error",
-    height: 400,
-    width: 500,
-    small: true,
-    destroyOnClose: true,
-    renderHeader() {
-      const header = document.createElement("h2");
-      header.classList.add("bytm-dialog-title");
-      header.role = "heading";
-      header.ariaLevel = "1";
-      header.tabIndex = 0;
-      header.textContent = header.ariaLabel = errName;
-
-      return header;
-    },
-    renderFooter() {
-      const footer = document.createElement("div");
-      footer.classList.add("bytm-dialog-footer", "align-right");
-
-      const dlLogsBtn = document.createElement("button");
-      dlLogsBtn.type = "button";
-      dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
-      onInteraction(dlLogsBtn, () => {
-        downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
-      });
-
-      footer.appendChild(dlLogsBtn);
-      return footer;
-    },
-    body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-  
-${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
-  });
+  loggers.uncategorized.dbg(...args);
 }
 
 //#region error classes
@@ -233,3 +119,4 @@ export class PluginError extends DatedError {
     this.name = "PluginError";
   }
 }
+
