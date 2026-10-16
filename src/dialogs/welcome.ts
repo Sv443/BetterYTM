@@ -11,6 +11,7 @@ import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";
 import { forceEmitSiteEvent } from "@/siteEvents.ts";
+import { showPrompt } from "@dialog/prompt.ts";
 
 let welcomeDialog: BytmDialog | null = null;
 
@@ -172,6 +173,11 @@ async function renderBody() {
       forceEmitSiteEvent("recreateCfgMenu");
 
       loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
+
+      await showPrompt({
+        type: "alert",
+        message: t(`privacy_mode.${isPrivacy ? "enhanced" : "default"}.alert`),
+      });
     });
 
     privacyCont.appendChild(privacyImg);
@@ -265,11 +271,11 @@ function retranslateWelcomeMenu() {
       e.textContent = e.ariaLabel = t("close");
       e.ariaLabel = e.title = t("close_menu_tooltip");
     },
-    "#bytm-welcome-text-line1": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
-    "#bytm-welcome-text-line2": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
-    "#bytm-welcome-text-line3": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
-    "#bytm-welcome-text-line4": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
-    "#bytm-welcome-text-line5": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
+    "#bytm-welcome-text-line1": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_1")),
+    "#bytm-welcome-text-line2": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_2", scriptInfo.name)),
+    "#bytm-welcome-text-line3": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
+    "#bytm-welcome-text-line4": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_4", ...getLink(pkg.funding.url))),
+    "#bytm-welcome-text-line5": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_5", ...getLink(pkg.bugs.url))),
     "#bytm-welcome-menu-privacy-img": (e: HTMLElement) => {
       e.title = t("welcome_menu_privacy_tooltip");
     },
