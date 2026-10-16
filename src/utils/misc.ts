@@ -1,4 +1,4 @@
-import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, getUnsafeWindow, GMStorageEngine, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/userutils";
+import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, getUnsafeWindow, GMStorageEngine, pauseFor, randomId, randRange, type FetchAdvancedOpts, type StringGen } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { registerStore } from "@/core/storeRegistry.ts";
 import { getThumbnailUrl, millis, type ThumbQuality } from "@util/pure.ts";
@@ -312,11 +312,17 @@ async function resourceCacheSet(key: ResourceKey | "_", val: string) {
   return await resourceCacheStore.setData(data);
 }
 
+/** Options for {@linkcode resourceAsString()}. */
+export type ResourceAsStringOptions = {
+  /** Options for {@linkcode fetchAdvanced()}. */
+  fetchAdvancedOpts: FetchAdvancedOpts;
+}
+
 /**
  * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
  * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
  */
-export async function resourceAsString(resourceKey: ResourceKey | "_") {
+export async function resourceAsString(resourceKey: ResourceKey | "_", options?: ResourceAsStringOptions) {
   if(typeof isCompressionSupported === "undefined")
     await compressionSupported(); // init variable
 
@@ -332,7 +338,10 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
       throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 
     logResourceFetch(resourceKey);
-    const res = await fetchAdvanced(resourceUrl);
+    const res = await fetchAdvanced(resourceUrl, {
+      timeout: 5_000,
+      ...options?.fetchAdvancedOpts,
+    });
 
     if(!res.ok)
       throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
