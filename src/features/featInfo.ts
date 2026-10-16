@@ -55,16 +55,16 @@ const removeEmoji = (str: string) => str.replace(/(\p{Emoji_Presentation}|\p{Ext
 const options = {
   /** `all`, `yt`, `ytm` */
   siteSelection: () => [
-    { value: "all", label: t("site_selection_both_sites") },
-    { value: "yt", label: t("site_selection_only_yt") },
-    { value: "ytm", label: t("site_selection_only_ytm") },
+    { value: "all", label: t("site_selection.both_sites") },
+    { value: "yt", label: t("site_selection.only_yt") },
+    { value: "ytm", label: t("site_selection.only_ytm") },
   ] satisfies SelectOption<SiteSelection>[],
   /** `all`, `yt`, `ytm`, `none` */
   siteSelectionOrNone: () => [
-    { value: "all", label: t("site_selection_both_sites") },
-    { value: "yt", label: t("site_selection_only_yt") },
-    { value: "ytm", label: t("site_selection_only_ytm") },
-    { value: "none", label: t("site_selection_none") },
+    { value: "all", label: t("site_selection.both_sites") },
+    { value: "yt", label: t("site_selection.only_yt") },
+    { value: "ytm", label: t("site_selection.only_ytm") },
+    { value: "none", label: t("site_selection.none") },
   ] satisfies SelectOption<SiteSelectionOrNone>[],
   /** Any key of {@linkcode langMapping} (`assets/locales.json`) */
   locale: () => Object.entries(langMapping)
