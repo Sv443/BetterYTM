@@ -11,7 +11,6 @@ import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";
 import { forceEmitSiteEvent } from "@/siteEvents.ts";
-import { showPrompt } from "@dialog/prompt.ts";
 
 let welcomeDialog: BytmDialog | null = null;
 
@@ -174,7 +173,7 @@ async function renderBody() {
 
       loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
 
-      await showPrompt({
+      await tryUse("showPrompt")?.({
         type: "alert",
         message: t(`privacy_mode.${isPrivacy ? "enhanced" : "default"}.alert`),
       });
