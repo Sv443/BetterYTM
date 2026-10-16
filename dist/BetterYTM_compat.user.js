@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c0b96c6c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@42ceabf6/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -54,13 +54,13 @@
 // @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
-// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Features können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
 // @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
 // @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
 // @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 29 Sep 2026 22:33:13 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Fri, 16 Oct 2026 16:04:41 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ c0b96c6c                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 42ceabf6                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ BB035Ms4gN9H                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 9udIoK6rcDwJ                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "c0b96c6c";
+	var buildNumber$1 = "42ceabf6";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1790721193628;
+	var buildTimestamp = 1792166681782;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9911,7 +9911,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	* Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
 	* Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
 	*/
-	async function resourceAsString(resourceKey) {
+	async function resourceAsString(resourceKey, options) {
 		if (typeof isCompressionSupported === "undefined") await compressionSupported();
 		if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL) await resourceCacheStore.saveDefaultData();
 		else if (await resourceCacheHas(resourceKey)) return resourceCacheGet(resourceKey);
@@ -9919,7 +9919,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		try {
 			if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 			logResourceFetch(resourceKey);
-			const res = await fetchAdvanced(resourceUrl);
+			const res = await fetchAdvanced(resourceUrl, {
+				timeout: 5e3,
+				...options?.fetchAdvancedOpts
+			});
 			if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 			const str = await res.text();
 			if (cachedResourcePrefixes.some((prefix) => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey)) await resourceCacheSet(resourceKey, str);
@@ -13910,6 +13913,10 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				});
 				forceEmitSiteEvent("recreateCfgMenu");
 				loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
+				await showPrompt({
+					type: "alert",
+					message: t(`privacy_mode.${isPrivacy ? "enhanced" : "default"}.alert`)
+				});
 			});
 			privacyCont.appendChild(privacyImg);
 			privacyCont.appendChild(privacySelectElem);
@@ -13976,11 +13983,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				e.textContent = e.ariaLabel = t("close");
 				e.ariaLabel = e.title = t("close_menu_tooltip");
 			},
-			"#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
-			"#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
-			"#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${package_default.hosts.greasyfork}/feedback`), ...getLink(package_default.hosts.openuserjs))),
-			"#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(package_default.funding.url))),
-			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(package_default.bugs.url))),
+			"#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_1")),
+			"#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_2", scriptInfo$1.name)),
+			"#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_3", scriptInfo$1.name, ...getLink(`${package_default.hosts.greasyfork}/feedback`), ...getLink(package_default.hosts.openuserjs))),
+			"#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_4", ...getLink(package_default.funding.url))),
+			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text.line_5", ...getLink(package_default.bugs.url))),
 			"#bytm-welcome-menu-privacy-img": (e) => {
 				e.title = t("welcome_menu_privacy_tooltip");
 			},
@@ -14057,34 +14064,34 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		siteSelection: () => [
 			{
 				value: "all",
-				label: t("site_selection_both_sites")
+				label: t("site_selection.both_sites")
 			},
 			{
 				value: "yt",
-				label: t("site_selection_only_yt")
+				label: t("site_selection.only_yt")
 			},
 			{
 				value: "ytm",
-				label: t("site_selection_only_ytm")
+				label: t("site_selection.only_ytm")
 			}
 		],
 		/** `all`, `yt`, `ytm`, `none` */
 		siteSelectionOrNone: () => [
 			{
 				value: "all",
-				label: t("site_selection_both_sites")
+				label: t("site_selection.both_sites")
 			},
 			{
 				value: "yt",
-				label: t("site_selection_only_yt")
+				label: t("site_selection.only_yt")
 			},
 			{
 				value: "ytm",
-				label: t("site_selection_only_ytm")
+				label: t("site_selection.only_ytm")
 			},
 			{
 				value: "none",
-				label: t("site_selection_none")
+				label: t("site_selection.none")
 			}
 		],
 		/** Any key of {@linkcode langMapping} (`assets/locales.json`) */
@@ -18965,7 +18972,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "c0b96c6c",
+				buildNumber: "42ceabf6",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
