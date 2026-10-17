@@ -28,16 +28,16 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en-US`](./en-US.json) | `555` (default locale) |  |
-| ✅ | [`de-DE`](./de-DE.json) | `555/555` (100%) | ─ |
-|  | [`en-GB`](./en-GB.json) | `555/555` (100%) | `en-US` |
-| ‼️ | [`es-ES`](./es-ES.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`fr-FR`](./fr-FR.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`hi-IN`](./hi-IN.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`ja-JP`](./ja-JP.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`pt-BR`](./pt-BR.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`tr-TR`](./tr-TR.json) | `503/555` (90.6%) | ─ |
-| ‼️ | [`zh-CN`](./zh-CN.json) | `503/555` (90.6%) | ─ |
+|  | [`en-US`](./en-US.json) | `577` (default locale) |  |
+| ✅ | [`de-DE`](./de-DE.json) | `577/577` (100%) | ─ |
+|  | [`en-GB`](./en-GB.json) | `577/577` (100%) | `en-US` |
+| ‼️ | [`es-ES`](./es-ES.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`fr-FR`](./fr-FR.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`hi-IN`](./hi-IN.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`ja-JP`](./ja-JP.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`pt-BR`](./pt-BR.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`tr-TR`](./tr-TR.json) | `503/577` (87.2%) | ─ |
+| ‼️ | [`zh-CN`](./zh-CN.json) | `503/577` (87.2%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
 > <sub>⚠ Almost fully translated</sub><br>
@@ -54,7 +54,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 ### Missing keys:
 
-<details><summary><code>es-ES</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es-ES</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -62,12 +62,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -90,8 +109,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -113,7 +135,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>fr-FR</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr-FR</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -121,12 +143,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -149,8 +190,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -172,7 +216,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>hi-IN</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi-IN</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -180,12 +224,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -208,8 +271,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -231,7 +297,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>ja-JP</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja-JP</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -239,12 +305,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -267,8 +352,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -290,7 +378,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>pt-BR</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt-BR</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -298,12 +386,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -326,8 +433,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -349,7 +459,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>tr-TR</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>tr-TR</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -357,12 +467,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -385,8 +514,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
@@ -408,7 +540,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>zh-CN</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh-CN</code> - 74 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -416,12 +548,31 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
 | `reopen` | `Reopen` |
 | `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
+| `clear` | `Clear` |
+| `compress` | `Compress` |
+| `decompress` | `Decompress` |
 | `feature_is_privacy_sensitive` | `This feature is privacy-sensitive as it may expose personally identifiable information about you.` |
+| `menu_command.reset_config.confirm` | `Reset the configuration to its default values?\nThis will automatically reload the page.` |
+| `menu_command.gm_storage_delete_all.confirm` | `Clear all ${count} GM values?\nSee console for details.` |
+| `menu_command.compress_or_decompress_text.alert.compressed` | `Compressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.alert.decompressed` | `Decompressed value (${initialLength} chars -> ${resultLength} chars):\n${result}` |
+| `menu_command.compress_or_decompress_text.prompt` | `Enter text to compress or decompress:` |
+| `menu_command.import_full.prompt` | `Paste the content of the exported file to import data:` |
+| `menu_command.import_full.confirm` | `Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?` |
+| `menu_command.toggle_dev_treatments.confirm.enabled` | `Dev treatments are now enabled.\nDo you want to reload the page?` |
+| `menu_command.toggle_dev_treatments.confirm.disabled` | `Dev treatments are now disabled.\nDo you want to reload the page?` |
+| `menu_command.get_dev_plugin_token.alert.success` | `Developer plugin token for the current session:\n${devPluginToken}` |
+| `menu_command.get_dev_plugin_token.alert.error` | `Error: Dev plugin not registered yet.\nPlease try again in a few seconds.` |
 | `menu_command.unregister_all_plugins` | `Unregister all plugins` |
+| `menu_command.reload_all_tabs.confirm` | `Reload all open tabs that are running ${scriptName}?` |
+| `menu_command.get_performance_report.file_name` | `${scriptName} Performance Report @ ${dateTime}.json` |
+| `menu_command.download_log_file.file_name` | `${scriptName} Log @ ${dateTime}.log` |
 | `welcome_menu_language_tooltip` | `Change the language used throughout the script` |
 | `welcome_menu_privacy_tooltip` | `Choose whether to turn off all privacy-sensitive features` |
+| `privacy_mode.default.alert` | `Re-enabled all features that are on by default, including those that may expose potentially sensitive information about you, like your IP address.` |
 | `privacy_mode.default` | `Standard Feature Selection` |
-| `privacy_mode.enhanced` | `Enhanced Privacy` |
+| `privacy_mode.enhanced.alert` | `Disabled all features that may expose potentially sensitive information about you, like your IP address.` |
+| `privacy_mode.enhanced` | `Privacy-First` |
 | `style_option.gradient` | `Gradient` |
 | `style_option.opaque` | `Opaque` |
 | `style_option.transparent` | `Transparent` |
@@ -444,8 +595,11 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
+| `feature_group_header.searchableLists` | `Searchable Lists:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.searchablePlaylistPopupsEnabled` | `Add a search bar to playlist popups` |
+| `feature_desc.searchableSongListsEnabled` | `Add a search bar to generic song and video lists` |
 | `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
