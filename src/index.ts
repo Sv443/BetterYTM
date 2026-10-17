@@ -7,7 +7,7 @@ import { serializeLogs } from "@util/logging.ts";
 import { initResourceCache, reloadTab, resourceFetches } from "@util/misc.ts";
 import { reloadAllTabs, broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
-import { getLocale, t, type TrKey } from "@util/translations.ts";
+import { getLocale, t, tl, type TrKey } from "@util/translations.ts";
 import { initVersionSessionCounter } from "@util/versionSessions.ts";
 import { clearConfig, getFeature, getFeatures } from "@/config.ts";
 import { initConfig } from "@/configInit.ts";
@@ -575,12 +575,12 @@ function registerDevCommands() {
 
   // #region reset_config
   GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
-    const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+    const message = t("menu_command.reset_config.confirm");
     try {
       if(await showPrompt({
         type: "confirm",
         message,
-        confirmBtnText: "Reset",
+        confirmBtnText: t("reset"),
       })) {
         await clearConfig();
         await reloadTab();
@@ -641,7 +641,7 @@ function registerDevCommands() {
   // #region gm_storage_delete_all
   isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
-    if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
+    if(await showPrompt({ type: "confirm", message: t("menu_command.gm_storage_delete_all.confirm", { count: keys.length }), confirmBtnText: t("clear") })) {
       loggers.command.log(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
         loggers.command.log("  No values found.");
@@ -675,17 +675,15 @@ function registerDevCommands() {
     const showFinalPrompt = async (type: "compress" | "decompress", initial: string, result: string) => {
       await showPrompt({
         type: "alert",
-        message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+        message: t(`menu_command.compress_or_decompress_text.alert.${type === "compress" ? "compressed" : "decompressed"}`, { initialLength: initial.length, resultLength: result.length, result }),
         extraButtons: [
           (dlg) => {
             const btn = document.createElement("button");
             btn.classList.add("bytm-btn");
-            btn.textContent = btn.ariaLabel = "Copy and close";
-            btn.addEventListener("click", async () => {
-              copyToClipboard(result);
-              dlg.emitResolve(result);
-              dlg.close();
-            });
+            btn.textContent = btn.ariaLabel = t("copy");
+            const copyResult = () => copyToClipboard(result);
+            btn.addEventListener("click", copyResult);
+            dlg.once("destroy", () => btn.removeEventListener("click", copyResult));
             return btn;
           },
         ],
@@ -704,13 +702,13 @@ function registerDevCommands() {
 
     await showPrompt({
       type: "prompt",
-      message: "Enter text to compress or decompress:",
+      message: t("menu_command.compress_or_decompress_text.prompt"),
       textarea: true,
       confirmBtnEnabled: false,
       extraButtons: [
         (dlg) => {
           const btn = document.createElement("button");
-          btn.textContent = btn.ariaLabel = "Compress";
+          btn.textContent = btn.ariaLabel = t("compress");
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();
             try {
@@ -731,7 +729,7 @@ function registerDevCommands() {
         (dlg) => {
           const btn = document.createElement("button");
           btn.classList.add("bytm-prompt-dialog-button");
-          btn.textContent = btn.ariaLabel = "Decompress";
+          btn.textContent = btn.ariaLabel = t("decompress");
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();
             try {
@@ -764,13 +762,13 @@ function registerDevCommands() {
   isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
     const input = await showPrompt({
       type: "prompt",
-      message: "Paste the content of the exported file to import data:",
-      confirmBtnText: "Import",
+      message: t("menu_command.import_full.prompt"),
+      confirmBtnText: t("import"),
       textarea: true,
     });
     if(input && input.length > 0) {
       await getDSSerializer(true).deserialize(input);
-      if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
+      if(await showPrompt({ type: "confirm", message: t("menu_command.import_full.confirm"), confirmBtnText: t("reload_now") }))
         await reloadTab();
     }
   });
@@ -779,7 +777,7 @@ function registerDevCommands() {
   isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
-    if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
+    if(await showPrompt({ type: "confirm", message: t(`menu_command.toggle_dev_treatments.confirm.${val ? "enabled" : "disabled"}`), confirmBtnText: t("reload_now"), denyBtnText: t("close") }))
       await reloadTab();
   });
 
@@ -787,14 +785,16 @@ function registerDevCommands() {
   isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
     showPrompt({
       type: "alert",
-      message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
+      message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
       extraButtons: [
-        () => {
+        (dlg) => {
           const btn = document.createElement("button");
-          btn.textContent = btn.ariaLabel = "Copy";
-          btn.addEventListener("click", async () => {
+          btn.textContent = btn.ariaLabel = t("copy");
+          const onClick = async () => {
             devPluginToken && copyToClipboard(devPluginToken);
-          });
+          };
+          btn.addEventListener("click", onClick);
+          dlg.once("destroy", () => btn.removeEventListener("click", onClick));
           return btn;
         },
       ],
@@ -896,8 +896,8 @@ function registerDevCommands() {
   isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
     await showPrompt({
       type: "confirm",
-      message: "Reload all open tabs that are running BetterYTM?",
-      confirmBtnText: "Reload",
+      message: t("menu_command.reload_all_tabs.confirm", { scriptName: scriptInfo.name }),
+      confirmBtnText: t("reload_now"),
     }) && await reloadAllTabs();
   });
 
@@ -905,12 +905,20 @@ function registerDevCommands() {
   GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
     perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
 
-    downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
+    const trKey = "menu_command.get_performance_report.file_name";
+    let fileName = t(trKey, { scriptName: scriptInfo.name, dateTime: new Date().toISOString() });
+    if(fileName === trKey)
+      fileName = tl("en-US", trKey);
+    downloadFile(fileName, JSON.stringify(perfReport, null, 2), "application/json");
   });
 
   // #region download_log_file
   GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
-    downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
+    const trKey = "menu_command.download_log_file.file_name";
+    let fileName = t(trKey, { scriptName: scriptInfo.name, dateTime: new Date().toISOString() });
+    if(fileName === trKey)
+      fileName = tl("en-US", trKey);
+    downloadFile(fileName, serializeLogs(), "text/plain");
   });
 
   loggers.command.log("Registered dev menu commands");
