@@ -357,7 +357,7 @@
   "feature_helptext.watermarkEnabled": "如果禁用此功能，您仍然可以通过单击右上角的个人资料图片打开配置菜单中的选项。\n但是，要找到彩蛋将会更难 ;)",
   "feature_desc.removeShareTrackingParam": "从共享菜单的 URL 中移除跟踪参数（\"?si\"）",
   "feature_desc.removeShareTrackingParamSites": "在哪些网站上应该删除共享跟踪参数？",
-  "feature_helptext.removeShareTrackingParam": "当您从共享菜单复制链接时，链接通常包含一个 \"si\" 跟踪参数。\n此功能会删除该参数，让您分享的链接更干净。",
+  "feature_helptext.removeShareTrackingParam": "当您从共享菜单复制链接时，链接通常包含一个 \"si/is\" 跟踪参数。\n此功能会删除该参数，让您分享的链接更干净。",
   "feature_desc.numKeysSkipToTime": "启用按数字键（0-9）跳转到视频中的特定时间",
   "feature_desc.numKeysSkipToTimeDoublePress": "是否需要双击数字键以及在多长时间内完成",
   "feature_helptext.numKeysSkipToTimeDoublePress": "如果启用，您需要在此时间内双击数字键才能跳转到视频中的特定时间，在 YTM 和 YT 上均适用。\n如果双击有困难，请增加时间。\n如果禁用，单击数字键即可跳转。",

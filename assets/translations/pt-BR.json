@@ -366,8 +366,8 @@
 
   "feature_desc.watermarkEnabled": "Mostrar uma marca d'água sob o logotipo do site que abre este menu de configuração",
   "feature_helptext.watermarkEnabled": "Se isso estiver desativado, você ainda pode abrir o menu de configuração clicando na opção no menu que abre quando você clica em sua foto de perfil no canto superior direito.\nNo entanto, será mais difícil encontrar o easter egg ;)",
-  "feature_desc.removeShareTrackingParam": "Remover o parâmetro identificador \"si\" da URL nos menus de compartilhamento",
-  "feature_helptext.removeShareTrackingParam": "Para fins analíticos, o YouTube adiciona o parâmetro \"si\" ao final da URL nos menus de compartilhamento. Embora não seja diretamente prejudicial, torna a URL mais longa e permite que o YouTube colete informações publicitárias.",
+  "feature_desc.removeShareTrackingParam": "Remover o parâmetro identificador \"si/is\" da URL nos menus de compartilhamento",
+  "feature_helptext.removeShareTrackingParam": "Para fins analíticos, o YouTube adiciona o parâmetro \"si/is\" ao final da URL nos menus de compartilhamento. Embora não seja diretamente prejudicial, torna a URL mais longa e permite que o YouTube colete informações publicitárias.",
   "feature_desc.removeShareTrackingParamSites": "Em quais sites o parâmetro de rastreamento de compartilhamento deve ser removido?",
   "feature_desc.numKeysSkipToTime": "Ativar a capacidade de pular para um tempo específico no vídeo pressionando uma tecla numérica (0-9)",
   "feature_desc.numKeysSkipToTimeDoublePress": "Se uma dupla pressão da tecla numérica é necessária e em que intervalo de tempo",

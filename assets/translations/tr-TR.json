@@ -371,8 +371,8 @@
 
   "feature_desc.watermarkEnabled": "Site logosunun altında bu menüyü açan bir filigran göster",
   "feature_helptext.watermarkEnabled": "Eğer devre dışıysa, sağ üstteki profil fotoğrafınıza tıklayınca açılan menüden ayarlara erişebilirsiniz.\nAncak gizli ögeyi bulmak daha zor olacak ;)",
-  "feature_desc.removeShareTrackingParam": "Paylaşma menüsündeki bağlantıdan tanımlayıcı \"si\" parametresini kaldırın",
-  "feature_helptext.removeShareTrackingParam": "YouTube, analitik amaçlar için paylaş menüsünde kopyalayacağınız bağlantıya tanımlayıcı \"si\" parametresini ekler. Doğrudan zararlı olmasa da, URL'yi uzatır ve YouTube'un sizin ve sosyal çevrenizin ortak ilgi alanları gibi reklam bilgilerini toplamasına olanak tanır.",
+  "feature_desc.removeShareTrackingParam": "Paylaşma menüsündeki bağlantıdan tanımlayıcı \"si/is\" parametresini kaldırın",
+  "feature_helptext.removeShareTrackingParam": "YouTube, analitik amaçlar için paylaş menüsünde kopyalayacağınız bağlantıya tanımlayıcı \"si/is\" parametresini ekler. Doğrudan zararlı olmasa da, URL'yi uzatır ve YouTube'un sizin ve sosyal çevrenizin ortak ilgi alanları gibi reklam bilgilerini toplamasına olanak tanır.",
   "feature_desc.removeShareTrackingParamSites": "Hangi sayfanın paylaşım takip parametresi silinmeli?",
   "feature_desc.fixSpacing": "Sayfa düzenindeki aralık sorunlarını düzelt",
   "feature_helptext.fixSpacing": "Kullanıcı arayüzünde çeşitli konumlarda tutarsız aralıklar bulunur. Bu özellik bu sorunları düzeltir.",

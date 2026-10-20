@@ -367,9 +367,9 @@
 
   "feature_desc.watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",
   "feature_helptext.watermarkEnabled": "これが無効になっている場合、プロフィール画像をクリックして右上隅にあるメニューを開くと、構成メニューを開くことができます。\nただし、イースターエッグを見つけるのは難しくなります ;)",
-  "feature_desc.removeShareTrackingParam": "共有メニューでコピーできる URL から追跡パラメータ \"si\" を削除する",
+  "feature_desc.removeShareTrackingParam": "共有メニューでコピーできる URL から追跡パラメータ \"si/is\" を削除する",
   "feature_desc.removeShareTrackingParamSites": "共有トラッキングパラメータを削除するサイトはどこですか？",
-  "feature_helptext.removeShareTrackingParam": "この機能を有効にすると、共有メニューでコピーできる URL から追跡パラメータ \"si\" が削除されます。直接的に有害ではありませんが、URL を長くし、YouTube が広告情報を収集できるようになります。",
+  "feature_helptext.removeShareTrackingParam": "この機能を有効にすると、共有メニューでコピーできる URL から追跡パラメータ \"si/is\" が削除されます。直接的に有害ではありませんが、URL を長くし、YouTube が広告情報を収集できるようになります。",
   "feature_desc.numKeysSkipToTime": "数字キー (0-9) を押して特定の時間にスキップする",
   "feature_desc.numKeysSkipToTimeDoublePress": "数字キーのダブルプレスが必要か、また何秒以内か",
   "feature_helptext.numKeysSkipToTimeDoublePress": "有効にすると、特定の時間にスキップするためにこの時間枠内で数字キーをダブルプレスする必要があります。時間内にダブルプレスするのが難しい場合は、時間を増やしてください。無効にすると、シングルプレスで十分になります。",

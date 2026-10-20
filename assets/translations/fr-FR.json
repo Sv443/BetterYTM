@@ -367,9 +367,9 @@
 
   "feature_desc.watermarkEnabled": "Afficher un filigrane sous le logo du site qui ouvre ce menu de configuration",
   "feature_helptext.watermarkEnabled": "Si cela est désactivé, vous pouvez toujours ouvrir le menu de configuration en cliquant sur l'option dans le menu qui s'ouvre lorsque vous cliquez sur votre photo de profil dans le coin supérieur droit.\nCependant, il sera plus difficile de trouver l'easter egg ;)",
-  "feature_desc.removeShareTrackingParam": "Supprimer le paramètre de suivi \"si\" de l'URL dans les menus de partage",
+  "feature_desc.removeShareTrackingParam": "Supprimer le paramètre de suivi \"si/is\" de l'URL dans les menus de partage",
   "feature_desc.removeShareTrackingParamSites": "Sur quels sites le paramètre de suivi de partage doit-il être supprimé?",
-  "feature_helptext.removeShareTrackingParam": "Pour des raisons analytiques, YouTube ajoute le paramètre d'identification de source \"si\" à la fin de l'URL que vous pouvez copier dans le menu de partage. Bien que pas directement nuisible, il allonge l'URL et permet à YouTube de collecter des informations publicitaires.",
+  "feature_helptext.removeShareTrackingParam": "Pour des raisons analytiques, YouTube ajoute le paramètre d'identification de source \"si/is\" à la fin de l'URL que vous pouvez copier dans le menu de partage. Bien que pas directement nuisible, il allonge l'URL et permet à YouTube de collecter des informations publicitaires.",
   "feature_desc.numKeysSkipToTime": "Activer le saut à un moment spécifique de la vidéo en appuyant sur une touche numérique (0-9)",
   "feature_desc.numKeysSkipToTimeDoublePress": "Si une double pression de la touche numérique est requise et dans quel délai",
   "feature_helptext.numKeysSkipToTimeDoublePress": "Si activé, vous devez appuyer deux fois sur la touche numérique dans ce délai pour sauter à la position spécifique dans la vidéo. Cela fonctionne sur YTM et YT.\nAugmentez le délai si vous avez du mal à appuyer deux fois sur la touche à temps.\nSi désactivé, une seule pression sur la touche numérique suffit pour sauter à la position spécifique dans la vidéo.",
