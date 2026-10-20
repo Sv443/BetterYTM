@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8ef1f2c4/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@88dfe4ec/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 16 Oct 2026 16:10:22 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Tue, 20 Oct 2026 19:20:02 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 8ef1f2c4                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 88dfe4ec                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ XpTGKN19Q3gA                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 9HL79i6nhy2u                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -566,9 +566,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "8ef1f2c4";
+	var buildNumber$1 = "88dfe4ec";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1792167022945;
+	var buildTimestamp = 1792524002518;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -2551,7 +2551,7 @@
 				"likeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-like" },
 				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
 				"dislikeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-dislike" },
-				"dislikeBtnShorts": { "yt": "dislike-button-view-model" },
+				"dislikeBtnShorts": { "yt": ".ryd-synthetic-shorts-dislike button, dislike-button-view-model" },
 				"likeBtnAlternate": {
 					"yt": "like-button-view-model button",
 					"ytm": "#button-shape-like button"
@@ -12606,12 +12606,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		const getCmdName = (emoji, key) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
 		GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
 		GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
-			const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+			const message = t("menu_command.reset_config.confirm");
 			try {
 				if (await showPrompt({
 					type: "confirm",
 					message,
-					confirmBtnText: "Reset"
+					confirmBtnText: t("reset")
 				})) {
 					await clearConfig();
 					await reloadTab();
@@ -12654,8 +12654,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			const keys = await GM.listValues();
 			if (await showPrompt({
 				type: "confirm",
-				message: `Clear all ${keys.length} GM values?\nSee console for details.`,
-				confirmBtnText: "Clear"
+				message: t("menu_command.gm_storage_delete_all.confirm", { count: keys.length }),
+				confirmBtnText: t("clear")
 			})) {
 				loggers.command.log(`Clearing ${keys.length} GM values:`);
 				if (keys.length === 0) loggers.command.log("  No values found.");
@@ -12685,16 +12685,18 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			const showFinalPrompt = async (type, initial, result) => {
 				await showPrompt({
 					type: "alert",
-					message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+					message: t(`menu_command.compress_or_decompress_text.alert.${type === "compress" ? "compressed" : "decompressed"}`, {
+						initialLength: initial.length,
+						resultLength: result.length,
+						result
+					}),
 					extraButtons: [(dlg) => {
 						const btn = document.createElement("button");
 						btn.classList.add("bytm-btn");
-						btn.textContent = btn.ariaLabel = "Copy and close";
-						btn.addEventListener("click", async () => {
-							copyToClipboard(result);
-							dlg.emitResolve(result);
-							dlg.close();
-						});
+						btn.textContent = btn.ariaLabel = t("copy");
+						const copyResult = () => copyToClipboard(result);
+						btn.addEventListener("click", copyResult);
+						dlg.once("destroy", () => btn.removeEventListener("click", copyResult));
 						return btn;
 					}],
 					extraButtonsPosition: "before"
@@ -12710,12 +12712,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			};
 			await showPrompt({
 				type: "prompt",
-				message: "Enter text to compress or decompress:",
+				message: t("menu_command.compress_or_decompress_text.prompt"),
 				textarea: true,
 				confirmBtnEnabled: false,
 				extraButtons: [(dlg) => {
 					const btn = document.createElement("button");
-					btn.textContent = btn.ariaLabel = "Compress";
+					btn.textContent = btn.ariaLabel = t("compress");
 					btn.addEventListener("click", async () => {
 						const val = dlg.getInputValue();
 						try {
@@ -12734,7 +12736,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}, (dlg) => {
 					const btn = document.createElement("button");
 					btn.classList.add("bytm-prompt-dialog-button");
-					btn.textContent = btn.ariaLabel = "Decompress";
+					btn.textContent = btn.ariaLabel = t("decompress");
 					btn.addEventListener("click", async () => {
 						const val = dlg.getInputValue();
 						try {
@@ -12759,16 +12761,16 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
 			const input = await showPrompt({
 				type: "prompt",
-				message: "Paste the content of the exported file to import data:",
-				confirmBtnText: "Import",
+				message: t("menu_command.import_full.prompt"),
+				confirmBtnText: t("import"),
 				textarea: true
 			});
 			if (input && input.length > 0) {
 				await getDSSerializer(true).deserialize(input);
 				if (await showPrompt({
 					type: "confirm",
-					message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?",
-					confirmBtnText: "Reload"
+					message: t("menu_command.import_full.confirm"),
+					confirmBtnText: t("reload_now")
 				})) await reloadTab();
 			}
 		});
@@ -12777,20 +12779,22 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			await GM.setValue("bytm-dev-treatments", val);
 			if (await showPrompt({
 				type: "confirm",
-				message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`,
-				confirmBtnText: "Reload",
-				denyBtnText: "nothxbye"
+				message: t(`menu_command.toggle_dev_treatments.confirm.${val ? "enabled" : "disabled"}`),
+				confirmBtnText: t("reload_now"),
+				denyBtnText: t("close")
 			})) await reloadTab();
 		});
 		isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
 			type: "alert",
-			message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
-			extraButtons: [() => {
+			message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
+			extraButtons: [(dlg) => {
 				const btn = document.createElement("button");
-				btn.textContent = btn.ariaLabel = "Copy";
-				btn.addEventListener("click", async () => {
+				btn.textContent = btn.ariaLabel = t("copy");
+				const onClick = async () => {
 					devPluginToken && copyToClipboard(devPluginToken);
-				});
+				};
+				btn.addEventListener("click", onClick);
+				dlg.once("destroy", () => btn.removeEventListener("click", onClick));
 				return btn;
 			}],
 			extraButtonsPosition: "before"
@@ -12802,7 +12806,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "8ef1f2c4",
+				buildNumber: "88dfe4ec",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -12866,8 +12870,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
 			await showPrompt({
 				type: "confirm",
-				message: "Reload all open tabs that are running BetterYTM?",
-				confirmBtnText: "Reload"
+				message: t("menu_command.reload_all_tabs.confirm", { scriptName: scriptInfo$1.name }),
+				confirmBtnText: t("reload_now")
 			}) && await reloadAllTabs();
 		});
 		GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
@@ -12875,10 +12879,22 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				...a,
 				[key]: vals
 			}), {});
-			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
+			const trKey = "menu_command.get_performance_report.file_name";
+			let fileName = t(trKey, {
+				scriptName: scriptInfo$1.name,
+				dateTime: (/* @__PURE__ */ new Date()).toISOString()
+			});
+			if (fileName === trKey) fileName = tl("en-US", trKey);
+			downloadFile(fileName, JSON.stringify(perfReport, null, 2), "application/json");
 		});
 		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
-			downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, serializeLogs(), "text/plain");
+			const trKey = "menu_command.download_log_file.file_name";
+			let fileName = t(trKey, {
+				scriptName: scriptInfo$1.name,
+				dateTime: (/* @__PURE__ */ new Date()).toISOString()
+			});
+			if (fileName === trKey) fileName = tl("en-US", trKey);
+			downloadFile(fileName, serializeLogs(), "text/plain");
 		});
 		loggers.command.log("Registered dev menu commands");
 	}
