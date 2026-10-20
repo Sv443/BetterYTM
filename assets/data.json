@@ -164,7 +164,7 @@
         "ytm": "#button-shape-dislike"
       },
       "dislikeBtnShorts": {
-        "yt": "dislike-button-view-model"
+        "yt": ".ryd-synthetic-shorts-dislike button, dislike-button-view-model"
       },
       "likeBtnAlternate": {
         "yt": "like-button-view-model button",

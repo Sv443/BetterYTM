@@ -31,6 +31,7 @@
   - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
   - When multiple dialog windows are opened at a time, the focus locks will now be set correctly.
   - The `yesImStillThere` feature now only dispatches its events when no native modal dialog (like the "add to playlist" dialog) is open.
+  - When [Return YouTube Dislike](https://returnyoutubedislike.com/) is installed, the YT Shorts dislike button will now be used for the dislike hotkey feature and internal `getLikeDislikeBtns()` function.
 
 <details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
 <sup>(I did my best to order these by relevance for each section)</sup>
