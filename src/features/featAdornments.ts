@@ -91,7 +91,7 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
   // >> data-generated adornments:
 
   // reload required:
-  if(!("reloadRequired" in feat) || feat.reloadRequired === true)
+  if((!("reloadRequired" in feat) || feat.reloadRequired === true) && feat.type !== "button")
     addAdorn(adornments.reload);
 
   // YTM only:

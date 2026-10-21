@@ -280,6 +280,7 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     click: () => tryUse("promptResetConfig")?.(),
+    adornments: [adornments.reload],
   },
   resetEverything: {
     ...featDefaults.resetEverything,
@@ -298,6 +299,7 @@ export const featInfo = {
       }
     },
     advanced: true,
+    adornments: [adornments.reload],
   },
   logLevel: {
     ...featDefaults.logLevel,
