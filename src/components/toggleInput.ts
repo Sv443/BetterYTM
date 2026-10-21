@@ -1,5 +1,5 @@
-import { randomId } from "@sv443-network/coreutils";
-import { t } from "@util/index.ts";
+import { randomId } from "@sv443-network/userutils";
+import { t } from "@util/translations.ts";
 import "@comp/toggleInput.css";
 
 export type ToggleInputProps = {
@@ -33,7 +33,6 @@ export async function createToggleInput({
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
       labelEl.htmlFor = `bytm-toggle-${id}`;
-    wrapperEl.setAttribute("aria-labelledby", labelEl.id);
   }
 
   const toggleEl = document.createElement("label");
@@ -62,9 +61,9 @@ export async function createToggleInput({
   };
 
   checkboxEl.addEventListener("change", handleToggle, { capture: true });
-  
+
   wrapperEl.addEventListener("keydown", (e) => {
-    if(["Space", " ", "Enter"].includes(e.code)) {
+    if(["Space", " ", "Enter", "NumpadEnter"].includes(e.code)) {
       e.preventDefault();
       e.stopPropagation();
       checkboxEl.checked = !checkboxEl.checked;

@@ -123,6 +123,21 @@
       "?"
     ]
   },
+  "tr-TR": {
+    "name": "Türkçe (Türkiye)",
+    "nameEnglish": "Turkish (Turkey)",
+    "emoji": "🇹🇷",
+    "userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
+    "authors": ["kcangny"],
+    "altLocales": ["tr"],
+    "textDir": "ltr",
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
+  },
   "zh-CN": {
     "name": "中文（简化，中国）",
     "nameEnglish": "Chinese (Simplified, China)",

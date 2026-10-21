@@ -1,6 +1,6 @@
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import { resolve, dirname, join, sep } from "node:path";
-import k from "kleur";
+import { styleText } from "node:util";
 
 //#region args
 
@@ -83,7 +83,7 @@ let totalFiles = 0;
 let modifiedFiles = 0;
 let totalChanges = 0;
 
-console.log(`\n${dryRun ? k.yellow("(dry run) ") : ""}Replacing relative imports with path aliases...\n`);
+console.log(`\n${dryRun ? styleText("yellow", "(dry run) ") : ""}Replacing relative imports with path aliases...\n`);
 
 for await(const filePath of walkDir(srcDir)) {
   totalFiles++;
@@ -94,10 +94,10 @@ for await(const filePath of walkDir(srcDir)) {
     modifiedFiles++;
     totalChanges += changes.length;
     const rel = filePath.slice(root.length + 1).replace(/\\/g, "/");
-    console.log(`  ${k.green("✓")} ${rel} ${k.gray(`(${changes.length} import${changes.length !== 1 ? "s" : ""})`)}`);
+    console.log(`  ${styleText("green", "✓")} ${rel} ${styleText("gray", `(${changes.length} import${changes.length !== 1 ? "s" : ""})`)}`);
     if(verbose) {
       for(const [orig, aliased] of changes)
-        console.log(`      ${k.red(orig)} ${k.gray("→")} ${k.cyan(aliased)}`);
+        console.log(`      ${styleText("red", orig)} ${styleText("gray", "→")} ${styleText("cyan", aliased)}`);
     }
     if(!dryRun)
       await writeFile(filePath, result, "utf-8");
@@ -105,7 +105,7 @@ for await(const filePath of walkDir(srcDir)) {
 }
 
 const summary = dryRun
-  ? `${k.yellow("Would modify")} ${k.bold(String(modifiedFiles))} of ${totalFiles} files with ${k.bold(String(totalChanges))} replacements`
-  : `${k.green("Modified")} ${k.bold(String(modifiedFiles))} of ${totalFiles} files with ${k.bold(String(totalChanges))} replacements`;
+  ? `${styleText("yellow", "Would modify")} ${styleText("bold", String(modifiedFiles))} of ${totalFiles} files with ${styleText("bold", String(totalChanges))} replacements`
+  : `${styleText("green", "Modified")} ${styleText("bold", String(modifiedFiles))} of ${totalFiles} files with ${styleText("bold", String(totalChanges))} replacements`;
 
 console.log(`\n${summary}\n`);

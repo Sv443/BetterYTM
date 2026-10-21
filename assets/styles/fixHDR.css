@@ -1,5 +1,5 @@
 #side-panel ytmusic-player-queue-item[play-button-state="loading"],
 #side-panel ytmusic-player-queue-item[play-button-state="playing"],
 #side-panel ytmusic-player-queue-item[play-button-state="paused"] {
-  background-color: var(--bytm-themesong-bg-accent-col, #1d1d1d) !important;
+  background-color: var(--bytm-themesong-bg-accent-col, var(--ytmusic-color-white1-alpha10, #1d1d1d)) !important;
 }

@@ -1,19 +1,20 @@
-import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
-import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
+import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad, consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
-import { error, fetchCss, getDomain, t } from "@util/index.ts";
+import { getSelector } from "@util/staticData";
+import { fetchCss } from "@util/xhr.ts";
+import { getDomain } from "@util/domain.ts";
+import { loggers } from "@util/logging.ts";
+import { t } from "@util/translations.ts";
 import { addSelectorListener } from "@/observers.ts";
 import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "@/types.ts";
 import { siteEvents } from "@/siteEvents.ts";
-import { showPrompt } from "@dialog/prompt.ts";
+import { tryUse } from "@/core/hooks.ts";
 
 //#region vid elem
 
 /** Returns the video element selector string based on the current domain */
 export function getVideoSelector() {
-  return getDomain() === "ytm"
-    ? "ytmusic-player video"
-    : "#player-container ytd-player video";
+  return getSelector("generic", "video");
 }
 
 /** Returns the video element based on the current domain */
@@ -50,7 +51,7 @@ export function getVideoTime(precision = 2) {
         if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
-        addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+        addSelectorListener<HTMLProgressElement>("playerBar", getSelector("watchPage", "progressBar"), {
           listener: (pbEl) =>
             resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
@@ -63,7 +64,7 @@ export function getVideoTime(precision = 2) {
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();
 
-        const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+        const pbSelector = getSelector("watchPage", "progressBar");
         let videoTime = -1;
 
         const mut = new MutationObserver(() => {
@@ -92,7 +93,7 @@ export function getVideoTime(precision = 2) {
       }
     }
     catch(err) {
-      error("Couldn't get video time due to error:", err);
+      loggers.layout.error("Couldn't get video time due to error:", err);
       res(null);
     }
   });
@@ -103,7 +104,7 @@ export function getVideoTime(precision = 2) {
  * This only works once (for some reason), then the page needs to be reloaded!
  */
 function ytForceShowVideoTime() {
-  const player = document.querySelector("#movie_player");
+  const player = document.querySelector(getSelector("watchPage", "videoPlayer"));
   if(!player)
     return false;
 
@@ -182,18 +183,18 @@ export function getLikeDislikeBtns() {
 
   switch(getDomain()) {
   case "ytm": {
-    btnRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer") ?? undefined;
-    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button") ?? undefined;
-    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-dislike button") ?? undefined;
+    btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRenderer")) ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnAlternate")) ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnAlternate")) ?? undefined;
 
     const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
     likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw ?? "") ? likeStateRaw as LikeDislikeState : "INDIFFERENT";
     break;
   }
   case "yt": {
-    btnRenderer = document.querySelector<HTMLElement>("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? undefined;
-    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
-    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+    btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRenderer")) ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnAlternate")) ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnAlternate")) ?? undefined;
 
     if(likeBtn?.getAttribute("aria-pressed") === "true")
       likeState = "LIKE";
@@ -204,9 +205,9 @@ export function getLikeDislikeBtns() {
 
     // yt shorts:
     if(!btnRenderer && !likeBtn && !dislikeBtn) {
-      btnRenderer = document.querySelector<HTMLElement>("reel-action-bar-view-model") ?? undefined;
-      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
-      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+      btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRendererShorts")) ?? undefined;
+      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnShorts")) ?? undefined;
+      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnShorts")) ?? undefined;
     }
 
     const liked = likeBtn?.getAttribute("aria-pressed") === "true";
@@ -239,6 +240,7 @@ export async function addStyle(css: StringGen, ref?: string, transform: (css: st
   if(!isDomLoaded())
     throw new Error("DOM has not finished loading yet");
   const elem = addGlobalStyle(await transform(await consumeStringGen(css)));
+  elem.classList.add("bytm-style");
   elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;
   return elem;
 }
@@ -256,7 +258,7 @@ export async function addStyleFromResource(key: StyleResourceKey, transform: (cs
     }
   }
   catch(err) {
-    error(`Couldn't add style from resource "${key}":`, err);
+    loggers.layout.error(`Couldn't add style from resource "${key}":`, err);
     return false;
   }
 }
@@ -295,7 +297,7 @@ export function clearNode(element: Element) {
 export function getCurrentMediaType(): "video" | "song" {
   if(getDomain() === "yt")
     return "video";
-  const songImgElem = document.querySelector("ytmusic-player #song-image");
+  const songImgElem = document.querySelector(getSelector("watchPage", "songImg"));
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
   return window.getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
@@ -307,7 +309,7 @@ export function copyToClipboard(text: Stringifiable) {
     GM.setClipboard(String(text));
   }
   catch {
-    showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
+    tryUse("showPrompt")?.({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
   }
 }
 
@@ -322,8 +324,7 @@ DOMPurify.addHook("beforeSanitizeAttributes", (node) => {
   if(node.tagName === "A") {
     if(!node.hasAttribute("target"))
       node.setAttribute("target", "_self");
-    if(node.hasAttribute("target"))
-      node.setAttribute(tempTargetAttrName, node.getAttribute("target")!);
+    node.setAttribute(tempTargetAttrName, node.getAttribute("target")!);
   }
 });
 
@@ -340,7 +341,7 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
  * Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links.  
  * By default, automatically returns a TrustedHTML object if the browser supports it.
  */
-export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTypesSupported) {
+export function sanitizeHtml(html: string, returnTrustedType = trustedTypesSupported) {
   return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
 }
 
@@ -348,13 +349,13 @@ export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTyp
  * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
-export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) {
+export function setInnerHtml(element: HTMLElement, html?: string | null) {
   if(!html)
     html = "";
 
   if(!ttPolicy && trustedTypesSupported) {
     ttPolicy = window.trustedTypes!.createPolicy("bytm-sanitize-html", {
-      createHTML: (html: Stringifiable) => sanitizeHtml(html, true) as unknown as string,
+      createHTML: (html: string) => sanitizeHtml(html, true) as unknown as string,
     });
   }
 
@@ -391,4 +392,19 @@ export function transplantElement<TElem extends Element = HTMLElement>(element: 
     throw new Error(`Failed to transplant element at position "${position}"`);
 
   return element;
+}
+
+/**
+ * Prevents the given events' listeners from being called and bubbling, for the given container element.  
+ * Use the optional predicate function to control whenever this happens.
+ */
+export function preventEvents<TContainer extends HTMLElement, TKey extends keyof HTMLElementEventMap>(events: TKey | TKey[], container: TContainer, predicate?: (e: HTMLElementEventMap[TKey]) => boolean) {
+  for(const evt of Array.isArray(events) ? events : [events]) {
+    container.addEventListener(evt, (e) => {
+      if(!predicate || predicate(e)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, { capture: true });
+  }
 }

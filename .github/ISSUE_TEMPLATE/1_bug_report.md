@@ -8,9 +8,10 @@ assignees: Sv443
 ---
 
 ### Checklist:
-<!-- Please go through the following checklist before submitting your bug report. -->
-<!-- After submitting, click on the checkboxes to mark them as done. -->
-
+<!--
+  Please go through the following checklist to the best of your abilities before submitting your bug report.
+  After submitting, click on the checkboxes to mark them as completed.
+-->
 - [ ] I checked [on this page](https://github.com/Sv443/BetterYTM/issues?q=is%3Aissue+sort%3Aupdated-desc) if someone already reported the same bug.
 - [ ] I am using the latest version of BetterYTM (matching [the latest release](https://github.com/Sv443/BetterYTM/releases/latest)).
 - [ ] I am using a recent version of my browser.

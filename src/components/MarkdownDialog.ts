@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
+import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
 import { sanitizeHtml, setInnerHtml } from "@util/dom.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 
