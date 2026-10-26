@@ -6,7 +6,7 @@ import { getSelector } from "@util/staticData.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
-import { recordObserverTick } from "@util/perf.ts";
+import { recordObserverEvent } from "@util/perf.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
@@ -113,8 +113,33 @@ export function initObservers(cfg: FeatureConfig) {
     defaultDebounceType: "immediate",
   } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
 
-  for(const observer of Object.values(globservers))
-    observer.on("enabled", () => loggers.observer.info("Observer enabled for base element", observer.baseElement));
+  /**
+   * Hooks into the {@linkcode globservers} events `"checked"` and `"found"` to update the performance report using {@linkcode recordObserverEvent()}, and log a line to the console if the feature `verboseObservers` is on.
+   * @param name The unique name of the instance.
+   * @param obs A reference to the instance, if it hasn't already been added to {@linkcode globservers}.
+   */
+  const hookObsEvents = (name: ObserverName, obs?: SelectorObserver) => {
+    if(!obs)
+      obs = globservers[name];
+    if(!obs)
+      throw new TypeError(`Couldn't find globserver instance with the name '${name}' in initObservers():trackObserver()`);
+
+    const baseElem = typeof obs.baseElement === "string"
+      ? `'${obs.baseElement}'`
+      : Logger.serializeElement(obs.baseElement);
+
+    obs.on("checked", () => {
+      if(getFeature("verboseObservers"))
+        loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+      recordObserverEvent(name, "checked");
+    });
+    obs.on("found", (data) => {
+      const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+      if(getFeature("verboseObservers"))
+        loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural("element", elements)}:`, elements.join(", "), LogLevel.Info);
+      recordObserverEvent(name, "found", elements.length);
+    });
+  };
 
   try {
     //#region # both sites
@@ -128,6 +153,7 @@ export function initObservers(cfg: FeatureConfig) {
       subtree: false,
     });
 
+    hookObsEvents("body");
     globservers.body.enable();
 
     //#region bytmDialogContainer
@@ -140,6 +166,7 @@ export function initObservers(cfg: FeatureConfig) {
       subtree: true,
     });
 
+    hookObsEvents("bytmDialogContainer");
     globservers.bytmDialogContainer.enable();
 
     switch(getDomain()) {
@@ -156,6 +183,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("browseResponse");
       globservers.body.addListener(browseResponseSelector, {
         listener: getEnableObsFn("browseResponse"),
       });
@@ -169,6 +197,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("searchPage");
       globservers.body.addListener(searchPageSelector, {
         listener: getEnableObsFn("searchPage"),
       });
@@ -182,6 +211,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: false,
       });
 
+      hookObsEvents("navBar");
       globservers.body.addListener(navBarSelector, {
         listener: getEnableObsFn("navBar"),
       });
@@ -195,6 +225,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("mainPanel");
       globservers.body.addListener(mainPanelSelector, {
         listener: getEnableObsFn("mainPanel"),
       });
@@ -210,6 +241,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("sideBar");
       globservers.body.addListener(sidebarSelector, {
         listener: getEnableObsFn("sideBar"),
       });
@@ -223,6 +255,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("sidePanel");
       globservers.body.addListener(sidePanelSelector, {
         listener: getEnableObsFn("sidePanel"),
       });
@@ -235,6 +268,7 @@ export function initObservers(cfg: FeatureConfig) {
         ...defaultObserverOptions,
       });
 
+      hookObsEvents("playerBar");
       globservers.body.addListener(playerBarSelector, {
         listener: () => {
           globservers.playerBar.enable();
@@ -251,6 +285,7 @@ export function initObservers(cfg: FeatureConfig) {
         attributeFilter: ["title"],
       });
 
+      hookObsEvents("playerBarInfo");
       globservers.playerBar.addListener(playerBarInfoSelector, {
         listener: getEnableObsFn("playerBarInfo"),
       });
@@ -264,6 +299,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("playerBarMiddleButtons");
       globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
         listener: getEnableObsFn("playerBarMiddleButtons"),
       });
@@ -277,6 +313,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("playerBarRightControls");
       globservers.playerBar.addListener(playerBarRightControls, {
         listener: getEnableObsFn("playerBarRightControls"),
       });
@@ -290,6 +327,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("popupContainer");
       globservers.body.addListener(popupContainerSelector, {
         listener: getEnableObsFn("popupContainer"),
       });
@@ -308,6 +346,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytGuide");
       globservers.body.addListener(ytGuideSelector, {
         listener: getEnableObsFn("ytGuide"),
       });
@@ -321,6 +360,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytdBrowse");
       globservers.body.addListener(ytdBrowseSelector, {
         listener: getEnableObsFn("ytdBrowse"),
       });
@@ -335,6 +375,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytAppHeader");
       globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
         listener: getEnableObsFn("ytAppHeader"),
       });
@@ -349,6 +390,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytWatchFlexy");
       globservers.body.addListener(ytWatchFlexySelector, {
         listener: getEnableObsFn("ytWatchFlexy"),
       });
@@ -362,6 +404,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytWatchMetadata");
       globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
         listener: getEnableObsFn("ytWatchMetadata"),
       });
@@ -375,6 +418,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytMasthead");
       globservers.body.addListener(mastheadSelector, {
         listener: getEnableObsFn("ytMasthead"),
       });
@@ -388,6 +432,7 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("ytPopupContainer");
       globservers.body.addListener(popupContainerSelector, {
         listener: getEnableObsFn("ytPopupContainer"),
       });
@@ -395,24 +440,6 @@ export function initObservers(cfg: FeatureConfig) {
     }
 
     //#region finalize
-
-    for(const [name, obs] of Object.entries(globservers)) {
-      const baseElem = typeof obs.baseElement === "string"
-        ? `'${obs.baseElement}'`
-        : Logger.serializeElement(obs.baseElement);
-
-      obs.on("checked", () => {
-        if(getFeature("verboseObservers"))
-          loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
-        recordObserverTick(name as ObserverName, "checked");
-      });
-      obs.on("found", (data) => {
-        const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
-        if(getFeature("verboseObservers"))
-          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural("element", elements)}:`, elements.join(", "), LogLevel.Info);
-        recordObserverTick(name as ObserverName, "found", elements.length);
-      });
-    }
 
     globserversReady = true;
     emitInterface("bytm:observersReady");

@@ -57,8 +57,18 @@ export function measureInitDuration(name: LooseUnion<keyof PerformanceReport & F
 /** When there are more than this many observer ticks, the middle part of the array will be removed. Has to be an even number. */
 const obsEventTruncLen = 200;
 
+if(obsEventTruncLen % 2 !== 0)
+  throw new Error("obsEventTruncLen has to be an even number!");
+
 /** Records when a {@linkcode globservers} instance checks for elements and finds elements, to record the event times to the {@linkcode perfReport}. */
-export function recordObserverTick<TObsName extends keyof PerformanceReport["observers"], TType extends "checked" | "found">(globserverName: TObsName, type: TType, ...results: TType extends "checked" ? [] : [numElements: number]) {
+export function recordObserverEvent<
+  TObsName extends keyof PerformanceReport["observers"],
+  TType extends "checked" | "found",
+>(
+  globserverName: TObsName,
+  type: TType,
+  ...results: TType extends "checked" ? [] : [numElements: number]
+) {
   if(typeof perfReport.observers[globserverName] !== "object")
     perfReport.observers[globserverName] = {} as PerformanceReport["observers"][TObsName];
 
