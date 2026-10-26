@@ -246,9 +246,9 @@ export type PerformanceReport = {
   /** Maps {@linkcode globservers} to an object of millis()-timestamps for performance analysis. */
   observers: {
     [TKey in keyof typeof globservers]?: {
-      /** Array with millis() values of when this observer checked for elements. */
+      /** Array with millis() values of when this observer checked for elements. If there are many entries, the center measurements will be truncated and replaced with a string message. */
       checked?: number[];
-      /** Array of tuples of when elements were found with this observer. First item is the millis() value, second item is the amount of elements found. */
+      /** Array of tuples of when elements were found with this observer. First item is the millis() value, second item is the amount of elements found. If there are many entries, the center measurements will be truncated and replaced with a string message. */
       found?: [millis: number, numElements: number][];
     };
   };

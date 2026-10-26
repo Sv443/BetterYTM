@@ -54,17 +54,30 @@ export function measureInitDuration(name: LooseUnion<keyof PerformanceReport & F
   };
 }
 
+/** When there are more than this many observer ticks, the middle part of the array will be removed. Has to be an even number. */
+const obsEventTruncLen = 200;
+
 /** Records when a {@linkcode globservers} instance checks for elements and finds elements, to record the event times to the {@linkcode perfReport}. */
 export function recordObserverTick<TObsName extends keyof PerformanceReport["observers"], TType extends "checked" | "found">(globserverName: TObsName, type: TType, ...results: TType extends "checked" ? [] : [numElements: number]) {
   if(typeof perfReport.observers[globserverName] !== "object")
     perfReport.observers[globserverName] = {} as PerformanceReport["observers"][TObsName];
 
-  const obsData = [...perfReport.observers[globserverName]![type] ?? []];
+  let obsData = [...perfReport.observers[globserverName]![type] ?? []];
 
   if(type === "checked")
     (obsData as number[]).push(millis());
   else
     (obsData as [number, number][]).push([millis(), (results as [number])[0]]);
+
+  // if an entry of "checked" and list length > threshold, slice the first and last parts into a new array:
+  const reportLen = perfReport.observers[globserverName]?.[type]?.length;
+  if(type === "checked" && perfReport.observers[globserverName]?.[type] && typeof reportLen === "number" && reportLen > obsEventTruncLen) {
+    obsData = [
+      ...obsData.slice(0, obsEventTruncLen / 2),
+      `<! TRUNCATED - only showing first and last ${obsEventTruncLen / 2} entries !>` as never,
+      ...obsData.slice(obsData.length - obsEventTruncLen / 2),
+    ];
+  }
 
   // @ts-expect-error idw deal with this
   perfReport.observers[globserverName]![type] = obsData;
