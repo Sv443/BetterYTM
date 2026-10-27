@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@88dfe4ec/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@50d619e5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 20 Oct 2026 19:20:02 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Tue, 27 Oct 2026 22:53:51 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 88dfe4ec                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 50d619e5                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 9HL79i6nhy2u                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ e5Fm8zoPoq27                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -540,6 +540,7 @@
 		defaultLogLevel: () => defaultLogLevel,
 		devServerPort: () => devServerPort,
 		host: () => host$1,
+		initDate: () => initDate,
 		initTime: () => initTime,
 		initialParams: () => initialParams$1,
 		mode: () => mode$1,
@@ -566,9 +567,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "88dfe4ec";
+	var buildNumber$1 = "50d619e5";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1792524002518;
+	var buildTimestamp = 1793141631244;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -577,8 +578,10 @@
 	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
 	/** The URL search parameters at the earliest possible time */
 	var initialParams$1 = new URL(location.href).searchParams;
+	/** Date instance of when the script was initialized. */
+	var initDate = /* @__PURE__ */ new Date();
 	/** Timestamp of when the script was initialized. */
-	var initTime = Date.now();
+	var initTime = initDate.getTime();
 	/** Names of platforms by key of {@linkcode host} */
 	var platformNames = (0, _sv443_network_userutils.pureObj)({
 		github: "GitHub",
@@ -671,7 +674,12 @@
 		/** Current log level applied across all Logger instances. */
 		static curLogLevel = LogLevel.Info;
 		/** Shared log history across all Logger instances. */
-		static logs = [];
+		static logs = [[
+			"Misc",
+			"LOG",
+			Date.now(),
+			`Init time: unix=${initTime}, iso=${initDate.toISOString()}, utc=${initDate.toUTCString()}, en-US=${initDate.toLocaleString("en-US")}`
+		]];
 		/** Total log lines ever pushed (including truncated ones). */
 		static logLines = 0;
 		/** Max number of log lines kept in the {@linkcode Logger.logs} memory. */
@@ -2483,157 +2491,7 @@
 		}],
 		alerts: [],
 		strings: { "ytm_platform_logo_svg_url": "https://music.youtube.com/img/on_platform_logo_dark.svg" },
-		selectors: {
-			"generic": {
-				"app": {
-					"yt": "ytd-app",
-					"ytm": "ytmusic-app"
-				},
-				"appHeader": { "ytm": "ytmusic-header-renderer" },
-				"navBar": {
-					"yt": "#masthead-container",
-					"ytm": "ytmusic-nav-bar"
-				},
-				"player": { "ytm": "ytmusic-player#player" },
-				"playerMedia": { "ytm": "ytmusic-player #song-media-window" },
-				"video": {
-					"yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
-					"ytm": "ytmusic-player video"
-				},
-				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
-				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" },
-				"playlistPopup_sub_popupContainer": { "yt": "tp-yt-iron-dropdown[prevent-autonav=true]" },
-				"playlistPopupMainContainer_sub_popupContainer": { "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer" }
-			},
-			"layout": {
-				"navBarLogoContent": { "ytm": "ytmusic-logo a" },
-				"navBarLogoPath": { "ytm": "svg > g > path" },
-				"navbarSettingsButton": { "ytm": "ytmusic-nav-bar ytmusic-settings-button button" },
-				"sidebarItems_sub_sidebar": { "ytm": "ytmusic-guide-entry-renderer tp-yt-paper-item" },
-				"sidebarItemRenderers_sub_sidebar": { "ytm": "#contentContainer #guide-content #items ytmusic-guide-entry-renderer" },
-				"miniSidebarContainer": { "ytm": "#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer" },
-				"listItemLeftItems_sub_listItem": { "ytm": ".left-items" },
-				"listItemTitle_sub_listItem": { "ytm": ".title-column .title a" },
-				"listItem_homePage": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer" },
-				"listItem_watchPageRelated": { "ytm": "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer" },
-				"listItem_playlists": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer" },
-				"listItem_genericShelves": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer" },
-				"genericSongListItems": { "ytm": "ytmusic-responsive-list-item-renderer, .card-content-container" },
-				"genericSongListItemPlayButton_sub_listItem": { "ytm": "ytmusic-play-button-renderer" },
-				"playerBarSubtitleContainer": { "ytm": ".content-info-wrapper .subtitle yt-formatted-string" },
-				"playerBarSubtitleAnchors_sub_playerBarInfo": { "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span" },
-				"popupListItemContainer_sub_popupContainer": { "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model" },
-				"popupListItemsAll_sub_popupContainer": { "yt": "yt-list-view-model > toggleable-list-item-view-model" },
-				"queueHeaderButtons_sub_sidePanel": { "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons" },
-				"queueHeaderRenderer_sub_sidePanel": { "ytm": "ytmusic-queue-header-renderer" },
-				"sharePanel": {
-					"yt": "yt-unified-share-panel-renderer",
-					"ytm": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer"
-				},
-				"sharePanelInput_sub_sharePanel": "input#share-url"
-			},
-			"watchPage": {
-				"channelName": {
-					"yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
-					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
-				},
-				"votesRenderer": {
-					"yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
-					"ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
-				},
-				"votesRendererShorts": { "yt": "reel-action-bar-view-model" },
-				"likeBtn": {
-					"yt": "#actions ytd-menu-renderer like-button-view-model button",
-					"ytm": "ytmusic-like-button-renderer #button-shape-like"
-				},
-				"likeBtnShorts": { "yt": "like-button-view-model button" },
-				"likeBtnRenderer": { "ytm": "ytmusic-like-button-renderer#like-button-renderer" },
-				"likeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-like" },
-				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
-				"dislikeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-dislike" },
-				"dislikeBtnShorts": { "yt": ".ryd-synthetic-shorts-dislike button, dislike-button-view-model" },
-				"likeBtnAlternate": {
-					"yt": "like-button-view-model button",
-					"ytm": "#button-shape-like button"
-				},
-				"dislikeBtnAlternate": {
-					"yt": "dislike-button-view-model button",
-					"ytm": "#button-shape-dislike button"
-				},
-				"progressBar": {
-					"yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
-					"ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
-				},
-				"videoPlayer": { "yt": "#movie_player" },
-				"songImg": { "ytm": "ytmusic-player #song-image" }
-			},
-			"songLists": {
-				"all": { "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents" },
-				"searchPage": { "ytm": "ytmusic-shelf-renderer #contents, ytmusic-card-shelf-renderer .card-container" },
-				"currentQueueContainer": { "ytm": "ytmusic-player-queue #contents" },
-				"currentQueueSongAndArtistNames": { "ytm": "yt-formatted-string" },
-				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
-				"playlistPageArtistName": { "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a" },
-				"playlistPageArtistNameAlternate": { "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]" },
-				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]" },
-				"genericListSongName": { "ytm": ".title-column yt-formatted-string a" },
-				"queueItem": { "ytm": "ytmusic-player-queue-item" },
-				"queueItemThumbnailImg": { "ytm": "yt-img-shadow img" },
-				"queueItemPopoverContainer": { "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown" },
-				"queueItemPopoverRemoveFromListBtn": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)" },
-				"queueItemPopoverRemoveFromListBtnOptional": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)" },
-				"queueItemDotsBtn": { "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button" },
-				"queueMultiSelect": { "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]" },
-				"allCurrentQueueItems_global": { "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item" },
-				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer" },
-				"allGenericListItems_sub_listContainer": { "ytm": "ytmusic-responsive-list-item-renderer" }
-			},
-			"volume": {
-				"volSlider_sub_playerBarRightControls": { "ytm": "tp-yt-paper-slider#volume-slider" },
-				"volSliderExpanded_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider" },
-				"volSliderContainer_sub_playerBarRightControls": { "ytm": ".bytm-vol-slider-cont" },
-				"volSliderExpandedContainer_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont" }
-			},
-			"integration": { "themeSongPlayerBarControls": { "ytm": "#ts-panel-container" } },
-			"autoLike": {
-				"titleContainer": {
-					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
-					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
-				},
-				"titleContainerChannelName": {
-					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
-					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
-				},
-				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
-				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
-				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
-				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
-				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
-				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
-				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
-			},
-			"observer": {
-				"bytmDialogContainer": "#bytm-dialog-container",
-				"browseResponse": { "ytm": "ytmusic-browse-response" },
-				"searchPage": { "ytm": "ytmusic-search-page" },
-				"navBar": { "ytm": "ytmusic-nav-bar" },
-				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
-				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
-				"sidePanel": { "ytm": "#side-panel" },
-				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
-				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
-				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
-				"playerBarRightControls": { "ytm": "#right-controls" },
-				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
-				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
-				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
-				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
-				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
-				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-				"ytMasthead": { "yt": "#content ytd-masthead#masthead" },
-				"ytPopupContainer": { "yt": "ytd-app > ytd-popup-container" }
-			}
-		}
+		selectors: /* @__PURE__ */ JSON.parse("{\"generic\":{\"app\":{\"yt\":\"ytd-app\",\"ytm\":\"ytmusic-app\"},\"appHeader\":{\"ytm\":\"ytmusic-header-renderer\"},\"navBar\":{\"yt\":\"#masthead-container\",\"ytm\":\"ytmusic-nav-bar\"},\"player\":{\"ytm\":\"ytmusic-player#player\"},\"playerMedia\":{\"ytm\":\"ytmusic-player #song-media-window\"},\"video\":{\"yt\":\"ytd-player #shorts-player video, ytd-player #movie_player video\",\"ytm\":\"ytmusic-player video\"},\"pageHeaderContainer_sub_ytAppHeader\":{\"yt\":\"#channel-header-container, #page-header, #page-header-container\"},\"browseResponseHeader_sub_browseResponse\":{\"ytm\":\"ytmusic-browse-response #header.ytmusic-browse-response\"},\"playlistPopup_sub_popupContainer\":{\"yt\":\"tp-yt-iron-dropdown[prevent-autonav=true]\",\"ytm\":\"tp-yt-paper-dialog\"},\"playlistPopupMainContainer_sub_popupContainer\":{\"yt\":\"yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer\",\"ytm\":\"#playlists, #contents\"}},\"layout\":{\"navBarLogoContent\":{\"ytm\":\"ytmusic-logo a\"},\"navBarLogoPath\":{\"ytm\":\"svg > g > path\"},\"navbarSettingsButton\":{\"ytm\":\"ytmusic-nav-bar ytmusic-settings-button button\"},\"sidebarItems_sub_sidebar\":{\"ytm\":\"ytmusic-guide-entry-renderer tp-yt-paper-item\"},\"sidebarItemRenderers_sub_sidebar\":{\"ytm\":\"#contentContainer #guide-content #items ytmusic-guide-entry-renderer\"},\"miniSidebarContainer\":{\"ytm\":\"#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer\"},\"listItemLeftItems_sub_listItem\":{\"ytm\":\".left-items\"},\"listItemTitle_sub_listItem\":{\"ytm\":\".title-column .title a\"},\"listItem_homePage\":{\"ytm\":\"#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer\"},\"listItem_watchPageRelated\":{\"ytm\":\"ytmusic-tab-renderer[page-type=\\\"MUSIC_PAGE_TYPE_TRACK_RELATED\\\"] ytmusic-responsive-list-item-renderer\"},\"listItem_playlists\":{\"ytm\":\"#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer\"},\"listItem_genericShelves\":{\"ytm\":\"#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer\"},\"genericSongListItems\":{\"ytm\":\"ytmusic-responsive-list-item-renderer, .card-content-container\"},\"genericSongListItemPlayButton_sub_listItem\":{\"ytm\":\"ytmusic-play-button-renderer\"},\"playerBarSubtitleContainer\":{\"ytm\":\".content-info-wrapper .subtitle yt-formatted-string\"},\"playerBarSubtitleAnchors_sub_playerBarInfo\":{\"ytm\":\".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span\"},\"popupListItemContainer_sub_popupContainer\":{\"yt\":\"yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model\",\"ytm\":\"ytmusic-add-to-playlist-renderer #playlists\"},\"popupListItemsAll_sub_popupContainer\":{\"yt\":\"yt-list-view-model > toggleable-list-item-view-model\",\"ytm\":\"ytmusic-responsive-list-item-renderer, ytmusic-playlist-add-to-option-renderer\"},\"queueHeaderButtons_sub_sidePanel\":{\"ytm\":\"ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons\"},\"queueHeaderRenderer_sub_sidePanel\":{\"ytm\":\"ytmusic-queue-header-renderer\"},\"sharePanel\":{\"yt\":\"yt-unified-share-panel-renderer\",\"ytm\":\"tp-yt-paper-dialog ytmusic-unified-share-panel-renderer\"},\"sharePanelInput_sub_sharePanel\":\"input#share-url\"},\"watchPage\":{\"channelName\":{\"yt\":\"/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a\",\"ytm\":\"ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]\"},\"votesRenderer\":{\"yt\":\"ytd-watch-metadata segmented-like-dislike-button-view-model\",\"ytm\":\".middle-controls-buttons ytmusic-like-button-renderer\"},\"votesRendererShorts\":{\"yt\":\"reel-action-bar-view-model\"},\"likeBtn\":{\"yt\":\"#actions ytd-menu-renderer like-button-view-model button\",\"ytm\":\"ytmusic-like-button-renderer #button-shape-like\"},\"likeBtnShorts\":{\"yt\":\"like-button-view-model button\"},\"likeBtnRenderer\":{\"ytm\":\"ytmusic-like-button-renderer#like-button-renderer\"},\"likeBtnShape_sub_votesRenderer\":{\"ytm\":\"#button-shape-like\"},\"dislikeBtn\":{\"ytm\":\"ytmusic-like-button-renderer #button-shape-dislike\"},\"dislikeBtnShape_sub_votesRenderer\":{\"ytm\":\"#button-shape-dislike\"},\"dislikeBtnShorts\":{\"yt\":\".ryd-synthetic-shorts-dislike button, dislike-button-view-model\"},\"likeBtnAlternate\":{\"yt\":\"like-button-view-model button\",\"ytm\":\"#button-shape-like button\"},\"dislikeBtnAlternate\":{\"yt\":\"dislike-button-view-model button\",\"ytm\":\"#button-shape-dislike button\"},\"progressBar\":{\"yt\":\".ytp-chrome-bottom div.ytp-progress-bar[role=\\\"slider\\\"]\",\"ytm\":\"tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar\"},\"videoPlayer\":{\"yt\":\"#movie_player\"},\"songImg\":{\"ytm\":\"ytmusic-player #song-image\"}},\"songLists\":{\"all\":{\"yt\":\"yt-section-list-renderer #contents\",\"ytm\":\"ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\\\"MUSIC_PAGE_TYPE_ALBUM\\\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\\\"MUSIC_PAGE_TYPE_ARTIST\\\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\\\"MUSIC_PAGE_TYPE_PLAYLIST\\\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\\\"MUSIC_PAGE_TYPE_ALBUM\\\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\\\"MUSIC_PAGE_TYPE_ARTIST\\\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\\\"MUSIC_PAGE_TYPE_PLAYLIST\\\"] ytmusic-shelf-renderer #contents\"},\"searchPage\":{\"ytm\":\"ytmusic-shelf-renderer #contents, ytmusic-card-shelf-renderer .card-container\"},\"currentQueueContainer\":{\"ytm\":\"ytmusic-player-queue #contents\"},\"currentQueueSongAndArtistNames\":{\"ytm\":\"yt-formatted-string\"},\"autoplayQueueContainer\":{\"ytm\":\"ytmusic-player-queue #automix-contents\"},\"playlistPageArtistName\":{\"ytm\":\"ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a\"},\"playlistPageArtistNameAlternate\":{\"ytm\":\"ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]\"},\"genericListArtistName\":{\"ytm\":\".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]\"},\"genericListSongName\":{\"ytm\":\".title-column yt-formatted-string a\"},\"queueItem\":{\"ytm\":\"ytmusic-player-queue-item\"},\"queueItemThumbnailImg\":{\"ytm\":\"yt-img-shadow img\"},\"queueItemPopoverContainer\":{\"ytm\":\"ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown\"},\"queueItemPopoverRemoveFromListBtn\":{\"ytm\":\"tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)\"},\"queueItemPopoverRemoveFromListBtnOptional\":{\"ytm\":\"tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)\"},\"queueItemDotsBtn\":{\"ytm\":\"ytmusic-menu-renderer yt-button-shape[id=\\\"button-shape\\\"] button\"},\"queueMultiSelect\":{\"ytm\":\"ytmusic-dialog[dialog-type=\\\"multiSelectMenuBar\\\"]\"},\"allCurrentQueueItems_global\":{\"ytm\":\"#contents.ytmusic-player-queue > ytmusic-player-queue-item\"},\"allCurrentQueueItemsSongInfo_global\":{\"ytm\":\".song-info, .flex-columns.ytmusic-responsive-list-item-renderer\"},\"allGenericListItems_sub_listContainer\":{\"yt\":\"div\",\"ytm\":\"ytmusic-responsive-list-item-renderer, ytmusic-playlist-add-to-option-renderer\"}},\"volume\":{\"volSlider_sub_playerBarRightControls\":{\"ytm\":\"tp-yt-paper-slider#volume-slider\"},\"volSliderExpanded_sub_playerBarRightControls\":{\"ytm\":\"ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider\"},\"volSliderContainer_sub_playerBarRightControls\":{\"ytm\":\".bytm-vol-slider-cont\"},\"volSliderExpandedContainer_sub_playerBarRightControls\":{\"ytm\":\"ytmusic-player-expanding-menu .bytm-vol-slider-cont\"}},\"integration\":{\"themeSongPlayerBarControls\":{\"ytm\":\"#ts-panel-container\"}},\"autoLike\":{\"titleContainer\":{\"yt\":\"ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model\",\"ytm\":\"ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title\"},\"titleContainerChannelName\":{\"yt\":\"yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span\",\"ytm\":\"yt-formatted-string, span.yt-core-attributed-string\"},\"titleContainerChannelNameAlternate\":{\"ytm\":\"ytmusic-visual-header-renderer .content-container h2 yt-formatted-string\"},\"titleContainerButtonsContainer\":{\"yt\":\"#inner-header-container #buttons, yt-flexible-actions-view-model\"},\"titleContainerButtonsContainerLastButton\":{\"ytm\":\"ytmusic-subscribe-button-renderer\"},\"titleContainerButtonsContainerShareButton\":{\"ytm\":\"ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type\"},\"titleContainerOtherButtons_sub_ytAppHeader\":{\"yt\":\"#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction\"},\"channelName_global\":{\"ytm\":\".ytmusic-immersive-header-renderer > h1 > yt-formatted-string\"},\"channelNameFallback_global\":{\"ytm\":\"ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\\\"heading\\\"]\"}},\"observer\":{\"bytmDialogContainer\":\"#bytm-dialog-container\",\"browseResponse\":{\"ytm\":\"ytmusic-browse-response\"},\"searchPage\":{\"ytm\":\"ytmusic-search-page\"},\"navBar\":{\"ytm\":\"ytmusic-nav-bar\"},\"mainPanel\":{\"ytm\":\"ytmusic-player-page #main-panel\"},\"sideBar\":{\"ytm\":\"ytmusic-app-layout tp-yt-app-drawer\"},\"sidePanel\":{\"ytm\":\"#side-panel\"},\"playerBar\":{\"ytm\":\"ytmusic-app-layout ytmusic-player-bar.ytmusic-app\"},\"playerBarInfo\":{\"ytm\":\"ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper\"},\"playerBarMiddleButtons\":{\"ytm\":\".middle-controls .middle-controls-buttons\"},\"playerBarRightControls\":{\"ytm\":\"#right-controls\"},\"popupContainer\":{\"ytm\":\"ytmusic-app ytmusic-popup-container\"},\"ytGuide\":{\"yt\":\"#content tp-yt-app-drawer#guide #guide-inner-content\"},\"ytdBrowse\":{\"yt\":\"ytd-app ytd-page-manager ytd-browse:not([hidden])\"},\"ytAppHeader\":{\"yt\":\"#header ytd-app-header, #header ytd-tabbed-page-header\"},\"ytWatchFlexy\":{\"yt\":\"ytd-app ytd-watch-flexy\"},\"ytWatchMetadata\":{\"yt\":\"#columns #primary-inner ytd-watch-metadata\"},\"ytMasthead\":{\"yt\":\"#content ytd-masthead#masthead\"},\"ytPopupContainer\":{\"yt\":\"ytd-app > ytd-popup-container\"}}}")
 	};
 	//#endregion
 	//#region src/utils/domain.ts
@@ -2930,12 +2788,21 @@
 			perfReport.durations[name] = Date.now() - start;
 		};
 	}
+	/** When there are more than this many observer ticks, the middle part of the array will be removed. Has to be an even number. */
+	var obsEventTruncLen = 200;
+	if (obsEventTruncLen % 2 !== 0) throw new Error("obsEventTruncLen has to be an even number!");
 	/** Records when a {@linkcode globservers} instance checks for elements and finds elements, to record the event times to the {@linkcode perfReport}. */
-	function recordObserverTick(globserverName, type, ...results) {
+	function recordObserverEvent(globserverName, type, ...results) {
 		if (typeof perfReport.observers[globserverName] !== "object") perfReport.observers[globserverName] = {};
-		const obsData = [...perfReport.observers[globserverName][type] ?? []];
+		let obsData = [...perfReport.observers[globserverName][type] ?? []];
 		if (type === "checked") obsData.push(millis());
 		else obsData.push([millis(), results[0]]);
+		const reportLen = perfReport.observers[globserverName]?.[type]?.length;
+		if (type === "checked" && perfReport.observers[globserverName]?.[type] && typeof reportLen === "number" && reportLen > obsEventTruncLen) obsData = [
+			...obsData.slice(0, obsEventTruncLen / 2),
+			`<! TRUNCATED - only showing first and last ${obsEventTruncLen / 2} entries !>`,
+			...obsData.slice(obsData.length - obsEventTruncLen / 2)
+		];
 		perfReport.observers[globserverName][type] = obsData;
 	}
 	/** Overrides the plugin performance object for the given plugin. */
@@ -2984,19 +2851,39 @@
 			defaultDebounce: cfg.defaultObserverDebounce,
 			defaultDebounceType: "immediate"
 		};
-		for (const observer of Object.values(globservers)) observer.on("enabled", () => loggers.observer.info("Observer enabled for base element", observer.baseElement));
+		/**
+		* Hooks into the {@linkcode globservers} events `"checked"` and `"found"` to update the performance report using {@linkcode recordObserverEvent()}, and log a line to the console if the feature `verboseObservers` is on.
+		* @param name The unique name of the instance.
+		* @param obs A reference to the instance, if it hasn't already been added to {@linkcode globservers}.
+		*/
+		const hookObsEvents = (name, obs) => {
+			if (!obs) obs = globservers[name];
+			if (!obs) throw new TypeError(`Couldn't find globserver instance with the name '${name}' in initObservers():trackObserver()`);
+			const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
+			obs.on("checked", () => {
+				if (getFeature("verboseObservers")) loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+				recordObserverEvent(name, "checked");
+			});
+			obs.on("found", (data) => {
+				const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+				if (getFeature("verboseObservers")) loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${(0, _sv443_network_userutils.autoPlural)("element", elements)}:`, elements.join(", "), LogLevel.Info);
+				recordObserverEvent(name, "found", elements.length);
+			});
+		};
 		try {
 			globservers.body = new _sv443_network_userutils.SelectorObserver(document.body, {
 				...defaultObserverOptions,
 				defaultDebounce: (0, _sv443_network_userutils.clamp)(defaultObserverOptions.defaultDebounce, 100, 500),
 				subtree: false
 			});
+			hookObsEvents("body");
 			globservers.body.enable();
 			globservers.bytmDialogContainer = new _sv443_network_userutils.SelectorObserver(getSelector("observer", "bytmDialogContainer"), {
 				...defaultObserverOptions,
 				defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
 				subtree: true
 			});
+			hookObsEvents("bytmDialogContainer");
 			globservers.bytmDialogContainer.enable();
 			switch (getDomain()) {
 				case "ytm": {
@@ -3006,24 +2893,28 @@
 						defaultDebounce: (0, _sv443_network_userutils.clamp)(Math.floor(defaultObserverOptions.defaultDebounce / 2), 50, 1e3),
 						subtree: true
 					});
+					hookObsEvents("browseResponse");
 					globservers.body.addListener(browseResponseSelector, { listener: getEnableObsFn("browseResponse") });
 					const searchPageSelector = getSelector("observer", "searchPage");
 					globservers.searchPage = new _sv443_network_userutils.SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("searchPage");
 					globservers.body.addListener(searchPageSelector, { listener: getEnableObsFn("searchPage") });
 					const navBarSelector = getSelector("observer", "navBar");
 					globservers.navBar = new _sv443_network_userutils.SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
+					hookObsEvents("navBar");
 					globservers.body.addListener(navBarSelector, { listener: getEnableObsFn("navBar") });
 					const mainPanelSelector = getSelector("observer", "mainPanel");
 					globservers.mainPanel = new _sv443_network_userutils.SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("mainPanel");
 					globservers.body.addListener(mainPanelSelector, { listener: getEnableObsFn("mainPanel") });
 					const sidebarSelector = getSelector("observer", "sideBar");
 					globservers.sideBar = new _sv443_network_userutils.SelectorObserver(sidebarSelector, {
@@ -3032,15 +2923,18 @@
 						childList: true,
 						subtree: true
 					});
+					hookObsEvents("sideBar");
 					globservers.body.addListener(sidebarSelector, { listener: getEnableObsFn("sideBar") });
 					const sidePanelSelector = getSelector("observer", "sidePanel");
 					globservers.sidePanel = new _sv443_network_userutils.SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("sidePanel");
 					globservers.body.addListener(sidePanelSelector, { listener: getEnableObsFn("sidePanel") });
 					const playerBarSelector = getSelector("observer", "playerBar");
 					globservers.playerBar = new _sv443_network_userutils.SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
+					hookObsEvents("playerBar");
 					globservers.body.addListener(playerBarSelector, { listener: () => {
 						globservers.playerBar.enable();
 					} });
@@ -3050,24 +2944,28 @@
 						attributes: true,
 						attributeFilter: ["title"]
 					});
+					hookObsEvents("playerBarInfo");
 					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableObsFn("playerBarInfo") });
 					const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
 					globservers.playerBarMiddleButtons = new _sv443_network_userutils.SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("playerBarMiddleButtons");
 					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableObsFn("playerBarMiddleButtons") });
 					const playerBarRightControls = getSelector("observer", "playerBarRightControls");
 					globservers.playerBarRightControls = new _sv443_network_userutils.SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("playerBarRightControls");
 					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableObsFn("playerBarRightControls") });
 					const popupContainerSelector = getSelector("observer", "popupContainer");
 					globservers.popupContainer = new _sv443_network_userutils.SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("popupContainer");
 					globservers.body.addListener(popupContainerSelector, { listener: getEnableObsFn("popupContainer") });
 					break;
 				}
@@ -3077,12 +2975,14 @@
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("ytGuide");
 					globservers.body.addListener(ytGuideSelector, { listener: getEnableObsFn("ytGuide") });
 					const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
 					globservers.ytdBrowse = new _sv443_network_userutils.SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("ytdBrowse");
 					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableObsFn("ytdBrowse") });
 					const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
 					globservers.ytAppHeader = new _sv443_network_userutils.SelectorObserver(ytAppHeaderSelector, {
@@ -3090,6 +2990,7 @@
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
+					hookObsEvents("ytAppHeader");
 					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableObsFn("ytAppHeader") });
 					const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
 					globservers.ytWatchFlexy = new _sv443_network_userutils.SelectorObserver(ytWatchFlexySelector, {
@@ -3097,38 +2998,30 @@
 						defaultDebounce: (0, _sv443_network_userutils.clamp)(Math.floor(defaultObserverOptions.defaultDebounce * 3), 100, 300),
 						subtree: true
 					});
+					hookObsEvents("ytWatchFlexy");
 					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableObsFn("ytWatchFlexy") });
 					const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
 					globservers.ytWatchMetadata = new _sv443_network_userutils.SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("ytWatchMetadata");
 					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableObsFn("ytWatchMetadata") });
 					const mastheadSelector = getSelector("observer", "ytMasthead");
 					globservers.ytMasthead = new _sv443_network_userutils.SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("ytMasthead");
 					globservers.body.addListener(mastheadSelector, { listener: getEnableObsFn("ytMasthead") });
 					const popupContainerSelector = getSelector("observer", "ytPopupContainer");
 					globservers.ytPopupContainer = new _sv443_network_userutils.SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
+					hookObsEvents("ytPopupContainer");
 					globservers.body.addListener(popupContainerSelector, { listener: getEnableObsFn("ytPopupContainer") });
 				}
-			}
-			for (const [name, obs] of Object.entries(globservers)) {
-				const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
-				obs.on("checked", () => {
-					if (getFeature("verboseObservers")) loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
-					recordObserverTick(name, "checked");
-				});
-				obs.on("found", (data) => {
-					const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
-					if (getFeature("verboseObservers")) loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${(0, _sv443_network_userutils.autoPlural)("element", elements)}:`, elements.join(", "), LogLevel.Info);
-					recordObserverTick(name, "found", elements.length);
-				});
 			}
 			globserversReady = true;
 			emitInterface("bytm:observersReady");
@@ -5353,7 +5246,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const addAdorn = (adornFn) => {
 			if (!resolvedAdorns.find((a) => a === adornFn)) resolvedAdorns.push(adornFn);
 		};
-		if (!("reloadRequired" in feat) || feat.reloadRequired === true) addAdorn(adornments.reload);
+		if ((!("reloadRequired" in feat) || feat.reloadRequired === true) && feat.type !== "button") addAdorn(adornments.reload);
 		if (feat.supportedSites.length === 1 && feat.supportedSites[0] === "ytm") addAdorn(adornments.ytmOnly);
 		if (feat.advanced === true) addAdorn(adornments.advanced);
 		if (feat.since && (0, compare_versions.compare)(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < 20 || isDev)) addAdorn(adornments.newFeature);
@@ -8173,7 +8066,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "general",
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
-			click: () => tryUse("promptResetConfig")?.()
+			click: () => tryUse("promptResetConfig")?.(),
+			adornments: [adornments.reload]
 		},
 		resetEverything: {
 			...featDefaults.resetEverything,
@@ -8191,7 +8085,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					await reloadTab();
 				}
 			},
-			advanced: true
+			advanced: true,
+			adornments: [adornments.reload]
 		},
 		logLevel: {
 			...featDefaults.logLevel,
@@ -11204,8 +11099,21 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	/** Adds search inputs to lists */
 	async function initSearchableLists() {
 		if (getDomain() === "ytm") {
-			if (getFeature("searchablePlaylistPopupsEnabled")) {}
-			if (getFeature("searchableSongListsEnabled")) {}
+			if (getFeature("searchablePlaylistPopupsEnabled")) addSelectorListener("popupContainer", getSelector("generic", "playlistPopup_sub_popupContainer"), {
+				all: true,
+				continuous: true,
+				listener(popupConts) {
+					for (const pc of popupConts) {
+						const listItemCont = pc.querySelector(getSelector("layout", "popupListItemContainer_sub_popupContainer"));
+						if (listItemCont && listItemCont.childElementCount > 0) addPopupSearchBar(pc);
+					}
+				}
+			});
+			if (getFeature("searchableSongListsEnabled")) addSelectorListener("browseResponse", getSelector("songLists", "all"), {
+				all: true,
+				continuous: true,
+				listener: (songListConts) => [...songListConts].map(addListSearchBar)
+			});
 		} else {
 			if (getFeature("searchablePlaylistPopupsEnabled")) addSelectorListener("ytPopupContainer", getSelector("generic", "playlistPopup_sub_popupContainer"), {
 				all: true,
@@ -11217,7 +11125,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					}
 				}
 			});
-			if (getFeature("searchableSongListsEnabled")) {}
+			if (getFeature("searchableSongListsEnabled")) addSelectorListener("ytdBrowse", getSelector("songLists", "all"), {
+				all: true,
+				continuous: true,
+				listener: (songListConts) => [...songListConts].map(addListSearchBar)
+			});
 		}
 	}
 	var searchBarContClass = "bytm-list-search-bar-cont";
@@ -11240,14 +11152,22 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		onInteraction(clearBtn, () => {
 			searchBar.value = "";
 			applyPopupContSearchDebounced(popupContainer);
-		});
+		}, { capture: true });
 		searchWrapper.appendChild(searchBar);
 		searchWrapper.appendChild(clearBtn);
-		preventEvents("click", searchWrapper);
+		const inputElClasses = [
+			"bytm-list-search-bar",
+			"bytm-list-search-clear-btn",
+			"bytm-btn"
+		];
+		preventEvents("click", searchWrapper, (e) => {
+			if (inputElClasses.some((cl) => e.target?.classList.contains(cl))) return false;
+			return true;
+		});
 		return searchWrapper;
 	}
 	/** Adds a search bar to the given popup container */
-	function addPopupSearchBar(popupContainer) {
+	function addPopupSearchBar(popupContainer, searchBarParentPositioning = "afterbegin") {
 		const isPlaylistPopup = [...popupContainer.querySelectorAll(getSelector("layout", "popupListItemsAll_sub_popupContainer")) ?? []].length > 0;
 		const searchBarCont = popupContainer.querySelector(`.${searchBarContClass}`);
 		if (searchBarCont && !isPlaylistPopup) searchBarCont.remove();
@@ -11256,8 +11176,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const parentEl = popupContainer.querySelector(parentSel);
 		if (parentEl && isPlaylistPopup) {
 			const searchBar = createSearchBarEl(popupContainer);
-			parentEl.insertAdjacentElement("afterbegin", searchBar);
+			parentEl.insertAdjacentElement(searchBarParentPositioning, searchBar);
 		}
+	}
+	/** Adds a search bar to the given popup container */
+	function addListSearchBar(listContainer) {
+		loggers.debug.log("TODO: add search bar for list container:", listContainer);
+		addPopupSearchBar(listContainer.closest("ytmusic-playlist-shelf-renderer, ytmusic-section-list-renderer, ytmusic-shelf-renderer") ?? listContainer, "beforebegin");
 	}
 	//#endregion
 	//#region src/bindings.ts
@@ -12348,6 +12273,7 @@ Build #${buildNumber$1} (dev mode)
 
 %cPowered by:
 ─ Lots of ambition and dedication
+─ The work of various contributors: https://github.com/Sv443/BetterYTM#special-thanks
 ─ My song metadata API: https://api.sv443.net/geniurl
 ─ My core utility library: https://github.com/Sv443-Network/CoreUtils
 ─ My DOM utility library: https://github.com/Sv443-Network/UserUtils
@@ -12806,7 +12732,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "88dfe4ec",
+				buildNumber: "50d619e5",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
