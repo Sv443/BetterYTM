@@ -1,5 +1,5 @@
 import { clamp, DatedError, type LooseUnion } from "@sv443-network/userutils";
-import { scriptInfo } from "@/constants.ts";
+import { initDate, initTime, scriptInfo } from "@/constants.ts";
 import { LogLevel } from "@/types.ts";
 
 /** Predefined log categories for better organization and filtering. Also allows any other string value. Prefer using PascalCase. */
@@ -94,7 +94,9 @@ export class Logger {
   public static curLogLevel: LogLevel = LogLevel.Info;
 
   /** Shared log history across all Logger instances. */
-  public static readonly logs: LogLine[] = [];
+  public static readonly logs: LogLine[] = [
+    ["Misc", "LOG", Date.now(), `Init time: unix=${initTime}, iso=${initDate.toISOString()}, utc=${initDate.toUTCString()}, en-US=${initDate.toLocaleString("en-US")}`],
+  ];
 
   /** Total log lines ever pushed (including truncated ones). */
   public static logLines = 0;

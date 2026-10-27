@@ -71,6 +71,7 @@ import packageJson from "@root/package.json" with { type: "json" };
 
   const poweredBy = `Powered by:
 ─ Lots of ambition and dedication
+─ The work of various contributors: https://github.com/Sv443/BetterYTM#special-thanks
 ─ My song metadata API: https://api.sv443.net/geniurl
 ─ My core utility library: https://github.com/Sv443-Network/CoreUtils
 ─ My DOM utility library: https://github.com/Sv443-Network/UserUtils
