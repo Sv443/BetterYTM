@@ -4,6 +4,7 @@ import { LogLevel } from "@/types.ts";
 /**
  * Check below this variable for the constant variables used throughout BetterYTM.  
  * Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+ * For more info on each of these, refer to the table just below the userscript header, which is the line that only contains the following: // ==/UserScript==  
  * Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
  * @deprecated This object was reworked when the build process was migrated to vite.
  */
@@ -14,15 +15,15 @@ export const repo = "Sv443/BetterYTM";
 export const mode = __BYTM_MODE__;
 /** The branch to use in various URLs that point to the GitHub repo. */
 export const branch = __BYTM_BRANCH__;
-/** Which host the userscript was installed from. */
+/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 export const host = __BYTM_HOST__;
-/** The build number of the userscript. */
+/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
 export const buildNumber = __BYTM_BUILD_NUMBER__;
-/** When the script was built, as a UNIX timestamp. */
+/** When the script was built, as a 13 digit UNIX timestamp. */
 export const buildTimestamp = __BYTM_BUILD_TIMESTAMP__;
 /** The source of the assets - github, jsdelivr or local. */
 export const assetSource = __BYTM_ASSET_SOURCE__;
-/** The port of the dev server. */
+/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
 export const devServerPort = __BYTM_DEV_SERVER_PORT__;
 
 /** URL to the changelog file */

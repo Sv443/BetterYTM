@@ -1,4 +1,4 @@
-import { openInNewTab, type StringGen } from "@sv443-network/userutils";
+import { openInNewTab, pureObj, type StringGen } from "@sv443-network/userutils";
 
 /**
  * Dependency-free helpers.  
@@ -99,8 +99,8 @@ export function overflowVal(value: number, minOrMax: number, max?: number): numb
 }
 
 /** Transforms an object's own properties into getters that return the original values. */
-export function getterifyObj<TObj extends object>(obj: TObj): TObj {
-  const newObj = {} as ReturnType<typeof getterifyObj<TObj>>;
+export function getterifyObj<TObj extends object>(obj: TObj, pure = false): TObj {
+  const newObj = (pure ? pureObj() : {}) as ReturnType<typeof getterifyObj<TObj>>;
 
   for(const key in obj) {
     Object.defineProperty(newObj, key, {
