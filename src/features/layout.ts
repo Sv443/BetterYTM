@@ -1392,10 +1392,25 @@ export async function initSearchableLists() {
   // >> YTM >>
   if(getDomain() === "ytm") {
     if(getFeature("searchablePlaylistPopupsEnabled")) {
-      // TODO:
+      addSelectorListener<0, "ytm">("popupContainer", getSelector("generic", "playlistPopup_sub_popupContainer"), {
+        all: true,
+        continuous: true,
+        listener(popupConts) {
+          for(const pc of popupConts) {
+            const listItemCont = pc.querySelector<HTMLElement>(getSelector("layout", "popupListItemContainer_sub_popupContainer"));
+            if(listItemCont && listItemCont.childElementCount > 0)
+              addPopupSearchBar(pc);
+          }
+        },
+      });
+
     }
     if(getFeature("searchableSongListsEnabled")) {
-      // TODO:
+      addSelectorListener<0, "ytm">("browseResponse", getSelector("songLists", "all"), {
+        all: true,
+        continuous: true,
+        listener: (songListConts) => [...songListConts].map(addListSearchBar),
+      });
     }
   }
   // >> YT >>
@@ -1414,7 +1429,11 @@ export async function initSearchableLists() {
       });
     }
     if(getFeature("searchableSongListsEnabled")) {
-      // TODO:
+      addSelectorListener<0, "yt">("ytdBrowse", getSelector("songLists", "all"), {
+        all: true,
+        continuous: true,
+        listener: (songListConts) => [...songListConts].map(addListSearchBar),
+      });
     }
   }
 }
@@ -1448,18 +1467,23 @@ function createSearchBarEl(popupContainer: HTMLElement): HTMLElement {
   onInteraction(clearBtn, () => {
     searchBar.value = "";
     applyPopupContSearchDebounced(popupContainer);
-  });
+  }, { capture: true });
 
   searchWrapper.appendChild(searchBar);
   searchWrapper.appendChild(clearBtn);
 
-  preventEvents("click", searchWrapper);
+  const inputElClasses = ["bytm-list-search-bar", "bytm-list-search-clear-btn", "bytm-btn"];
+  preventEvents("click", searchWrapper, (e) => {
+    if(inputElClasses.some(cl => (e.target as HTMLElement | null)?.classList.contains(cl)))
+      return false;
+    return true;
+  });
 
   return searchWrapper;
 }
 
 /** Adds a search bar to the given popup container */
-function addPopupSearchBar(popupContainer: HTMLElement) {
+function addPopupSearchBar(popupContainer: HTMLElement, searchBarParentPositioning: "afterbegin" | "afterend" | "beforebegin" | "beforeend" = "afterbegin") {
   const isPlaylistPopup = [...(popupContainer.querySelectorAll<HTMLElement>(getSelector("layout", "popupListItemsAll_sub_popupContainer")) ?? [])].length > 0;
   const searchBarCont = popupContainer.querySelector(`.${searchBarContClass}`);
 
@@ -1475,6 +1499,12 @@ function addPopupSearchBar(popupContainer: HTMLElement) {
   if(parentEl && isPlaylistPopup) {
     const searchBar = createSearchBarEl(popupContainer);
 
-    parentEl.insertAdjacentElement("afterbegin", searchBar);
+    parentEl.insertAdjacentElement(searchBarParentPositioning, searchBar);
   }
+}
+
+/** Adds a search bar to the given popup container */
+function addListSearchBar(listContainer: HTMLElement) {
+  loggers.debug.log("TODO: add search bar for list container:", listContainer);
+  addPopupSearchBar(listContainer.closest("ytmusic-playlist-shelf-renderer, ytmusic-section-list-renderer, ytmusic-shelf-renderer") ?? listContainer, "beforebegin");
 }

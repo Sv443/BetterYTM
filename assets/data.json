@@ -59,10 +59,12 @@
         "ytm": "ytmusic-browse-response #header.ytmusic-browse-response"
       },
       "playlistPopup_sub_popupContainer": {
-        "yt": "tp-yt-iron-dropdown[prevent-autonav=true]"
+        "yt": "tp-yt-iron-dropdown[prevent-autonav=true]",
+        "ytm": "tp-yt-paper-dialog"
       },
       "playlistPopupMainContainer_sub_popupContainer": {
-        "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer"
+        "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer",
+        "ytm": "#playlists, #contents"
       }
     },
     "layout": {
@@ -115,10 +117,12 @@
         "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span"
       },
       "popupListItemContainer_sub_popupContainer": {
-        "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model"
+        "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model",
+        "ytm": "ytmusic-add-to-playlist-renderer #playlists"
       },
       "popupListItemsAll_sub_popupContainer": {
-        "yt": "yt-list-view-model > toggleable-list-item-view-model"
+        "yt": "yt-list-view-model > toggleable-list-item-view-model",
+        "ytm": "ytmusic-responsive-list-item-renderer, ytmusic-playlist-add-to-option-renderer"
       },
       "queueHeaderButtons_sub_sidePanel": {
         "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons"
@@ -187,6 +191,7 @@
     },
     "songLists": {
       "all": {
+        "yt": "yt-section-list-renderer #contents",
         "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents"
       },
       "searchPage": {
@@ -241,7 +246,8 @@
         "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer"
       },
       "allGenericListItems_sub_listContainer": {
-        "ytm": "ytmusic-responsive-list-item-renderer"
+        "yt": "div",
+        "ytm": "ytmusic-responsive-list-item-renderer, ytmusic-playlist-add-to-option-renderer"
       }
     },
     "volume": {
@@ -333,7 +339,7 @@
         "yt": "#content tp-yt-app-drawer#guide #guide-inner-content"
       },
       "ytdBrowse": {
-        "yt": "ytd-app ytd-page-manager ytd-browse"
+        "yt": "ytd-app ytd-page-manager ytd-browse:not([hidden])"
       },
       "ytAppHeader": {
         "yt": "#header ytd-app-header, #header ytd-tabbed-page-header"
