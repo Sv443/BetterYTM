@@ -107,8 +107,8 @@ function getEnableObsFn(observerName: ObserverName): () => void {
 export function initObservers(cfg: FeatureConfig) {
   /** Options that are applied to every SelectorObserver instance */
   const defaultObserverOptions = {
-    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
-    enableOnAddListener: false,  // important because of strict init order
+    disableOnNoListeners: false, // important because of strict init order
+    enableOnAddListener: false,  // ^
     defaultDebounce: cfg.defaultObserverDebounce,
     defaultDebounceType: "immediate",
   } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
@@ -127,6 +127,14 @@ export function initObservers(cfg: FeatureConfig) {
     const baseElem = typeof obs.baseElement === "string"
       ? `'${obs.baseElement}'`
       : Logger.serializeElement(obs.baseElement);
+
+    // re-enable performance flags after initialization is done:
+    if(!obs.isEnabled()) {
+      obs.once("enabled", () => {
+        obs.setOption("disableOnNoListeners", true);
+        obs.setOption("enableOnAddListener", true);
+      });
+    }
 
     obs.on("checked", () => {
       if(getFeature("verboseObservers"))
