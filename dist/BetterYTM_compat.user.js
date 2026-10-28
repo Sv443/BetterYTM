@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@50d619e5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1968bbb7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 27 Oct 2026 22:53:51 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 28 Oct 2026 00:51:54 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 50d619e5                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 1968bbb7                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 67m1Zacl1g3Y                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ dSDUBj1ZDIsc                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -194,7 +194,7 @@
 		module.exports = {};
 	}));
 	//#endregion
-	//#region node_modules/.pnpm/@sv443-network+userutils@11.0.0/node_modules/@sv443-network/userutils/dist/UserUtils.mjs
+	//#region node_modules/.pnpm/@sv443-network+userutils@11.2.0/node_modules/@sv443-network/userutils/dist/UserUtils.mjs
 	var UserUtils_exports = /* @__PURE__ */ __exportAll({
 		BrowserStorageEngine: () => BrowserStorageEngine,
 		ChecksumMismatchError: () => ChecksumMismatchError,
@@ -1895,8 +1895,8 @@ Has: ${checksum}`);
 		return func;
 	}
 	var rawConsts$1 = {
-		coreUtilsVersion: "3.8.0",
-		userUtilsVersion: "11.0.0"
+		coreUtilsVersion: "3.9.0",
+		userUtilsVersion: "11.1.0"
 	};
 	function getConst(constKey, defaultVal) {
 		const val = rawConsts$1[constKey];
@@ -2603,14 +2603,15 @@ Has: ${checksum}`);
 			__publicField(this, "observerOptions");
 			__publicField(this, "customOptions");
 			__publicField(this, "listenerMap");
+			__publicField(this, "checkSelectorDebouncer");
 			/** The base element (or its selector) to observe the children of - can be set in the constructor and is read-only afterward. */
 			__publicField(this, "baseElement");
-			/** The options that were set in the constructor - read-only afterward. */
+			/** The options that were set in the constructor. Can be modified with {@linkcode SelectorObserver.setOptions()} */
 			__publicField(this, "options");
 			this.baseElement = baseElement;
 			this.options = options;
 			this.listenerMap = /* @__PURE__ */ new Map();
-			const { defaultDebounce, defaultDebounceType, disableOnNoListeners, enableOnAddListener, ...observerOptions } = options;
+			const { defaultDebounce, defaultDebounceType, disableOnNoListeners, enableOnAddListener, debounceChecks, ...observerOptions } = options;
 			this.observerOptions = {
 				childList: true,
 				subtree: true,
@@ -2620,13 +2621,26 @@ Has: ${checksum}`);
 				defaultDebounce: defaultDebounce != null ? defaultDebounce : 0,
 				defaultDebounceType: defaultDebounceType != null ? defaultDebounceType : "immediate",
 				disableOnNoListeners: disableOnNoListeners != null ? disableOnNoListeners : false,
-				enableOnAddListener: enableOnAddListener != null ? enableOnAddListener : true
+				enableOnAddListener: enableOnAddListener != null ? enableOnAddListener : true,
+				debounceChecks: debounceChecks != null ? debounceChecks : true
 			};
-			if (typeof this.customOptions.checkInterval !== "number") this.observer = new MutationObserver(() => this.checkAllSelectors());
+			this.checkSelectorDebouncer = new Debouncer(this.customOptions.defaultDebounce, this.customOptions.defaultDebounceType);
+			this.checkSelectorDebouncer.on("call", () => this.checkAllSelectors());
+			if (typeof this.customOptions.checkInterval !== "number") this.observer = new MutationObserver(() => this.checkAllSelectorsDebounced());
 			else {
-				this.checkAllSelectors();
-				setInterval(() => this.checkAllSelectors(), this.customOptions.checkInterval);
+				this.checkAllSelectorsDebounced();
+				setInterval(() => this.checkAllSelectorsDebounced(), this.customOptions.checkInterval);
 			}
+		}
+		/** Sets one of the mutable options to a new value. Not all options can be modified after instantiation. Refer to the types {@linkcode SelectorObserverOptions} and {@linkcode SelectorObserverOptionsMutable} for more info. */
+		setOption(modifiableOptionKey, newValue) {
+			if (modifiableOptionKey in this.options) this.options[modifiableOptionKey] = newValue;
+			else if (modifiableOptionKey in this.customOptions) this.customOptions[modifiableOptionKey] = newValue;
+		}
+		/** Call to check all selectors in the {@linkcode listenerMap} using {@linkcode checkSelector()} - uses this instance's debounce settings for checking selectors, if enabled. */
+		checkAllSelectorsDebounced() {
+			if (this.options.debounceChecks) return this.checkSelectorDebouncer.call();
+			else return this.checkAllSelectors();
 		}
 		/** Call to check all selectors in the {@linkcode listenerMap} using {@linkcode checkSelector()} */
 		checkAllSelectors() {
@@ -3435,6 +3449,7 @@ Has: ${checksum}`);
 	/**
 	* Check below this variable for the constant variables used throughout BetterYTM.  
 	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+	* For more info on each of these, refer to the table just below the userscript header, which is the line that only contains the following: // ==/UserScript==  
 	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
 	* @deprecated This object was reworked when the build process was migrated to vite.
 	*/
@@ -3445,15 +3460,15 @@ Has: ${checksum}`);
 	var mode$1 = "development";
 	/** The branch to use in various URLs that point to the GitHub repo. */
 	var branch$1 = "develop";
-	/** Which host the userscript was installed from. */
+	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
-	/** The build number of the userscript. */
-	var buildNumber$1 = "50d619e5";
-	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1793141631883;
+	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
+	var buildNumber$1 = "1968bbb7";
+	/** When the script was built, as a 13 digit UNIX timestamp. */
+	var buildTimestamp = 1793148714389;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
-	/** The port of the dev server. */
+	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
 	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
@@ -6804,8 +6819,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		return ((value - min) % range + range) % range + min;
 	}
 	/** Transforms an object's own properties into getters that return the original values. */
-	function getterifyObj(obj) {
-		const newObj = {};
+	function getterifyObj(obj, pure = false) {
+		const newObj = pure ? pureObj$1() : {};
 		for (const key in obj) Object.defineProperty(newObj, key, {
 			get: () => obj[key],
 			enumerable: true,
@@ -7026,6 +7041,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		},
 		scripts: {
 			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+			"dev-compat": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false BYTM_COMPAT_MODE=strict vite build --watch\" \"pnpm serve -S -L\"",
 			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
 			"build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
 			"build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
@@ -7078,7 +7094,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/userutils": "11.0.0",
+			"@sv443-network/userutils": "11.2.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
 			"marked": "17.0.4",
@@ -7251,6 +7267,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (!obs) obs = globservers[name];
 			if (!obs) throw new TypeError(`Couldn't find globserver instance with the name '${name}' in initObservers():trackObserver()`);
 			const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
+			if (!obs.isEnabled()) obs.once("enabled", () => {
+				obs.setOption("disableOnNoListeners", true);
+				obs.setOption("enableOnAddListener", true);
+			});
 			obs.on("checked", () => {
 				if (getFeature("verboseObservers")) loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
 				recordObserverEvent(name, "checked");
@@ -18902,7 +18922,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "50d619e5",
+				buildNumber: "1968bbb7",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),

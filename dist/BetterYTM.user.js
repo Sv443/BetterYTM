@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@50d619e5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1968bbb7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -109,7 +109,7 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@11.0.0/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@11.2.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 27 Oct 2026 22:53:51 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 28 Oct 2026 00:51:53 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 50d619e5                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 1968bbb7                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ e5Fm8zoPoq27                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 8YUA07aaSGg2                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -554,6 +554,7 @@
 	/**
 	* Check below this variable for the constant variables used throughout BetterYTM.  
 	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+	* For more info on each of these, refer to the table just below the userscript header, which is the line that only contains the following: // ==/UserScript==  
 	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
 	* @deprecated This object was reworked when the build process was migrated to vite.
 	*/
@@ -564,15 +565,15 @@
 	var mode$1 = "development";
 	/** The branch to use in various URLs that point to the GitHub repo. */
 	var branch$1 = "develop";
-	/** Which host the userscript was installed from. */
+	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
-	/** The build number of the userscript. */
-	var buildNumber$1 = "50d619e5";
-	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1793141631244;
+	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
+	var buildNumber$1 = "1968bbb7";
+	/** When the script was built, as a 13 digit UNIX timestamp. */
+	var buildTimestamp = 1793148713752;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
-	/** The port of the dev server. */
+	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
 	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
@@ -2413,8 +2414,8 @@
 		return ((value - min) % range + range) % range + min;
 	}
 	/** Transforms an object's own properties into getters that return the original values. */
-	function getterifyObj(obj) {
-		const newObj = {};
+	function getterifyObj(obj, pure = false) {
+		const newObj = pure ? (0, _sv443_network_userutils.pureObj)() : {};
 		for (const key in obj) Object.defineProperty(newObj, key, {
 			get: () => obj[key],
 			enumerable: true,
@@ -2635,6 +2636,7 @@
 		},
 		scripts: {
 			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+			"dev-compat": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false BYTM_COMPAT_MODE=strict vite build --watch\" \"pnpm serve -S -L\"",
 			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
 			"build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
 			"build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
@@ -2687,7 +2689,7 @@
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/userutils": "11.0.0",
+			"@sv443-network/userutils": "11.2.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
 			"marked": "17.0.4",
@@ -2860,6 +2862,10 @@
 			if (!obs) obs = globservers[name];
 			if (!obs) throw new TypeError(`Couldn't find globserver instance with the name '${name}' in initObservers():trackObserver()`);
 			const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
+			if (!obs.isEnabled()) obs.once("enabled", () => {
+				obs.setOption("disableOnNoListeners", true);
+				obs.setOption("enableOnAddListener", true);
+			});
 			obs.on("checked", () => {
 				if (getFeature("verboseObservers")) loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
 				recordObserverEvent(name, "checked");
@@ -12732,7 +12738,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "50d619e5",
+				buildNumber: "1968bbb7",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
