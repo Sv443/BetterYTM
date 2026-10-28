@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sv443-network/userutils':
-        specifier: 11.1.0
-        version: 11.1.0
+        specifier: 11.2.0
+        version: 11.2.0
       compare-versions:
         specifier: 6.1.1
         version: 6.1.1
@@ -907,8 +907,8 @@ packages:
   '@sv443-network/coreutils@3.9.0':
     resolution: {integrity: sha512-rWbS8jGJG22IZvYiqstgbXW9xFUuDlXLfre+JONcM/onYYC06cW+sRyoirriacDrst0SQ8gn5m7y6BAVic+CLQ==}
 
-  '@sv443-network/userutils@11.1.0':
-    resolution: {integrity: sha512-oO3W9zxdb6eAx91zpqYuyLQm8gJgjFUXon+GHksN1cEgyz0H8E4pDrigvU0T9YDp26yAnI0wU1/0pLgrohXNgA==}
+  '@sv443-network/userutils@11.2.0':
+    resolution: {integrity: sha512-O/04BLOqqHAHEUU25s4+va371a8WkKK9kTa5qYxAjMT43OfPzjrGWqZ/e42kbVY9XPdOtivythpVcN4N9xFDhA==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -3331,7 +3331,7 @@ snapshots:
     dependencies:
       nanoevents: 9.1.0
 
-  '@sv443-network/userutils@11.1.0':
+  '@sv443-network/userutils@11.2.0':
     dependencies:
       '@sv443-network/coreutils': 3.9.0
       nanoevents: 9.1.0

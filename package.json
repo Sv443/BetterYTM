@@ -55,6 +55,7 @@
   },
   "scripts": {
     "dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+    "dev-compat": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false BYTM_COMPAT_MODE=strict vite build --watch\" \"pnpm serve -S -L\"",
     "dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
     "build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
     "build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
@@ -107,7 +108,7 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
-    "@sv443-network/userutils": "11.1.0",
+    "@sv443-network/userutils": "11.2.0",
     "compare-versions": "6.1.1",
     "dompurify": "3.3.3",
     "marked": "17.0.4",

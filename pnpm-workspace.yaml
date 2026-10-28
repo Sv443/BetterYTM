@@ -13,3 +13,7 @@ saveExact: true
 
 allowBuilds:
   esbuild: true
+
+# Use the following to locally link the UserUtils library:
+# overrides:
+#   "@sv443-network/userutils": "/path/to/UserUtils"
