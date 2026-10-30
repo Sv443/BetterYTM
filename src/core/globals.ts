@@ -2,11 +2,7 @@ import { getUnsafeWindow, pureObj } from "@sv443-network/userutils";
 import type { BytmObject } from "@/types.ts";
 
 /**
- * Writes to the `unsafeWindow.BYTM` object that plugins read.
- *
- * Lives here, apart from {@linkcode "@/interface.ts"}, because the modules that need it sit near the
- * bottom of the dependency graph while `interface.ts` sits at the very top. Keep this file free of
- * internal value imports so it can never take part in an import cycle.
+ * @module core/globals Writes to the `unsafeWindow.BYTM` object that plugins read, using {@linkcode setGlobalProp()}.
  */
 
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */

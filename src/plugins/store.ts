@@ -3,11 +3,7 @@ import { registerStore } from "@/core/storeRegistry.ts";
 import type { PluginDef, PluginEventMap, PluginItem, PluginDefResolvable, BitSetTSEnum } from "@/types.ts";
 
 /**
- * The registry of plugins that have registered themselves with BYTM.  
- *   
- * Kept apart from {@linkcode "@/interface.ts"} - which owns the registration *flow* - because
- * {@linkcode "@/core/interfaceEvents.ts"} needs {@linkcode emitOnPlugins} from far down the
- * dependency graph. Must stay free of internal value imports.
+ * @module plugins/store The registry of plugins that have registered themselves with BYTM.
  */
 
 /** Map of plugin key to all registered plugins */

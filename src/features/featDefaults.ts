@@ -3,13 +3,7 @@ import { getPreferredLocale } from "@util/locale.ts";
 import { LogLevel, type FeatureTag } from "@/types.ts";
 
 /**
- * Default value, type and validation-range metadata for every feature, keyed the same as
- * {@linkcode "@feat/featInfo.ts".featInfo}.
- *
- * Split out of `featInfo` because {@linkcode "@/configSchema.ts"} needs this at module-init time to
- * compute `cfgDefaultData`, while `featInfo` itself pulls in dialogs, the menu and serializers to
- * power its config-menu UI callbacks. This module must stay a pure leaf: no internal value imports
- * besides other leaves.
+ * Default value, type and validation-range metadata for every feature, keyed the same as `featInfo` in `@feat/featInfo.ts`.
  */
 export const featDefaults = {
   locale: {

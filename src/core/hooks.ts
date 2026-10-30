@@ -1,16 +1,12 @@
 /**
- * Late-binding registry for the few places where a low-level module needs behavior that is owned by
- * a high-level one.
- *
- * Most "inverted" dependencies in this codebase are really just misfiled code - the fix for those is
- * to move the code down a layer, not to add indirection. Only reach for this registry when the
- * dependency is genuinely inverted, i.e. when a util truly needs a dialog, the menu or a feature.
- *
- * Every implementation is registered in one place, {@linkcode "@/bindings.ts"}, so the full set of
- * inverted dependencies can be read off a single file.
- *
- * ⚠️ This module must never import another internal module at value level. The types below use
- * type-only dynamic imports, which TypeScript erases entirely, so they create no runtime edge.
+ * @module core/hooks Late-binding registry for the few places where a low-level module needs behavior that is owned by a high-level one.  
+ *   
+ * ⚠️ This module must never import another internal module at value level. The types below use type-only dynamic imports, which TypeScript erases entirely, so they create no runtime edge.
+ */
+
+/**
+ * All late bindings available on this registry.  
+ * At runtime they need to be provided using {@linkcode provide()}, and used via {@linkcode tryUse()} or {@linkcode use()}
  */
 export type LateBindings = {
   /** Surfaces a generic error as a toast that opens the error dialog. Owned by `@dialog/errorDialog.ts` */

@@ -9,11 +9,7 @@ import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "@/constant
 import type { AdornFunc, FeatureInfo, FeatureKey, ResourceKey } from "@/types.ts";
 
 /**
- * The decoration icons shown next to a feature's label in the config menu, and the logic that
- * resolves a {@linkcode "@feat/featInfo.ts".featInfo} entry's `adornments` property into HTML.
- *
- * Split out of `featInfo.ts` only for file size - both live at the same layer and may freely
- * import each other's exports (`featInfo.ts` imports {@linkcode adornments} from here).
+ * @module features/featAdornments The decoration icons shown next to a feature's label in the config menu, and the logic that resolves a `featInfo` entry's `adornments` property into HTML.
  */
 
 //#region adornments

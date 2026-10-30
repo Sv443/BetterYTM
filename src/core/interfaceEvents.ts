@@ -8,11 +8,7 @@ import type { BytmDialog } from "@comp/BytmDialog.ts";
 import type { TrLocale } from "@util/translations.ts";
 
 /**
- * The BYTM interface event bus that plugins listen on.  
- *   
- * Separated from {@linkcode "@/interface.ts"} - which assembles the whole public API and therefore
- * sits at the very top of the dependency graph - because nearly every low-level module needs to
- * emit an event. Keeping the emitter down here is what stops that from creating an import cycle.
+ * @module core/interfaceEvents The BYTM interface event bus that plugins listen on.
  */
 
 /** Whether emitted interface events should be logged. Pushed in by the config init so this module doesn't depend on the config store. */

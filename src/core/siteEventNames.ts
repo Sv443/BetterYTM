@@ -1,13 +1,10 @@
 import type { SiteEventsMap } from "@/siteEvents.ts";
 
 /**
- * The plain list of site event names.  
- * Kept apart from {@linkcode "@/siteEvents.ts"} - which owns the emitter - so that
- * {@linkcode "@/core/interfaceEvents.ts"} can build its event list without depending on the
- * emitter, which in turn depends on the interface.
+ * @module core/siteEventNames The plain list of site event names.
  */
 
-/** Array of all site events. */
+/** Array of all site events. Not guaranteed to be a complete set, but the vast majority should be included here. */
 export const allSiteEvents = [
   "configChanged",
   "configHeaderSelected",
