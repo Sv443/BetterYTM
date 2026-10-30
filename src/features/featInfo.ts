@@ -23,14 +23,7 @@ import langMapping from "@asset/locales.json" with { type: "json" };
 import packageJson from "@root/package.json" with { type: "json" };
 
 /**
- * The UI half of the feature registry: category/group placement, config-menu form fields, help
- * text, and the `click`/`change`/`renderValue` callbacks that wire features up to dialogs, the
- * menu and serializers.
- *
- * Split out of the old `@feat/index.ts` so that the default *values* ({@linkcode featDefaults},
- * L1) stay reachable from low layers like `@/configSchema.ts`, without dragging in everything
- * this file needs. Each entry spreads its {@linkcode featDefaults} counterpart rather than
- * repeating the value - see `@feat/featDefaults.ts` for why.
+ * @module features/featInfo The UI half of the feature registry: category/group placement, config-menu form fields, help text, and the `click`/`change`/`renderValue` callbacks that wire features up to dialogs, the menu and serializers.
  */
 
 //#region misc
@@ -224,7 +217,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     click: async () => {
       tryUse("closeCfgMenu")?.();
-      await (await getWelcomeDialog()).open();
+      return await (await getWelcomeDialog()).open();
     },
   },
   versionCheck: {
@@ -238,7 +231,7 @@ export const featInfo = {
     category: "general",
     group: "versionCheck",
     supportedSites: ["ytm", "yt"],
-    click: () => doVersionCheck(true),
+    click: async () => await doVersionCheck(true),
   },
   numbersFormat: {
     ...featDefaults.numbersFormat,
@@ -279,7 +272,7 @@ export const featInfo = {
     category: "general",
     group: "resetData",
     supportedSites: ["ytm", "yt"],
-    click: () => tryUse("promptResetConfig")?.(),
+    click: async () => await tryUse("promptResetConfig")?.(),
     adornments: [adornments.reload],
   },
   resetEverything: {
@@ -468,7 +461,7 @@ export const featInfo = {
     ...featDefaults.swapLikeDislikeButtons,
     category: "layout",
     group: "votes",
-    supportedSites: ["ytm", "yt"],
+    supportedSites: ["ytm"],
   },
   watchPageFullSize: {
     ...featDefaults.watchPageFullSize,
@@ -860,7 +853,7 @@ export const featInfo = {
     category: "autoLike",
     group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
-    click: () => getAutoLikeDialog().then(d => d.open()),
+    click: async () => await (await getAutoLikeDialog()).open(),
   },
   autoLikeChannelToggleBtn: {
     ...featDefaults.autoLikeChannelToggleBtn,
@@ -1241,7 +1234,7 @@ export const featInfo = {
     category: "plugins",
     group: "pluginList",
     supportedSites: ["ytm", "yt"],
-    click: () => getPluginListDialog().then(d => d.open()),
+    click: async () => await (await getPluginListDialog()).open(),
   },
   openPluginDiscoverySite: {
     ...featDefaults.openPluginDiscoverySite,
