@@ -21,21 +21,21 @@ jobs:
     env:
       CI: "true"
       STORE_PATH: ""
-      PNPM_VERSION: 10
+      PNPM_VERSION: 12
       RETENTION_DAYS_PUSH: 3
       RETENTION_DAYS_PR: 2
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Node.js v${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
           run_install: false
@@ -45,7 +45,7 @@ jobs:
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Setup pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload artifacts
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "BetterYTM v${{ steps.get_version_info.outputs.BYTM_VERSION }} (${{ steps.get_version_info.outputs.GIT_SHA_SHORT }}) [${{ github.run_number }}]"
           path: dist
