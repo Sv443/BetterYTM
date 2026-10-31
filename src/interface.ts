@@ -64,7 +64,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   resourceAsString,
   getSessionId,
   reloadTab,
-  getSelector, // TODO: docs
+  getSelector,
 
   // dom:
   setInnerHtml,
@@ -81,8 +81,8 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getCurrentMediaType,
   getLikeDislikeBtns,
   isIgnoredInputElement,
-  parseMarkdown, // TODO: docs
-  preventEvents, // TODO: docs
+  parseMarkdown,
+  preventEvents,
 
   // site events:
   onSiteEvent: siteEvents.on.bind(siteEvents),
@@ -108,8 +108,8 @@ const globalFuncs: InterfaceFunctions = pureObj({
   sanitizeArtists,
   sanitizeSong,
   fetchLyricsUrlTop,
-  fuzzyFetchLyricsInfo, // TODO: docs
-  getLyricsCacheEntry, // TODO: docs
+  fuzzyFetchLyricsInfo, // TODO: impl & docs
+  getLyricsCacheEntry,
   // TODO:
   // getLyricsCache: getLyricsCacheInterface,
   // saveLyricsCache: saveLyricsCacheInterface,
@@ -130,7 +130,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // other:
   formatNumber,
-  sanitizeUnicode, // TODO: docs
+  sanitizeUnicode,
 });
 
 /** Initializes the BYTM interface */

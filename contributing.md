@@ -218,6 +218,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [`function resourceAsString()`](#resourceasstring) - Returns the specified resource as a string - uses a cross-session cache for better performance
   - [`function getSessionId()`](#getsessionid) - Returns the unique session ID that is generated on every started session
   - [`function reloadTab()`](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
+  - [`function getSelector()`](#getselector) - Returns the CSS selector of the given identifier from the currently loaded version of `assets/data.json`
 - DOM:
   - [`function getBytmDialog()`](#getbytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [`function getExImDialog()`](#geteximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
@@ -235,6 +236,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [`function getCurrentMediaType()`](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [`function getLikeDislikeBtns()`](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
   - [`function isIgnoredInputElement()`](#isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
+  - [`function parseMarkdown()`](#parsemarkdown) - Parses Markdown into an HTML string (or TrustedTypes object) using [marked](https://github.com/markedjs/marked) and [DOMPurify](https://github.com/cure53/dompurify), with support for [GFM](https://github.github.com/gfm/)
+  - [`function preventEvents()`](#preventevents) - Prevents the given events' listeners from being executed and bubbling within the given container element
 - Site Events:
   - [`function onSiteEvent()`](#onsiteevent) - Adds a site event listener
   - [`function onceSiteEvent()`](#oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
@@ -276,6 +279,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Other:
   - [`class NanoEmitter`](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
   - [`function formatNumber()`](#formatnumber) - Formats a number with the configured locale and passed or configured format
+  - [`function sanitizeUnicode()`](#sanitizeunicode) - Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible
 
 <br><br>
 
@@ -628,6 +632,28 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority.  
 > The tab will be reloaded, whether the video element is queryable in the DOM or not, but without video time and volume restoration in the latter case.
+
+<br>
+
+> ### getSelector()
+> Signature:
+> ```ts
+> function getSelector<
+>   TSelectorGroup extends keyof StaticData["selectors"],
+>   TThrows extends boolean | undefined = true,
+> >(
+>   group: TSelectorGroup,
+>   id: keyof (typeof StaticData["selectors"][TSelectorGroup]),
+>   throws: TThrows = true,
+> ): TThrows extends true ? string : (string | undefined)
+> ```
+>   
+> Description:  
+> Returns the CSS selector with the given `group` and `id` and current domain (see [`getDomain()`](#getdomain)) from the currently loaded in version of the [`assets/data.json` file.](./assets/data.json)  
+> The file will be fetched from the repository's `main` branch at runtime, which allows the selectors to quickly be updated in response to a page redesign, which is why this function can be very useful to ensure continued functionality.  
+>   
+> The `throws` parameter is set to `true` by default, which means the function will throw an error when the provided selector wasn't found, but the return type will also be strictly typed as just `string`.  
+> If you set it to `false`, the function will return a `string`, or `undefined` if the provided selector wasn't found.
 
 <br>
 
@@ -1124,6 +1150,51 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
+> ### parseMarkdown()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.parseMarkdown(mdString: string, sanitize = true): Promise<string>;
+> ```
+>   
+> Description:  
+> Parses a markdown string using [the marked library](https://github.com/markedjs/marked) and turns it into an HTML string with default settings.  
+> Sanitizes against XSS by default using [the DOMPurify library.](https://github.com/cure53/dompurify) Set `sanitize` to false to skip this.  
+>   
+> ⚠️ Important: on YTM sanitization is required, as it returns the final HTML as a [TrustedTypes](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) object instead of a string on Chromium browsers, which is necessary due to the strict [Content Security Policy.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)  
+>   
+> The default settings used for marked are as follows:
+> ```jsonc
+> {
+>   "gfm": true,    // support Github Flavored Markdown (https://github.github.com/gfm/)
+>   "breaks": true, // support GFM line breaks (<br>)
+>   "silent": true, // don't show HTML error message when parsing fails
+>   "async": true,  // return a Promise
+> }
+> ```
+
+<br>
+
+> ### preventEvents()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.preventEvents<
+>   TContainer extends HTMLElement,
+>   TKey extends keyof HTMLElementEventMap,
+> >(
+>   events: TKey | TKey[],
+>   container: TContainer,
+>   predicate?: (e: HTMLElementEventMap[TKey]) => boolean
+> ): void;
+> ```
+>   
+> Description:  
+> Prevents the given events' listeners from being called and bubbling, for the given container element.  
+> Use the optional predicate function to control whenever this happens. If it returns true, the event is prevented. 
+>   
+> This uses [`AddEventListenerOptions`' `capture` property](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#capture) to ensure most listeners are actually prevented.
+
+<br>
+
 > ### setLocale()
 > Signature:  
 > ```ts
@@ -1498,7 +1569,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > // usually artist strings will only have one of these characters but this is just an example
-> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists("   Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra   ");
+> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists("   Michael Jackson    • Elton John & Freddy Mercury, Frank Sinatra   ");
 > console.log(sanitizedArtists); // "Michael Jackson"
 > ```
 > </details>
@@ -1522,7 +1593,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong("   Thriller (Tommy Cash Remix) [Freddy Mercury Cover]   ");
+> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong("   Thriller (Kendrick Lamar Remix) [Busta Rhymes Cover]   ");
 > console.log(sanitizedSong); // "Thriller"
 > ```
 > </details>
@@ -2384,6 +2455,24 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > console.log(formatNumber(num, "long"));  // 12,34,56,789
 > ```
 > </details>
+
+<br>
+
+> ### sanitizeUnicode()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.sanitizeUnicode(str: string): string;
+> ```
+>   
+> Description:  
+> Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible.  
+> Supports the following character types:
+>  - `'`: curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes.
+>  - `"`: curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks.
+>  - `,`: fullwidth, ideographic, Arabic and small-form commas.
+>  - `.`: fullwidth, ideographic, Arabic, small-form periods and the "one dot leader".
+>  - ` `: non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium mathematical and ideographic space separators.
+>  - `(removed)`: soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner, invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space.
 
 <br>
 
