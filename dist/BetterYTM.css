@@ -73,6 +73,13 @@
   gap: 10px;
 }
 
+.bytm-toast-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .bytm-toast-icon.img,
 .bytm-toast-icon svg {
   width: 24px;

@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1968bbb7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7c121a84/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 28 Oct 2026 00:51:53 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 31 Oct 2026 01:21:13 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 1968bbb7                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 7c121a84                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 8YUA07aaSGg2                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 9BRw8735RI6c                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -568,9 +568,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "1968bbb7";
+	var buildNumber$1 = "7c121a84";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1793148713752;
+	var buildTimestamp = 1793409673174;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -616,11 +616,7 @@
 	//#endregion
 	//#region src/core/globals.ts
 	/**
-	* Writes to the `unsafeWindow.BYTM` object that plugins read.
-	*
-	* Lives here, apart from {@linkcode "@/interface.ts"}, because the modules that need it sit near the
-	* bottom of the dependency graph while `interface.ts` sits at the very top. Keep this file free of
-	* internal value imports so it can never take part in an import cycle.
+	* @module core/globals Writes to the `unsafeWindow.BYTM` object that plugins read, using {@linkcode setGlobalProp()}.
 	*/
 	/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 	function setGlobalProp(key, value) {
@@ -894,9 +890,8 @@
 	//#region src/core/storeRegistry.ts
 	var stores = /* @__PURE__ */ new Map();
 	/**
-	* Registers a {@linkcode DataStore} instance so it is picked up by the DataStoreSerializer.
-	* @param full If true, the store is only included in the "full" serializer (see
-	* `@/serializers.ts`'s `getSerializerStoresFull`) - use this for caches and other volatile-ish data.
+	* Registers a {@linkcode DataStore} instance so it is picked up by the DataStoreSerializers in `@/serializers.ts`.
+	* @param full If true, the store is only included in the "full" serializer (see `@/serializers.ts`'s `getSerializerStoresFull`) - use this for caches and other volatile-ish data.
 	*/
 	function registerStore(store, opts = {}) {
 		stores.set(store.id, {
@@ -911,11 +906,7 @@
 	//#endregion
 	//#region src/plugins/store.ts
 	/**
-	* The registry of plugins that have registered themselves with BYTM.  
-	*   
-	* Kept apart from {@linkcode "@/interface.ts"} - which owns the registration *flow* - because
-	* {@linkcode "@/core/interfaceEvents.ts"} needs {@linkcode emitOnPlugins} from far down the
-	* dependency graph. Must stay free of internal value imports.
+	* @module plugins/store The registry of plugins that have registered themselves with BYTM.
 	*/
 	/** Map of plugin key to all registered plugins */
 	var registeredPlugins = /* @__PURE__ */ new Map();
@@ -979,12 +970,9 @@
 	//#endregion
 	//#region src/core/siteEventNames.ts
 	/**
-	* The plain list of site event names.  
-	* Kept apart from {@linkcode "@/siteEvents.ts"} - which owns the emitter - so that
-	* {@linkcode "@/core/interfaceEvents.ts"} can build its event list without depending on the
-	* emitter, which in turn depends on the interface.
+	* @module core/siteEventNames The plain list of site event names.
 	*/
-	/** Array of all site events. */
+	/** Array of all site events. Not guaranteed to be a complete set, but the vast majority should be included here. */
 	var allSiteEvents = [
 		"configChanged",
 		"configHeaderSelected",
@@ -1009,11 +997,7 @@
 	//#endregion
 	//#region src/core/interfaceEvents.ts
 	/**
-	* The BYTM interface event bus that plugins listen on.  
-	*   
-	* Separated from {@linkcode "@/interface.ts"} - which assembles the whole public API and therefore
-	* sits at the very top of the dependency graph - because nearly every low-level module needs to
-	* emit an event. Keeping the emitter down here is what stops that from creating an import cycle.
+	* @module core/interfaceEvents The BYTM interface event bus that plugins listen on.
 	*/
 	/** Whether emitted interface events should be logged. Pushed in by the config init so this module doesn't depend on the config store. */
 	var logEventsEnabled = false;
@@ -1057,13 +1041,7 @@
 	//#endregion
 	//#region src/features/featDefaults.ts
 	/**
-	* Default value, type and validation-range metadata for every feature, keyed the same as
-	* {@linkcode "@feat/featInfo.ts".featInfo}.
-	*
-	* Split out of `featInfo` because {@linkcode "@/configSchema.ts"} needs this at module-init time to
-	* compute `cfgDefaultData`, while `featInfo` itself pulls in dialogs, the menu and serializers to
-	* power its config-menu UI callbacks. This module must stay a pure leaf: no internal value imports
-	* besides other leaves.
+	* Default value, type and validation-range metadata for every feature, keyed the same as `featInfo` in `@feat/featInfo.ts`.
 	*/
 	var featDefaults = {
 		locale: {
@@ -5188,11 +5166,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/features/featAdornments.ts
 	/**
-	* The decoration icons shown next to a feature's label in the config menu, and the logic that
-	* resolves a {@linkcode "@feat/featInfo.ts".featInfo} entry's `adornments` property into HTML.
-	*
-	* Split out of `featInfo.ts` only for file size - both live at the same layer and may freely
-	* import each other's exports (`featInfo.ts` imports {@linkcode adornments} from here).
+	* @module features/featAdornments The decoration icons shown next to a feature's label in the config menu, and the logic that resolves a `featInfo` entry's `adornments` property into HTML.
 	*/
 	/** Decoration elements that can be added next to the label */
 	var adornments = {
@@ -7771,14 +7745,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/features/featInfo.ts
 	/**
-	* The UI half of the feature registry: category/group placement, config-menu form fields, help
-	* text, and the `click`/`change`/`renderValue` callbacks that wire features up to dialogs, the
-	* menu and serializers.
-	*
-	* Split out of the old `@feat/index.ts` so that the default *values* ({@linkcode featDefaults},
-	* L1) stay reachable from low layers like `@/configSchema.ts`, without dragging in everything
-	* this file needs. Each entry spreads its {@linkcode featDefaults} counterpart rather than
-	* repeating the value - see `@feat/featDefaults.ts` for why.
+	* @module features/featInfo The UI half of the feature registry: category/group placement, config-menu form fields, help text, and the `click`/`change`/`renderValue` callbacks that wire features up to dialogs, the menu and serializers.
 	*/
 	var ExampleError = class extends _sv443_network_userutils.DatedError {
 		constructor(message, options) {
@@ -8016,7 +7983,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm", "yt"],
 			click: async () => {
 				tryUse("closeCfgMenu")?.();
-				await (await getWelcomeDialog()).open();
+				return await (await getWelcomeDialog()).open();
 			}
 		},
 		versionCheck: {
@@ -8030,7 +7997,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "general",
 			group: "versionCheck",
 			supportedSites: ["ytm", "yt"],
-			click: () => doVersionCheck(true)
+			click: async () => await doVersionCheck(true)
 		},
 		numbersFormat: {
 			...featDefaults.numbersFormat,
@@ -8072,7 +8039,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "general",
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
-			click: () => tryUse("promptResetConfig")?.(),
+			click: async () => await tryUse("promptResetConfig")?.(),
 			adornments: [adornments.reload]
 		},
 		resetEverything: {
@@ -8274,7 +8241,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			...featDefaults.swapLikeDislikeButtons,
 			category: "layout",
 			group: "votes",
-			supportedSites: ["ytm", "yt"]
+			supportedSites: ["ytm"]
 		},
 		watchPageFullSize: {
 			...featDefaults.watchPageFullSize,
@@ -8692,7 +8659,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "autoLike",
 			group: "autoLikeChannels",
 			supportedSites: ["ytm", "yt"],
-			click: () => getAutoLikeDialog().then((d) => d.open())
+			click: async () => await (await getAutoLikeDialog()).open()
 		},
 		autoLikeChannelToggleBtn: {
 			...featDefaults.autoLikeChannelToggleBtn,
@@ -9042,7 +9009,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "plugins",
 			group: "pluginList",
 			supportedSites: ["ytm", "yt"],
-			click: () => getPluginListDialog().then((d) => d.open())
+			click: async () => await (await getPluginListDialog()).open()
 		},
 		openPluginDiscoverySite: {
 			...featDefaults.openPluginDiscoverySite,
@@ -12738,7 +12705,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "1968bbb7",
+				buildNumber: "7c121a84",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
