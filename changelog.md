@@ -4,6 +4,7 @@
 <!-- #region 4.0.0 -->
 ## 4.0.0
 - **New Features:**
+  - Search bars in playlists and "add to playlist" dialogs.
   - Turkish translations (by [@kcangny](https://github.com/kcangny)).
   - 🎵 Extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
   - Hotkey to quickly search for the lyrics of a song, anywhere on YT or YTM (<kbd>Alt</kbd><kbd>Q</kbd> by default).
@@ -18,14 +19,21 @@
   - The "switch sites" hotkeys now also work on `/playlist` and `/channel` pages.
   - Song list numbers will now also show up on YT playlists that are manually sorted, if enabled.
   - Some static data like CSS selectors are now fetched remotely, allowing the script to react to layout changes way faster and without having to go through the full release cycle.
-  - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
-  - The welcome menu can now be opened again using an option in the config menu.
+  - Improved the welcome menu:
+    - It now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
+    - It can now be opened again using an option in the config menu.
   - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
-  - Improved auto-like feature:
+  - Improved the auto-like feature:
     - It now works with collab videos, although it will only work with the primary channel (the first channel listed in the menu opened by clicking the channel names).
     - Improved the styling of the auto-like channels dialog.
     - The `autoLikeTimeout` feature is now a number input field and allows any value above or equal to `1`, in increments of `0.1`.
+  - Made translations more consistent.
+  - The userscript menu commands are now fully translated, with the exception of written console logs.
+  - Document mutation observer performance improvements:
+    - Updated the underlying `SelectorObserver` system to also debounce element selector checks, leading to fewer overall checks without compromising reactivity all that much.
+    - The internal `SelectorObserver` instances (globservers) will now be disabled and enabled dynamically after the initial startup sequence is finished.
 - **Fixes:**
+  - Fixed multiple CSS selectors that were broken by upstream page updates over time.
   - Added an "enhanced compatibility" build of the script that is meant to fix import issues on Chromium-based browsers, by including all dependencies directly in the script (at the cost of installation size).
   - Made error toasts show up again after being broken when toast queueing was overhauled.
   - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
@@ -47,7 +55,7 @@
     - `loggers`: An object of predefined Logger instances of different categories.
     - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system, which can be downloaded using a GM menu command.
     - `getSelector()`: Returns a remotely fetched CSS selector for the given category and name. Refer to `assets/data.json` in BYTM's source code for a list of all values.
-    - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts if possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
+    - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts whenever possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
     - `preventEvents()`: Prevents the given events' listeners from being called and bubbling, for the given container element, when a predicate function matches.
   - Added new properties to the object returned by `BYTM.getInternals()`:
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
