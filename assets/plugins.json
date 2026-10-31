@@ -1,3 +1,18 @@
 [
-
+  {
+    "name": {
+      "en-US": "BetterYTM - Song Playlists"
+    },
+    "description": {
+      "en-US": "Dynamically shows which of your playlists contain the currently selected song in YouTube Music."
+    },
+    "author": {
+      "name": "eissar",
+      "url": "https://github.com/eissar"
+    },
+    "links": {
+      "source": "https://github.com/eissar/betterytm-song-playlists",
+      "install": "https://github.com/eissar/betterytm-song-playlists/releases/latest/download/betterytm-song-playlists.user.js"
+    }
+  }
 ]

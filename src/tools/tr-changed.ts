@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import k from "kleur";
+import { styleText } from "node:util";
 import locales from "../../assets/locales.json" with { type: "json" };
 import { resolve } from "node:path";
 
@@ -20,7 +20,7 @@ const skipEnUS = true;
  */
 async function run() {
   if(!keys.length) {
-    console.error(`${k.red("No keys provided.")}\nExample: pnpm run tr-changed reload_hint,copy\n`);
+    console.error(`${styleText("red", "No keys provided.")}\nExample: pnpm run tr-changed reload_hint,copy\n`);
     return schedExit(1);
   }
 
@@ -46,11 +46,11 @@ async function run() {
   }
 
   if(updatedTrFiles.length) {
-    console.log(`${k.green(`Removed key${keys.length === 1 ? "" : "s"} from ${updatedTrFiles.length} translation file${updatedTrFiles.length === 1 ? "" : "s"}:`)} ${[...updatedTrFiles].sort().join(", ")}\n`);
+    console.log(`${styleText("green", `Removed key${keys.length === 1 ? "" : "s"} from ${updatedTrFiles.length} translation file${updatedTrFiles.length === 1 ? "" : "s"}:`)} ${[...updatedTrFiles].sort().join(", ")}\n`);
     return schedExit(0);
   }
 
-  console.log(k.yellow("No translation files were updated.\n"));
+  console.log(styleText("yellow", "No translation files were updated.\n"));
   return schedExit(1);
 }
 

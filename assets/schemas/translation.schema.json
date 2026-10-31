@@ -2,11 +2,31 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "type": "object",
   "required": ["meta"],
-  "description": "Mapping of translation keys to strings.",
+  "description": "Mapping of translation keys to strings, optionally grouped into nested objects.",
+  "definitions": {
+    "translationValue": {
+      "description": "Either a translated string or a nested object grouping related translation keys.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Translation value. May contain placeholders in the format '%n' (1-indexed) or '${argName}'."
+        },
+        {
+          "type": "object",
+          "description": "Nested group of related translation keys, sharing a common prefix that was split off into this object's key.",
+          "patternProperties": {
+            "^[a-zA-Z]([a-zA-Z0-9_-]+)?$": {
+              "$ref": "#/definitions/translationValue"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
   "patternProperties": {
-    "^[a-zA-Z]([a-zA-Z0-9_-]+)?$": {
-      "type": "string",
-      "description": "Translation key is case sensitive and may only contain letters, numbers, underscores, and hyphens. Value may contain placeholders in the format '%n' (1-indexed) or '${argName}'."
+    "^(?!meta$)[a-zA-Z]([a-zA-Z0-9_-]+)?$": {
+      "$ref": "#/definitions/translationValue"
     }
   },
   "properties": {

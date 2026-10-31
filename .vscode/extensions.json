@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "andywang.vscode-scriptmonkey",
+    "coyote-studios.monkey-wrench",
     "dbaeumer.vscode-eslint",
     "MylesMurphy.prettify-ts",
     "yoavbls.pretty-ts-errors",
@@ -8,5 +8,6 @@
   ],
   "unwantedRecommendations": [
     "adpyke.vscode-userscript",
+    "andywang.vscode-scriptmonkey",
   ],
 }

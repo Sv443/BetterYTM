@@ -52,34 +52,46 @@
   // highlight TODOs, regions, debug flags, and other important comments
   // >>>>> requires extension: fabiospampinato.vscode-highlight <<<<<
   "highlight.regexes": {
-    "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:
-      "backgroundColor": "#ed0",
-      "color": "black",
-      "overviewRulerColor": "#ed0",
-    },
-    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[<>\\[\\]\\(\\)\\w,.:;\\|\\-_&@$%§?!~+#*'\"/\\\\]+)*)": { //#region foo: (@bar):
-      "backgroundColor": "#35b5d0",
-      "color": "#000",
-      "overviewRulerColor": "#35b5d0",
-    },
-    "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
-      "backgroundColor": "#9af",
-      "overviewRulerColor": "#9af",
-      "color": "#000",
-    },
-    "(#?(DEBUG|DBG)#?)": { // #DEBUG or DEBUG or #DBG or #DBG#
-      "backgroundColor": "#ff0",
-      "color": "blue",
-      "overviewRulerColor": "#ff0",
-    },
-    "(IMPORTANT:)": { // IMPORTANT:
-      "backgroundColor": "#a24",
-      "color": "#fff",
-    },
-    "(FIXME:)": { // FIXME:
-      "backgroundColor": "#f43",
-      "color": "#000",
-      "overviewRulerColor": "#f43",
-    },
+    "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": [ // TODO: or TODO or TODO(xy): but not todo or todo:
+      {
+        "backgroundColor": "#ed0",
+        "color": "black",
+        "overviewRulerColor": "#ed0",
+      },
+    ],
+    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[<>\\[\\]\\(\\)\\w,.:;\\|\\-_&@$%§?!~+#*'\"/\\\\]+)*)": [ //#region foo: (@bar):
+      {
+        "backgroundColor": "#35b5d0",
+        "color": "#000",
+        "overviewRulerColor": "#35b5d0",
+      },
+    ],
+    "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": [ // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
+      {
+        "backgroundColor": "#9af",
+        "overviewRulerColor": "#9af",
+        "color": "#000",
+      },
+    ],
+    "(#?(DEBUG|DBG)#?)": [ // #DEBUG or DEBUG or #DBG or #DBG#
+      {
+        "backgroundColor": "#ff0",
+        "color": "blue",
+        "overviewRulerColor": "#ff0",
+      },
+    ],
+    "(IMPORTANT:)": [ // IMPORTANT:
+      {
+        "backgroundColor": "#a24",
+        "color": "#fff",
+      },
+    ],
+    "(FIXME:)": [ // FIXME:
+      {
+        "backgroundColor": "#f43",
+        "color": "#000",
+        "overviewRulerColor": "#f43",
+      },
+    ],
   },
 }

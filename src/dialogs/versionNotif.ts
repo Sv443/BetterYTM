@@ -1,5 +1,9 @@
 import { host, mode, platformNames, scriptInfo } from "@/constants.ts";
-import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtml, t } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { getChangelogMd, parseMarkdown } from "@util/misc.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
+import { t } from "@util/translations.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
 import { getFeature, getFeatures, setFeatures } from "@/config.ts";
