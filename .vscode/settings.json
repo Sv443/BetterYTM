@@ -47,6 +47,10 @@
       "fileMatch": ["assets/translations/*.json"],
       "url": "./assets/schemas/translation.schema.json"
     },
+    {
+      "fileMatch": ["tools/layers.json"],
+      "url": "./assets/schemas/layers.schema.json"
+    },
   ],
 
   // highlight TODOs, regions, debug flags, and other important comments
