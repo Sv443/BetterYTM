@@ -31,7 +31,7 @@ All of these can be toggled and configured in the configuration menu.
   - Auto-like songs and videos of your favorite creators on both YT and YT Music
   - Use arrow keys to skip forward or backward and control volume
   - Press number keys to skip to a percentage of the currently playing song
-  - Custom hotkeys that allow you to switch between YT and YTM, like or dislike, open the lyrics, and more
+  - Many custom hotkeys for switching between YT and YTM, liking and disliking, opening the lyrics, and more
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and these are just the notable features, there are many more smaller features, improvements and fixes!
@@ -40,13 +40,15 @@ All of these can be toggled and configured in the configuration menu.
 
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
 If you disabled the watermark, you can still open it by clicking your avatar in the top right corner on YTM or through the left sidebar on YT.  
-  
-> **My work relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)**
+
+<br>
+
+**BetterYTM and my other projects are free to use without strings attached; my work fully relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)**
 
 <br><br>
 
 ## Installation
-By installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
+By installing BetterYTM, you agree to the [license terms](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
 1. **Install a userscript manager browser extension - I highly recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)) or Tampermonkey.**  
   <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey, Greasemonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
@@ -56,7 +58,7 @@ By installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [discl
 <br>
 
 > Note:  
-> - Should the regular version not work in your browser, please try [installing the extended compatibility edition.](https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM_compat.user.js)
+> - **Should the regular version not work in your browser, please try [installing the extended compatibility edition.](https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM_compat.user.js)**
 > - If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there. Please make sure to manually remove and reinstall the userscript once the next release is out to avoid any issues.
 
 <br><br>
@@ -71,7 +73,7 @@ BetterYTM integrates with other extensions and tools to adjust their behavior an
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) (BYTM respects the set theme)
 - [Thumbnail Rating Bar for YouTube](https://github.com/elliotwaite/thumbnail-rating-bar-for-youtube) (rating bars can be removed on YTM)
   
-To find out more about these integrations, [click here](./src/dev/integrations.md)
+To find out more about these integrations, [click here](https://github.com/Sv443/BetterYTM/blob/main/src/dev/integrations.md)
 
 <br><br>
 
@@ -89,7 +91,7 @@ See below for a list of officially recognized plugins. Click on the install butt
 
 <br>
 
-> Note: Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
+> Note: Refer to the [plugin creation guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
 
@@ -157,11 +159,13 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 <br><br>
 
 ### Disclaimers
-- I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
-- I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever remotely collect any data about you. Everything in this script is done and stored locally on your device or on the site the script runs on.  
-  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
-- This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
+- **I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else but myself.**
+- **I use Generative AI lightly in this project** for mindless bulk tasks and minor refactors and to cut personal time costs. Everything is strictly reviewed, the vast majority of the codebase is hand-written, and none of the assets or documentation are generated.
+- **I don't own and have not modified any third party icons**, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
+- **I do not intend to ever remotely collect any data about you.** Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that **requests to external services may still collect some data about you**, to the extent that those RESTful services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
+- **This script comes as-is** (also see [`LICENSE.txt`](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)). I can't guarantee this software is without flaws or doesn't have a chance to potentially break something.  
+I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the codebase or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>
 

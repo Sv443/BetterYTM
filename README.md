@@ -45,7 +45,7 @@ If you disabled the watermark, you can still open it by clicking your avatar in 
   
 > [!NOTE]
 > 
-> My work relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)
+> **BetterYTM and my other projects are free to use. My work fully relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)**
 
 <br><br><br>
 
@@ -166,11 +166,13 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 <br><br>
 
 ### Disclaimers
-- I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
-- I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever remotely collect any data about you. Everything in this script is done and stored locally on your device or on the site the script runs on.  
-  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
-- This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
+- **I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else but myself.**
+- **I use Generative AI lightly in this project** for mindless bulk tasks and minor refactors and to cut personal time costs. Everything is strictly reviewed, the vast majority of the codebase is hand-written, and none of the assets or documentation are generated.
+- **I don't own and have not modified any third party icons**, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
+- **I do not intend to ever remotely collect any data about you.** Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that **requests to external services may still collect some data about you**, to the extent that those RESTful services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
+- **This script comes as-is** (also see [`LICENSE.txt`](./LICENSE.txt)). I can't guarantee this software is without flaws or doesn't have a chance to potentially break something.  
+I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the codebase or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>
 

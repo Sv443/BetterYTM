@@ -346,7 +346,7 @@ export function sanitizeHtml(html: string, returnTrustedType = trustedTypesSuppo
 }
 
 /**
- * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
+ * Sets innerHTML by using a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) when supported by the browser, else falls back to regular string assignment.  
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
 export function setInnerHtml(element: HTMLElement, html?: string | null) {

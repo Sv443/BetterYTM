@@ -1,6 +1,8 @@
 # Almanac
 Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
 
+- **[Meta](#meta)**
+  - [TODO: Code Layers / SCC prevention](#code-layers--scc-prevention)
 - **[Internals](#internals)**
   - [Constants](#constants)
   - [Domains](#domains)
