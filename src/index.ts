@@ -17,6 +17,8 @@ import { setLogLevel } from "@util/logging.ts";
 import { getSessionId } from "@util/misc.ts";
 import { initTranslations, setLocale } from "@util/translations.ts";
 import { loggers } from "@util/logging.ts";
+import { measureInitDuration, perfReport } from "@util/perf.js";
+import { getScriptHandler } from "@util/scriptHandler.ts";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
 import { devPluginToken, preInitInterface, initPlugins, preInitPlugins, unregisterPlugins, getRegisteredPlugins, reloadPluginData } from "@/interface.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
@@ -51,7 +53,6 @@ import {
   fixThemeSong, setThemeSongVisualizerOpacity,
 } from "@feat/integrations.ts";
 import { initVersionCheck } from "@feat/versionCheck.ts";
-import { measureInitDuration, perfReport } from "@util/perf.js";
 import { LogLevel, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type ResourceKey } from "@/types.ts";
 import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
@@ -564,18 +565,47 @@ async function initFonts() {
 
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
+  const scriptHandler = getScriptHandler();
+  const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
+
   const isDev = mode === "development";
   const isAdv = getFeature("advancedMode");
   const isAny = isDev || isAdv;
 
-  const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
-  const getCmdName = (emoji: string, key: TrKey & `menu_command.${string}`) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+  const registerCmd = (emoji: string, trKey: TrKey & `menu_command.${string}`, fn: (() => void | unknown | Promise<void | unknown>), opts?: {
+    /** An icon for the list and collapsed view - available on Violentmonkey >= 2.31.1 */
+    icon?: string;
+    /** Tooltip title of the command - available in Violentmonkey */
+    title?: string;
+    /** Whether to auto-close the popup after the user invoked the command - defaults to `true` - available on Violentmonkey */
+    autoClose?: boolean;
+    /** Quick access key - available on Tampermonkey */
+    accessKey?: string;
+  }) => {
+    if(scriptHandler === "violentmonkey" && !opts?.icon)
+      (opts ??= {}).icon = emoji;
+
+    GM.registerMenuCommand(
+      scriptHandler === "violentmonkey"
+        ? t(trKey)
+        : (
+          isLtr
+            ? `${emoji} ${t(trKey)}`
+            : `${t(trKey)} ${emoji}`
+        ),
+      fn,
+      // @ts-expect-error no way really of making this compatible with multiple @types/ packages
+      scriptHandler === "violentmonkey"
+        ? opts
+        : opts?.accessKey
+    );
+  };
 
   // #region open_cfg_menu
-  GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
+  registerCmd("⚙️", "menu_command.open_cfg_menu", () => openCfgMenu());
 
   // #region reset_config
-  GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
+  registerCmd("♻️", "menu_command.reset_config", async () => {
     const message = t("menu_command.reset_config.confirm");
     try {
       if(await showPrompt({
@@ -597,7 +627,7 @@ function registerDevCommands() {
   });
 
   // #region gm_storage_list_decompressed
-  isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
+  isAny && registerCmd("🔍", "menu_command.gm_storage_list_decompressed", async () => {
     const keys = await GM.listValues();
     loggers.command.log(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -640,7 +670,7 @@ function registerDevCommands() {
   });
 
   // #region gm_storage_delete_all
-  isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
+  isAny && registerCmd("🗑️", "menu_command.gm_storage_delete_all", async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: t("menu_command.gm_storage_delete_all.confirm", { count: keys.length }), confirmBtnText: t("clear") })) {
       loggers.command.log(`Clearing ${keys.length} GM values:`);
@@ -654,7 +684,7 @@ function registerDevCommands() {
   });
 
   // #region list_selectorobserver_listeners
-  isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
+  isAny && registerCmd("👂", "menu_command.list_selectorobserver_listeners", async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
     for(const [obsName, obs] of Object.entries(globservers)) {
@@ -672,7 +702,7 @@ function registerDevCommands() {
   });
 
   // #region compress_or_decompress_text
-  isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+  isAny && registerCmd("🗜️", "menu_command.compress_or_decompress_text", async () => {
     const showFinalPrompt = async (type: "compress" | "decompress", initial: string, result: string) => {
       await showPrompt({
         type: "alert",
@@ -754,13 +784,13 @@ function registerDevCommands() {
   });
 
   // #region export_config
-  isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
+  isAny && registerCmd("📤", "menu_command.export_config", () => downloadData(false));
 
   // #region export_full
-  isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
+  isAny && registerCmd("💾", "menu_command.export_full", () => downloadData(false, true));
 
   // #region import_full
-  isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
+  isAny && registerCmd("📥", "menu_command.import_full", async () => {
     const input = await showPrompt({
       type: "prompt",
       message: t("menu_command.import_full.prompt"),
@@ -775,7 +805,7 @@ function registerDevCommands() {
   });
 
   // #region toggle_dev_treatments
-  isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
+  isAny && registerCmd("🧪", "menu_command.toggle_dev_treatments", async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
     if(await showPrompt({ type: "confirm", message: t(`menu_command.toggle_dev_treatments.confirm.${val ? "enabled" : "disabled"}`), confirmBtnText: t("reload_now"), denyBtnText: t("close") }))
@@ -783,7 +813,7 @@ function registerDevCommands() {
   });
 
   // #region get_dev_plugin_token
-  isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
+  isDev && registerCmd("🔑", "menu_command.get_dev_plugin_token", () =>
     showPrompt({
       type: "alert",
       message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
@@ -804,12 +834,12 @@ function registerDevCommands() {
   );
 
   // #region unregister_all_plugins
-  GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+  registerCmd("🧩", "menu_command.unregister_all_plugins", () => {
     unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
   });
 
   // #region throw_example_error
-  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
+  isDev && registerCmd("💥", "menu_command.throw_example_error", () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 
   // #region tmp_log_used_tr_keys
   // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
@@ -832,7 +862,7 @@ function registerDevCommands() {
   // });
 
   // #region collect_sessions
-  isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+  isAny && registerCmd("🗂️", "menu_command.collect_sessions", () => {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
         sessionId: getSessionId(),
@@ -894,7 +924,7 @@ function registerDevCommands() {
   });
 
   // #region reload_all_tabs
-  isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+  isAny && registerCmd("🔄", "menu_command.reload_all_tabs", async () => {
     await showPrompt({
       type: "confirm",
       message: t("menu_command.reload_all_tabs.confirm", { scriptName: scriptInfo.name }),
@@ -903,7 +933,7 @@ function registerDevCommands() {
   });
 
   // #region get_performance_report
-  GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+  registerCmd("⏱️", "menu_command.get_performance_report", () => {
     perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
 
     const trKey = "menu_command.get_performance_report.file_name";
@@ -914,7 +944,7 @@ function registerDevCommands() {
   });
 
   // #region download_log_file
-  GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
+  registerCmd("📄", "menu_command.download_log_file", () => {
     const trKey = "menu_command.download_log_file.file_name";
     let fileName = t(trKey, { scriptName: scriptInfo.name, dateTime: new Date().toISOString() });
     if(fileName === trKey)

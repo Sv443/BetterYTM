@@ -12,7 +12,8 @@
       "src/utils/domain.ts",
       "src/utils/input.ts",
       "src/utils/locale.ts",
-      "src/utils/pure.ts"
+      "src/utils/pure.ts",
+      "src/utils/scriptHandler.ts"
     ],
     [
       "src/constants.ts",
