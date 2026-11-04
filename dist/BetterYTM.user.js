@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f8b29875/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7b5dee68/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 31 Oct 2026 01:21:21 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 04 Nov 2026 21:29:53 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ f8b29875                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 7b5dee68                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ L0Y78dZ6W2Gh                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 43Ba3Foes2c5                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -568,9 +568,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "f8b29875";
+	var buildNumber$1 = "7b5dee68";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1793409681508;
+	var buildTimestamp = 1793827793562;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -3534,7 +3534,7 @@
 		return dompurify.default.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
 	}
 	/**
-	* Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
+	* Sets innerHTML by using a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) when supported by the browser, else falls back to regular string assignment.  
 	* If no HTML string is given, the element's innerHTML will be set to an empty string.
 	*/
 	function setInnerHtml(element, html) {
@@ -11233,6 +11233,20 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return structuredClone(data);
 	}
 	//#endregion
+	//#region src/utils/scriptHandler.ts
+	/** Map of {@linkcode ScriptHandler} identifier to RegExp that matches it from `GM_info.scriptHandler` */
+	var scriptHandlerMap = {
+		greasemonkey: /greasemonkey/i,
+		tampermonkey: /tampermonkey/i,
+		violentmonkey: /violentmonkey/i,
+		firemonkey: /firemonkey/i
+	};
+	/** Returns the identifier of the extension that runs the BetterYTM userscript. */
+	function getScriptHandler() {
+		for (const [id, regex] of Object.entries(scriptHandlerMap)) if (regex.test(GM_info?.scriptHandler)) return id;
+		return "other";
+	}
+	//#endregion
 	//#region src/features/songLists.ts
 	/** Whether any song list item's checkbox is currently checked */
 	var isCheckboxChecked = false;
@@ -12498,13 +12512,17 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 	}
 	/** Registers dev commands using `GM.registerMenuCommand` */
 	function registerDevCommands() {
+		const scriptHandler = getScriptHandler();
+		const isLtr = locales_default?.[getLocale()]?.textDir !== "rtl";
 		const isDev = mode$1 === "development";
 		const isAdv = getFeature("advancedMode");
 		const isAny = isDev || isAdv;
-		const isLtr = locales_default?.[getLocale()]?.textDir !== "rtl";
-		const getCmdName = (emoji, key) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
-		GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
-		GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
+		const registerCmd = (emoji, trKey, fn, opts) => {
+			if (scriptHandler === "violentmonkey" && !opts?.icon) (opts ??= {}).icon = emoji;
+			GM.registerMenuCommand(scriptHandler === "violentmonkey" ? t(trKey) : isLtr ? `${emoji} ${t(trKey)}` : `${t(trKey)} ${emoji}`, fn, scriptHandler === "violentmonkey" ? opts : opts?.accessKey);
+		};
+		registerCmd("⚙️", "menu_command.open_cfg_menu", () => openCfgMenu());
+		registerCmd("♻️", "menu_command.reset_config", async () => {
 			const message = t("menu_command.reset_config.confirm");
 			try {
 				if (await showPrompt({
@@ -12522,7 +12540,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}
 			}
 		});
-		isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
+		isAny && registerCmd("🔍", "menu_command.gm_storage_list_decompressed", async () => {
 			const keys = await GM.listValues();
 			loggers.command.log(`GM values (${keys.length}):`);
 			if (keys.length === 0) loggers.command.log("  No values found.");
@@ -12549,7 +12567,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				decodeError(key, err);
 			}
 		});
-		isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
+		isAny && registerCmd("🗑️", "menu_command.gm_storage_delete_all", async () => {
 			const keys = await GM.listValues();
 			if (await showPrompt({
 				type: "confirm",
@@ -12564,7 +12582,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}
 			}
 		});
-		isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
+		isAny && registerCmd("👂", "menu_command.list_selectorobserver_listeners", async () => {
 			const lines = [];
 			let listenersAmt = 0;
 			for (const [obsName, obs] of Object.entries(globservers)) {
@@ -12580,7 +12598,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}
 			loggers.command.log(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
 		});
-		isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+		isAny && registerCmd("🗜️", "menu_command.compress_or_decompress_text", async () => {
 			const showFinalPrompt = async (type, initial, result) => {
 				await showPrompt({
 					type: "alert",
@@ -12655,9 +12673,9 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				extraButtonsPosition: "before"
 			});
 		});
-		isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
-		isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
-		isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
+		isAny && registerCmd("📤", "menu_command.export_config", () => downloadData(false));
+		isAny && registerCmd("💾", "menu_command.export_full", () => downloadData(false, true));
+		isAny && registerCmd("📥", "menu_command.import_full", async () => {
 			const input = await showPrompt({
 				type: "prompt",
 				message: t("menu_command.import_full.prompt"),
@@ -12673,7 +12691,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				})) await reloadTab();
 			}
 		});
-		isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
+		isAny && registerCmd("🧪", "menu_command.toggle_dev_treatments", async () => {
 			const val = !await GM.getValue("bytm-dev-treatments", false);
 			await GM.setValue("bytm-dev-treatments", val);
 			if (await showPrompt({
@@ -12683,7 +12701,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				denyBtnText: t("close")
 			})) await reloadTab();
 		});
-		isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
+		isDev && registerCmd("🔑", "menu_command.get_dev_plugin_token", () => showPrompt({
 			type: "alert",
 			message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
 			extraButtons: [(dlg) => {
@@ -12698,14 +12716,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}],
 			extraButtonsPosition: "before"
 		}));
-		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+		registerCmd("🧩", "menu_command.unregister_all_plugins", () => {
 			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
 		});
-		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new _sv443_network_userutils.CustomError("ExampleError", "Test error")));
-		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+		isDev && registerCmd("💥", "menu_command.throw_example_error", () => loggers.command.error("Test error thrown by user command:", new _sv443_network_userutils.CustomError("ExampleError", "Test error")));
+		isAny && registerCmd("🗂️", "menu_command.collect_sessions", () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "f8b29875",
+				buildNumber: "7b5dee68",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -12766,14 +12784,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}, 300);
 			emitBroadcast({ type: "discoverSessions" });
 		});
-		isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+		isAny && registerCmd("🔄", "menu_command.reload_all_tabs", async () => {
 			await showPrompt({
 				type: "confirm",
 				message: t("menu_command.reload_all_tabs.confirm", { scriptName: scriptInfo$1.name }),
 				confirmBtnText: t("reload_now")
 			}) && await reloadAllTabs();
 		});
-		GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+		registerCmd("⏱️", "menu_command.get_performance_report", () => {
 			perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
 				...a,
 				[key]: vals
@@ -12786,7 +12804,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			if (fileName === trKey) fileName = tl("en-US", trKey);
 			downloadFile(fileName, JSON.stringify(perfReport, null, 2), "application/json");
 		});
-		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
+		registerCmd("📄", "menu_command.download_log_file", () => {
 			const trKey = "menu_command.download_log_file.file_name";
 			let fileName = t(trKey, {
 				scriptName: scriptInfo$1.name,
