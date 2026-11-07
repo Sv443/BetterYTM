@@ -25,14 +25,14 @@ export const featDefaults = {
     type: "number",
     default: 3_000,
     min: mode === "development" ? 100 : 1_000,
-    max: 10_000,
+    max: 60_000,
     since: "2.1.0",
   },
   defaultObserverDebounce: {
     type: "number",
     default: 150,
     min: 10,
-    max: 1000,
+    max: 10_000,
     since: "3.1.0",
   },
   verboseObservers: {
@@ -337,7 +337,6 @@ export const featDefaults = {
     type: "number",
     default: 150,
     min: 50,
-    max: 500,
     since: "1.0.0",
   },
   volumeSliderStep: {
@@ -402,7 +401,6 @@ export const featDefaults = {
     type: "number",
     default: 180,
     min: 1,
-    max: 60 * 60 * 24 * 7,
     since: "2.0.0",
   },
   rememberSongTimeReduction: {
@@ -491,7 +489,7 @@ export const featDefaults = {
     type: "slider",
     default: 2,
     min: 1,
-    max: 25,
+    max: 100,
     since: "3.0.0",
   },
   frameSkip: {

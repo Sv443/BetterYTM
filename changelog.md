@@ -32,6 +32,12 @@
   - Document mutation observer performance improvements:
     - Updated the underlying `SelectorObserver` system to also debounce element selector checks, leading to fewer overall checks without compromising reactivity all that much.
     - The internal `SelectorObserver` instances (globservers) will now be disabled and enabled dynamically after the initial startup sequence is finished.
+  - Increased some features' maximum value or removed it entirely:
+    - `initTimeout`: 10,000 -> 60,000
+    - `defaultObserverDebounce`: 1,000 -> 10,000
+    - `arrowKeyVolumeStep`: 25 -> 100
+    - `volumeSliderSize`: 500 -> Infinity
+    - `rememberSongTimeDuration`: 604,800 -> Infinity
 - **Fixes:**
   - Fixed multiple CSS selectors that were broken by upstream page updates over time.
   - Added an "enhanced compatibility" build of the script that is meant to fix import issues on Chromium-based browsers, by including all dependencies directly in the script (at the cost of installation size).

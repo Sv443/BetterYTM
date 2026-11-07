@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7b5dee68/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@be487b46/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 04 Nov 2026 21:29:53 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 07 Nov 2026 20:52:08 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 7b5dee68                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ be487b46                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 43Ba3Foes2c5                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 3lpsSQzYTB28                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -568,9 +568,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "7b5dee68";
+	var buildNumber$1 = "be487b46";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1793827793562;
+	var buildTimestamp = 1794084728636;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -1063,14 +1063,14 @@
 			type: "number",
 			default: 3e3,
 			min: 100,
-			max: 1e4,
+			max: 6e4,
 			since: "2.1.0"
 		},
 		defaultObserverDebounce: {
 			type: "number",
 			default: 150,
 			min: 10,
-			max: 1e3,
+			max: 1e4,
 			since: "3.1.0"
 		},
 		verboseObservers: {
@@ -1375,7 +1375,6 @@
 			type: "number",
 			default: 150,
 			min: 50,
-			max: 500,
 			since: "1.0.0"
 		},
 		volumeSliderStep: {
@@ -1440,7 +1439,6 @@
 			type: "number",
 			default: 180,
 			min: 1,
-			max: 3600 * 24 * 7,
 			since: "2.0.0"
 		},
 		rememberSongTimeReduction: {
@@ -1529,7 +1527,7 @@
 			type: "slider",
 			default: 2,
 			min: 1,
-			max: 25,
+			max: 100,
 			since: "3.0.0"
 		},
 		frameSkip: {
@@ -7754,6 +7752,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 	};
 	var removeEmoji = (str) => str.replace(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu, "").trim();
+	/** Shared debounced example toast for the `toastDuration` feature - needs to be created only once so all calls share the same timer */
+	var toastDurationExampleToast = (0, _sv443_network_userutils.debounce)((newVal) => newVal === 0 ? closeToast() : showIconToast({
+		message: t("example_toast"),
+		iconSrc: getResourceUrl(`img-logo_dev`)
+	}).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0), 800, "idle");
 	/** Common options for config items of type "select" */
 	var options = {
 		/** `all`, `yt`, `ytm` */
@@ -8021,10 +8024,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			step: .5,
 			renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
 			reloadRequired: false,
-			change: (newVal) => newVal === 0 ? closeToast() : showIconToast({
-				message: t("example_toast"),
-				iconSrc: getResourceUrl(`img-logo_dev`)
-			}).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0)
+			change: (nv) => toastDurationExampleToast(Number(nv))
 		},
 		showToastOnGenericError: {
 			...featDefaults.showToastOnGenericError,
@@ -12723,7 +12723,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && registerCmd("🗂️", "menu_command.collect_sessions", () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "7b5dee68",
+				buildNumber: "be487b46",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
