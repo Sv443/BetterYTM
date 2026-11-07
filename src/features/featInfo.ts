@@ -1,4 +1,4 @@
-import { DatedError, openInNewTab } from "@sv443-network/userutils";
+import { DatedError, debounce, openInNewTab } from "@sv443-network/userutils";
 import { clearLyricsCache, getLyricsCache } from "@feat/lyricsCache.ts";
 import { featDefaults } from "@feat/featDefaults.ts";
 import { doVersionCheck } from "@feat/versionCheck.ts";
@@ -43,6 +43,18 @@ type SelectOption<TValue = number | string> = {
 };
 
 const removeEmoji = (str: string) => str.replace(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu, "").trim();
+
+/** Shared debounced example toast for the `toastDuration` feature - needs to be created only once so all calls share the same timer */
+const toastDurationExampleToast = debounce(
+  (newVal: number) => newVal === 0
+    ? closeToast()
+    : showIconToast({
+      message: t("example_toast"),
+      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+    }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
+  800,
+  "idle",
+);
 
 /** Common options for config items of type "select" */
 const options = {
@@ -252,12 +264,7 @@ export const featInfo = {
     step: 0.5,
     renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
     reloadRequired: false,
-    change: (newVal) => newVal === 0
-      ? closeToast()
-      : showIconToast({
-        message: t("example_toast"),
-        iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-      }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
+    change: (nv) => toastDurationExampleToast(Number(nv)),
   },
   showToastOnGenericError: {
     ...featDefaults.showToastOnGenericError,
