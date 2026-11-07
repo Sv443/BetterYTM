@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@be487b46/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0dfb1f47/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 07 Nov 2026 20:52:08 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 07 Nov 2026 22:25:56 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ be487b46                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 0dfb1f47                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 3lpsSQzYTB28                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ MBuoD3teh3yh                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -568,9 +568,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "be487b46";
+	var buildNumber$1 = "0dfb1f47";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1794084728636;
+	var buildTimestamp = 1794090356036;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -12723,7 +12723,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && registerCmd("🗂️", "menu_command.collect_sessions", () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "be487b46",
+				buildNumber: "0dfb1f47",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
