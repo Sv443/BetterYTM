@@ -215,8 +215,6 @@
   "auto_like_delete_all_tooltip": "Tüm otomatik beğenilen kanalları sil",
   "auto_like_delete_all_confirm": "Tüm otomatik beğenilen kanalları silmek istiyor musunuz?",
 
-  "interaction_lock_unlock_button": "Kilidi Aç",
-
   "prompt_confirm": "Onayla",
   "prompt_close": "Kapat",
   "prompt_dismiss": "Yoksay",

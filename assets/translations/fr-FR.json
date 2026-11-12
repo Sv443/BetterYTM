@@ -211,8 +211,6 @@
   "auto_like_delete_all_tooltip": "Supprimer toutes les chaînes auto-aimées",
   "auto_like_delete_all_confirm": "Voulez-vous vraiment supprimer toutes les chaînes auto-aimées?",
 
-  "interaction_lock_unlock_button": "Déverrouiller",
-
   "prompt_confirm": "Confirmer",
   "prompt_close": "Fermer",
   "prompt_dismiss": "Ignorer",

@@ -7,6 +7,7 @@
     "**/*.user.js": true,
     "**/BetterYTM.css": true,
     "docs/typedocs/**/*.md": true,
+    "assets/translations/README.md": true,
   },
 
   // fix .env and .env.template consistency

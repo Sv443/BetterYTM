@@ -212,8 +212,6 @@
   "auto_like_delete_all_tooltip": "Eliminar todos los canales con me gusta automático",
   "auto_like_delete_all_confirm": "¿Realmente quieres eliminar todos los canales con me gusta automático?",
 
-  "interaction_lock_unlock_button": "Desbloquear",
-
   "prompt_confirm": "Confirmar",
   "prompt_close": "Cerrar",
   "prompt_dismiss": "Descartar",

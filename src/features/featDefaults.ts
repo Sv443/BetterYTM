@@ -662,28 +662,6 @@ export const featDefaults = {
     },
     since: "3.1.0",
   },
-  interactionLockHotkeyEnabled: {
-    type: "toggle",
-    default: true,
-    since: "4.0.0",
-  },
-  interactionLockHotkey: {
-    type: "hotkey",
-    default: {
-      code: "Pause",
-      shift: false,
-      ctrl: false,
-      alt: true,
-    },
-    since: "4.0.0",
-  },
-  interactionLockOverlayTimeout: {
-    type: "slider",
-    default: 5,
-    min: 0,
-    max: 10,
-    since: "4.0.0",
-  },
   rebindNextAndPrevious: {
     type: "toggle",
     default: false,

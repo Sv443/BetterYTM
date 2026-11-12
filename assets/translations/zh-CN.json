@@ -213,8 +213,6 @@
   "auto_like_delete_all_tooltip": "删除所有自动喜欢的频道",
   "auto_like_delete_all_confirm": "您是否真的要删除所有 ${count} 个自动喜欢的频道？",
 
-  "interaction_lock_unlock_button": "解锁",
-
   "prompt_confirm": "确认",
   "prompt_close": "关闭",
   "prompt_dismiss": "忽略",

@@ -211,8 +211,6 @@
   "auto_like_delete_all_tooltip": "Excluir todos os canais auto-curtidos",
   "auto_like_delete_all_confirm": "Você realmente deseja excluir todos os canais auto-curtidos?",
 
-  "interaction_lock_unlock_button": "Desbloquear",
-
   "prompt_confirm": "Confirmar",
   "prompt_close": "Fechar",
   "prompt_dismiss": "Descartar",

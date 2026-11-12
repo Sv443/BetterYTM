@@ -211,8 +211,6 @@
   "auto_like_delete_all_tooltip": "सभी ऑटो-पसंद चैनल हटाएं",
   "auto_like_delete_all_confirm": "क्या आप वाकई सभी ऑटो-पसंद चैनल हटाना चाहते हैं?",
 
-  "interaction_lock_unlock_button": "अनलॉक करें",
-
   "prompt_confirm": "पुष्टि करना",
   "prompt_close": "बंद करें",
   "prompt_dismiss": "अस्वीकार करें",

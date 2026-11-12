@@ -212,8 +212,6 @@
   "auto_like_delete_all_tooltip": "すべての自動チャンネルを削除",
   "auto_like_delete_all_confirm": "本当にすべての自動チャンネルを削除しますか？",
 
-  "interaction_lock_unlock_button": "ロック解除",
-
   "prompt_confirm": "確認",
   "prompt_close": "閉じる",
   "prompt_dismiss": "拒否",
