@@ -4,6 +4,7 @@ import { onInteraction } from "@util/input.ts";
 import { getChangelogMd, parseMarkdown } from "@util/misc.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
 import { getFeature, getFeatures, setFeatures } from "@/config.ts";
@@ -43,7 +44,7 @@ export async function getVersionNotifDialog({
 }
 
 async function renderHeader() {
-  const logoEl = document.createElement("img");
+  const logoEl = createElement("img");
   logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
   logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   logoEl.alt = "BetterYTM logo";
@@ -62,17 +63,17 @@ async function renderBody({
 }) {
   disableUpdateCheck = false;
 
-  const wrapperEl = document.createElement("div");
+  const wrapperEl = createElement("div");
 
-  const pEl = document.createElement("p");
+  const pEl = createElement("p");
   pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
   wrapperEl.appendChild(pEl);
 
-  const changelogDetailsEl = document.createElement("details");
+  const changelogDetailsEl = createElement("details");
   changelogDetailsEl.id = "bytm-version-notif-changelog-details";
   changelogDetailsEl.open = false;
 
-  const changelogSummaryEl = document.createElement("summary");
+  const changelogSummaryEl = createElement("summary");
   changelogSummaryEl.role = "button";
   changelogSummaryEl.tabIndex = 0;
   changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
@@ -82,7 +83,7 @@ async function renderBody({
     changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
   });
 
-  const changelogEl = document.createElement("p");
+  const changelogEl = createElement("p");
   changelogEl.id = "bytm-version-notif-changelog-cont";
   changelogEl.classList.add("bytm-markdown-container");
   setInnerHtml(changelogEl, changelogHtml);
@@ -95,7 +96,7 @@ async function renderBody({
   changelogDetailsEl.appendChild(changelogEl);
   wrapperEl.appendChild(changelogDetailsEl);
 
-  const disableUpdCheckEl = document.createElement("div");
+  const disableUpdCheckEl = createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
   if(!getFeature("versionCheck"))
@@ -114,14 +115,14 @@ async function renderBody({
     },
   });
 
-  const labelWrapperEl = document.createElement("div");
+  const labelWrapperEl = createElement("div");
   labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
 
-  const labelEl = document.createElement("label");
+  const labelEl = createElement("label");
   labelEl.htmlFor = "bytm-toggle-disable-update-check";
   labelEl.textContent = t("disable_update_check");
 
-  const secondaryLabelEl = document.createElement("span");
+  const secondaryLabelEl = createElement("span");
   secondaryLabelEl.classList.add("bytm-secondary-label");
   secondaryLabelEl.textContent = t("reenable_in_config_menu");
 
@@ -144,10 +145,10 @@ async function renderBody({
     recreateCfgMenu && emitSiteEvent("recreateCfgMenu");
   });
 
-  const btnWrapper = document.createElement("div");
+  const btnWrapper = createElement("div");
   btnWrapper.id = "bytm-version-notif-dialog-btns";
 
-  const btnUpdate = document.createElement("button");
+  const btnUpdate = createElement("button");
   btnUpdate.classList.add("bytm-btn");
   btnUpdate.tabIndex = 0;
   btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host]);
@@ -157,7 +158,7 @@ async function renderBody({
     verNotifDialog?.close();
   });
 
-  const btnClose = document.createElement("button");
+  const btnClose = createElement("button");
   btnClose.classList.add("bytm-btn");
   btnClose.tabIndex = 0;
   btnClose.textContent = t("close_and_ignore_for_24h");

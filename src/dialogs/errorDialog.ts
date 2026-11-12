@@ -2,6 +2,7 @@ import { t } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { downloadFile } from "@util/dom.ts";
 import { Logger } from "@util/Logger.ts";
+import { createElement } from "@util/element.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import packageJson from "@root/package.json" with { type: "json" };
 
@@ -19,7 +20,7 @@ export function getErrorDialog(errName: string, args: unknown[]) {
     small: true,
     destroyOnClose: true,
     renderHeader() {
-      const header = document.createElement("h2");
+      const header = createElement("h2");
       header.classList.add("bytm-dialog-title");
       header.role = "heading";
       header.ariaLevel = "1";
@@ -29,17 +30,17 @@ export function getErrorDialog(errName: string, args: unknown[]) {
       return header;
     },
     renderFooter(dlg) {
-      const footer = document.createElement("div");
+      const footer = createElement("div");
       footer.classList.add("bytm-dialog-footer", "align-right");
 
-      const dlLogsBtn = document.createElement("button");
+      const dlLogsBtn = createElement("button");
       dlLogsBtn.classList.add("bytm-btn");
       dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
       onInteraction(dlLogsBtn, () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, Logger.serializeLogs(), "text/plain");
       });
 
-      const closeBtn = document.createElement("button");
+      const closeBtn = createElement("button");
       closeBtn.classList.add("bytm-btn");
       closeBtn.textContent = t("close");
       closeBtn.ariaLabel = t("close_menu_tooltip");

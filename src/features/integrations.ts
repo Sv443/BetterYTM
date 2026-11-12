@@ -1,6 +1,7 @@
 import { getDomain } from "@util/domain.ts";
 import { addStyleFromResource } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
+import { createElement } from "@util/element.ts";
 import { getFeature } from "@/config.ts";
 import type { FeatureConfig } from "@/types.ts";
 import "@feat/integrations.css";
@@ -12,7 +13,7 @@ export async function disableDarkReader() {
   if(getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
     return;
 
-  const metaElem = document.createElement("meta");
+  const metaElem = createElement("meta");
   metaElem.name = "darkreader-lock";
   metaElem.id = "bytm-disable-dark-reader";
   document.head.appendChild(metaElem);

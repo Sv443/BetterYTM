@@ -7,13 +7,14 @@ import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
-import type { LyricsCacheEntry } from "@/types.ts";
 import { getCurrentMediaType, setInnerHtml } from "@util/dom.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { openInTab } from "@util/pure.ts";
-import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import { constructUrl } from "@util/xhr.ts";
 import { onInteraction } from "@util/input.ts";
+import { createElement } from "@util/element.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
+import type { LyricsCacheEntry } from "@/types.ts";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -276,7 +277,7 @@ export async function addGeniusUrlToLyricsBtn(btnElem: HTMLAnchorElement, genius
 
 /** Creates the base lyrics button element */
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
-  const linkElem = document.createElement("a");
+  const linkElem = createElement("a");
   linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
   linkElem.dataset.state = geniusUrl ? "ready" : "loading";
   linkElem.role = "button";

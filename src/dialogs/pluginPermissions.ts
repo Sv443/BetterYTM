@@ -1,12 +1,13 @@
 import { bitSetHas } from "@sv443-network/userutils";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { defToIntentsBitSet, getPermStorePerms, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore, setRegisteredPluginPerms } from "@/plugins/store.ts";
 import { t } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { loggers } from "@util/logging.ts";
 import { emitBroadcast } from "@util/broadcast.ts";
+import { createElement } from "@util/element.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
+import { defToIntentsBitSet, getPermStorePerms, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore, setRegisteredPluginPerms } from "@/plugins/store.ts";
 import { mode } from "@/constants.ts";
 import { LogLevel, PluginIntent, type BitSetTSEnum, type PluginDef } from "@/types.ts";
 import "@dialog/pluginPermissions.css";
@@ -31,7 +32,7 @@ export function getPluginPermissionsDialog(def: PluginDef, initial = false) {
 }
 
 async function renderHeader() {
-  const titleElem = document.createElement("h2");
+  const titleElem = createElement("h2");
   titleElem.id = "bytm-plugin-perms-title";
   titleElem.classList.add("bytm-dialog-title");
   titleElem.role = "heading";
@@ -45,7 +46,7 @@ async function renderHeader() {
 async function renderBody(permDlg: BytmDialog, def: PluginDef) {
   const pluginKey = getPluginKey(def);
 
-  const permsListCont = document.createElement("div");
+  const permsListCont = createElement("div");
   permsListCont.id = "bytm-plugin-perms-container";
 
   if(!def) {
@@ -60,19 +61,19 @@ async function renderBody(permDlg: BytmDialog, def: PluginDef) {
   const intentsBitSet = defToIntentsBitSet(def);
   const intents = parseBitSetEnumArray(intentsBitSet, PluginIntent as unknown as BitSetTSEnum);
 
-  const descriptionElem = document.createElement("div");
+  const descriptionElem = createElement("div");
   descriptionElem.id = "bytm-plugin-perms-description";
   descriptionElem.textContent = descriptionElem.title = t("plugin_permissions_dialog.description", { pluginName: def.plugin.name });
   permsListCont.appendChild(descriptionElem);
 
-  const hrElem = document.createElement("hr");
+  const hrElem = createElement("hr");
   hrElem.classList.add("bytm-hr");
   permsListCont.appendChild(hrElem);
 
   const perms = getPermStorePerms(def);
 
   for(const intent of intents) {
-    const itemEl = document.createElement("div");
+    const itemEl = createElement("div");
     itemEl.classList.add("bytm-plugin-perms-item");
     itemEl.tabIndex = 0;
     itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + (mode === "development" ? `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}` : "");
@@ -88,7 +89,7 @@ async function renderBody(permDlg: BytmDialog, def: PluginDef) {
       onChange: () => void 0,
     });
 
-    const nameEl = document.createElement("div");
+    const nameEl = createElement("div");
     nameEl.classList.add("bytm-plugin-perms-item-name");
     nameEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
 
@@ -104,13 +105,13 @@ async function renderBody(permDlg: BytmDialog, def: PluginDef) {
 async function renderFooter(permDlg: BytmDialog, def: PluginDef) {
   const pluginKey = getPluginKey(def);
 
-  const footerEl = document.createElement("div");
+  const footerEl = createElement("div");
   footerEl.id = "bytm-plugin-perms-footer";
   footerEl.classList.add("bytm-dialog-footer", "align-right");
 
   const requestedIntents = defToIntentsBitSet(def);
 
-  const confirmBtn = document.createElement("button");
+  const confirmBtn = createElement("button");
   confirmBtn.classList.add("bytm-btn");
   confirmBtn.textContent = t("prompt_confirm");
   confirmBtn.title = t("click_to_confirm_tooltip");
@@ -139,7 +140,7 @@ async function renderFooter(permDlg: BytmDialog, def: PluginDef) {
   });
   footerEl.appendChild(confirmBtn);
 
-  const cancelBtn = document.createElement("button");
+  const cancelBtn = createElement("button");
   cancelBtn.classList.add("bytm-btn");
   cancelBtn.textContent = t("prompt_cancel");
   cancelBtn.title = t("click_to_cancel_tooltip");

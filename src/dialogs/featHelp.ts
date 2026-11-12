@@ -1,6 +1,7 @@
 import { setInnerHtml } from "@util/dom.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { getLocale, t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { featInfo } from "@feat/featInfo.ts";
 import type { FeatureKey } from "@/types.ts";
@@ -39,7 +40,7 @@ export async function getFeatHelpDialog({
 }
 
 async function renderHeader() {
-  const headerEl = document.createElement("div");
+  const headerEl = createElement("div");
   headerEl.id = "bytm-feat-help-dialog-header";
   headerEl.classList.add("bytm-flex-row");
   setInnerHtml(headerEl, await resourceAsString("icon-help"));
@@ -48,7 +49,7 @@ async function renderHeader() {
 }
 
 async function renderBody() {
-  const contElem = document.createElement("div");
+  const contElem = createElement("div");
 
   const localeObj = locales?.[getLocale()];
 
@@ -58,13 +59,13 @@ async function renderBody() {
   if(localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
     featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
 
-  const featDescElem = document.createElement("h3");
+  const featDescElem = createElement("h3");
   featDescElem.role = "subheading";
   featDescElem.tabIndex = 0;
   featDescElem.textContent = featDescElem.title = featText;
   featDescElem.id = "bytm-feat-help-dialog-desc";
 
-  const helpTextElem = document.createElement("div");
+  const helpTextElem = createElement("div");
   helpTextElem.id = "bytm-feat-help-dialog-text";
   helpTextElem.tabIndex = 0;
   // @ts-expect-error

@@ -3,6 +3,7 @@ import { setInnerHtml } from "@util/dom.ts";
 import { interactionKeys, onInteraction } from "@util/input.ts";
 import { getOS } from "@util/pure.ts";
 import { hasKey, t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import type { HotkeyObj } from "@/types.ts";
 import "@comp/hotkeyInput.css";
 
@@ -25,13 +26,13 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   if(!createTitle)
     createTitle = (value) => value;
 
-  const wrapperElem = document.createElement("div");
+  const wrapperElem = createElement("div");
   wrapperElem.classList.add("bytm-hotkey-wrapper");
 
-  const infoElem = document.createElement("span");
+  const infoElem = createElement("span");
   infoElem.classList.add("bytm-hotkey-info");
 
-  const inputElem = document.createElement("button");
+  const inputElem = createElement("button");
   inputElem.role = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
   inputElem.dataset.state = infoElem.dataset.state = "inactive";
@@ -43,7 +44,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = t("hotkey_input_click_to_change");
   inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
 
-  const resetElem = document.createElement("span");
+  const resetElem = createElement("span");
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
   resetElem.role = "button";
   resetElem.tabIndex = 0;

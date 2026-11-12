@@ -31,6 +31,7 @@ import type ghEmojis from "@asset/images/external/gh_emojis.json";
 import type { featInfo } from "@feat/featInfo.ts";
 import type { Logger } from "@util/Logger.ts";
 import type { getSelector } from "@util/staticData.ts";
+import type { createElement } from "@util/element.ts";
 
 //#region other
 
@@ -728,6 +729,8 @@ export type InterfaceFunctions = {
   getSelector: typeof getSelector;
 
   // dom:
+  /** Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to `document.createElement()`. */
+  createElement: typeof createElement;
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string. */
   setInnerHtml: typeof setInnerHtml;
   /** Sanitizes the given HTML string using DOMPurify in a TrustedTypes-compatible way (only if supported by the browser). */

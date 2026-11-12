@@ -3,6 +3,7 @@ import { copyToClipboard, downloadFile } from "@util/dom.ts";
 import { t } from "@util/translations.ts";
 import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
+import { createElement } from "@util/element.ts";
 import { getSerializerStoresIds, getDSSerializer } from "@/serializers.ts";
 import { ExImDialog, type ExImDialogOpts } from "@comp/ExImDialog.ts";
 import { showToast } from "@comp/toast.ts";
@@ -55,36 +56,36 @@ async function onImport(data: string) {
 }
 
 async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
-  const panesCont = document.createElement("div");
+  const panesCont = createElement("div");
   panesCont.classList.add("bytm-all-data-exim-dialog-panes-cont");
 
   //#region export
 
-  const exportPane = document.createElement("div");
+  const exportPane = createElement("div");
   exportPane.classList.add("bytm-all-data-exim-dialog-pane", "export");
 
   {
-    const descEl = document.createElement("p");
+    const descEl = createElement("p");
     descEl.classList.add("bytm-all-data-exim-dialog-desc");
     descEl.role = "note";
     descEl.tabIndex = 0;
     descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descExport);
 
-    const exportPartsCont = document.createElement("div");
+    const exportPartsCont = createElement("div");
     exportPartsCont.classList.add("bytm-all-data-exim-dialog-export-parts-cont");
 
-    const dataEl = document.createElement("textarea");
+    const dataEl = createElement("textarea");
     dataEl.classList.add("bytm-all-data-exim-dialog-data");
     dataEl.readOnly = true;
     dataEl.tabIndex = 0;
     dataEl.value = t("click_to_reveal");
 
     for(const id of getSerializerStoresIds(true)) {
-      const rowEl = document.createElement("div");
+      const rowEl = createElement("div");
       rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
       rowEl.title = t(`data_stores.disable.${id}`);
 
-      const chkEl = document.createElement("input");
+      const chkEl = createElement("input");
       chkEl.type = "checkbox";
       chkEl.id = `bytm-all-data-exim-dialog-export-part-${id}`;
       chkEl.dataset.storeId = id;
@@ -101,7 +102,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
           dataEl.value = filter(await consumeStringGen(opts.exportData));
       });
 
-      const lblEl = document.createElement("label");
+      const lblEl = createElement("label");
       lblEl.htmlFor = chkEl.id;
       lblEl.textContent = t(`data_stores.disable.${id}`);
 
@@ -130,7 +131,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
       dataEl.setSelectionRange(0, dataEl.value.length);
     });
 
-    const exportCenterBtnCont = document.createElement("div");
+    const exportCenterBtnCont = createElement("div");
     exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
 
     const cpBtn = await createLongBtn({
@@ -171,24 +172,24 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
 
   //#region import
 
-  const importPane = document.createElement("div");
+  const importPane = createElement("div");
   importPane.classList.add("bytm-all-data-exim-dialog-pane", "import");
 
   {
     // TODO: file upload field
     // TODO: select which stores to import
 
-    const descEl = document.createElement("p");
+    const descEl = createElement("p");
     descEl.classList.add("bytm-all-data-exim-dialog-desc");
     descEl.role = "note";
     descEl.tabIndex = 0;
     descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descImport);
 
-    const dataEl = document.createElement("textarea");
+    const dataEl = createElement("textarea");
     dataEl.classList.add("bytm-all-data-exim-dialog-data");
     dataEl.tabIndex = 0;
 
-    const importCenterBtnCont = document.createElement("div");
+    const importCenterBtnCont = createElement("div");
     importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
 
     const importBtn = await createLongBtn({

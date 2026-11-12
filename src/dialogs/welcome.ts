@@ -2,15 +2,16 @@ import { getResourceUrl } from "@util/resourceUrl.ts";
 import { initTranslations, setLocale, t, type TrLocale } from "@util/translations.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
+import { createElement } from "@util/element.ts";
 import { tryUse } from "@/core/hooks.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { configSetFeatsWithTags, getFeature, getFeatures, getFeaturesWithTags, setFeatures } from "@/config.ts";
 import { mode, scriptInfo } from "@/constants.ts";
 import { featDefaults } from "@feat/featDefaults.ts";
+import { forceEmitSiteEvent } from "@/siteEvents.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";
-import { forceEmitSiteEvent } from "@/siteEvents.ts";
 
 let welcomeDialog: BytmDialog | null = null;
 
@@ -40,15 +41,15 @@ export async function getWelcomeDialog() {
 // #region renderHeader
 
 async function renderHeader() {
-  const titleWrapperElem = document.createElement("div");
+  const titleWrapperElem = createElement("div");
   titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
 
-  const titleLogoElem = document.createElement("img");
+  const titleLogoElem = createElement("img");
   titleLogoElem.id = "bytm-welcome-menu-title-logo";
   titleLogoElem.classList.add("bytm-no-select");
   titleLogoElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
-  const titleElem = document.createElement("h2");
+  const titleElem = createElement("h2");
   titleElem.id = "bytm-welcome-menu-title";
   titleElem.classList.add("bytm-dialog-title");
   titleElem.role = "heading";
@@ -64,19 +65,19 @@ async function renderHeader() {
 //#region renderBody
 
 async function renderBody() {
-  const contentWrapper = document.createElement("div");
+  const contentWrapper = createElement("div");
   contentWrapper.id = "bytm-welcome-menu-content-wrapper";
 
   // horizontal stacked segments
 
-  const horSegmentCont = document.createElement("div");
+  const horSegmentCont = createElement("div");
   horSegmentCont.id = "bytm-welcome-menu-horizontal-segment-container";
 
   const getHorSegmentElements = async (imgKey: ResourceKey & `icon-${string}`) => {
-    const segCont = document.createElement("div");
+    const segCont = createElement("div");
     segCont.classList.add("bytm-welcome-menu-segment-cont");
 
-    const segImg = document.createElement("img");
+    const segImg = createElement("img");
     segImg.classList.add("bytm-welcome-menu-horizontal-segment-img", "bytm-no-select");
     segImg.src = await getResourceUrl(imgKey);
 
@@ -91,12 +92,12 @@ async function renderBody() {
     const [localeCont, localeImg] = await getHorSegmentElements("icon-globe");
     localeImg.id = "bytm-welcome-menu-locale-img";
 
-    const localeSelectElem = document.createElement("select");
+    const localeSelectElem = createElement("select");
     localeSelectElem.id = "bytm-welcome-menu-locale-select";
     localeSelectElem.classList.add("bytm-welcome-menu-select");
 
     for(const [locale, { name, emoji }] of Object.entries(locales)) {
-      const optionElem = document.createElement("option");
+      const optionElem = createElement("option");
       optionElem.value = locale;
       optionElem.textContent = `${emoji} ${name}`;
       localeSelectElem.appendChild(optionElem);
@@ -127,7 +128,7 @@ async function renderBody() {
     const [privacyCont, privacyImg] = await getHorSegmentElements("icon-shield_question");
     privacyImg.id = "bytm-welcome-menu-privacy-img";
 
-    const privacySelectElem = document.createElement("select");
+    const privacySelectElem = createElement("select");
     privacySelectElem.id = "bytm-welcome-menu-privacy-select";
     privacySelectElem.classList.add("bytm-welcome-menu-select");
 
@@ -145,7 +146,7 @@ async function renderBody() {
     ] as const;
 
     for(const { value, label } of options) {
-      const optionElem = document.createElement("option");
+      const optionElem = createElement("option");
       optionElem.id = `bytm-welcome-menu-privacy-option-${value}`;
       optionElem.value = value;
       optionElem.textContent = label;
@@ -189,58 +190,58 @@ async function renderBody() {
 
   // hr
 
-  const hrElem = document.createElement("hr");
+  const hrElem = createElement("hr");
   hrElem.classList.add("bytm-hr");
 
   contentWrapper.appendChild(hrElem);
 
   // text
 
-  const textCont = document.createElement("div");
+  const textCont = createElement("div");
   textCont.id = "bytm-welcome-menu-text-cont";
 
-  const textElem = document.createElement("p");
+  const textElem = createElement("p");
   textElem.id = "bytm-welcome-menu-text";
 
   const textElems = [] as HTMLElement[];
 
-  const line1Elem = document.createElement("span");
+  const line1Elem = createElement("span");
   line1Elem.id = "bytm-welcome-text-line1";
   line1Elem.tabIndex = 0;
   textElems.push(line1Elem);
 
-  const br1Elem = document.createElement("br");
+  const br1Elem = createElement("br");
   textElems.push(br1Elem);
 
-  const line2Elem = document.createElement("span");
+  const line2Elem = createElement("span");
   line2Elem.id = "bytm-welcome-text-line2";
   line2Elem.tabIndex = 0;
   textElems.push(line2Elem);
 
-  const br2Elem = document.createElement("br");
+  const br2Elem = createElement("br");
   textElems.push(br2Elem);
-  const br3Elem = document.createElement("br");
+  const br3Elem = createElement("br");
   textElems.push(br3Elem);
 
-  const line3Elem = document.createElement("span");
+  const line3Elem = createElement("span");
   line3Elem.id = "bytm-welcome-text-line3";
   line3Elem.tabIndex = 0;
   textElems.push(line3Elem);
 
-  const br4Elem = document.createElement("br");
+  const br4Elem = createElement("br");
   textElems.push(br4Elem);
 
-  const line4Elem = document.createElement("span");
+  const line4Elem = createElement("span");
   line4Elem.id = "bytm-welcome-text-line4";
   line4Elem.tabIndex = 0;
   textElems.push(line4Elem);
 
-  const br5Elem = document.createElement("br");
+  const br5Elem = createElement("br");
   textElems.push(br5Elem);
-  const br6Elem = document.createElement("br");
+  const br6Elem = createElement("br");
   textElems.push(br6Elem);
 
-  const line5Elem = document.createElement("span");
+  const line5Elem = createElement("span");
   line5Elem.id = "bytm-welcome-text-line5";
   line5Elem.tabIndex = 0;
   textElems.push(line5Elem);
@@ -309,10 +310,10 @@ function retranslateWelcomeMenu() {
 // #region renderFooter
 
 async function renderFooter() {
-  const footerCont = document.createElement("div");
+  const footerCont = createElement("div");
   footerCont.id = "bytm-welcome-menu-footer-cont";
 
-  const openCfgElem = document.createElement("button");
+  const openCfgElem = createElement("button");
   openCfgElem.id = "bytm-welcome-menu-open-cfg";
   openCfgElem.classList.add("bytm-btn");
   openCfgElem.addEventListener("click", () => {
@@ -320,14 +321,14 @@ async function renderFooter() {
     tryUse("openCfgMenu")?.();
   });
 
-  const closeBtnElem = document.createElement("button");
+  const closeBtnElem = createElement("button");
   closeBtnElem.id = "bytm-welcome-menu-footer-close";
   closeBtnElem.classList.add("bytm-btn");
   closeBtnElem.addEventListener("click", async () => {
     welcomeDialog?.close();
   });
 
-  const leftButtonsCont = document.createElement("div");
+  const leftButtonsCont = createElement("div");
   leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
 
   leftButtonsCont.appendChild(openCfgElem);

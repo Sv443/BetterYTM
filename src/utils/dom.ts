@@ -5,6 +5,7 @@ import { fetchCss } from "@util/xhr.ts";
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import { addSelectorListener } from "@/observers.ts";
 import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "@/types.ts";
 import { siteEvents } from "@/siteEvents.ts";
@@ -365,7 +366,7 @@ export function setInnerHtml(element: HTMLElement, html?: string | null) {
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
 export function downloadFile(fileName: string, data: string | Blob, mimeType = "text/plain") {
   const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
-  const a = document.createElement("a");
+  const a = createElement("a");
   a.classList.add("bytm-hidden");
   a.href = URL.createObjectURL(blob);
   a.download = fileName;

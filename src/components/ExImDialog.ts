@@ -3,6 +3,7 @@ import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 import { t } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { copyToClipboard } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { createLongBtn } from "@comp/longButton.ts";
 import { showToast } from "@comp/toast.ts";
 import "@comp/ExImDialog.css";
@@ -50,7 +51,7 @@ export class ExImDialog extends BytmDialog {
   //#region header
 
   static async renderHeader(opts: ExImDialogOpts): Promise<HTMLElement> {
-    const headerEl = document.createElement("h2");
+    const headerEl = createElement("h2");
     headerEl.classList.add("bytm-menu-title");
     headerEl.role = "heading";
     headerEl.ariaLevel = "1";
@@ -63,22 +64,22 @@ export class ExImDialog extends BytmDialog {
   //#region body
 
   static async renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
-    const panesCont = document.createElement("div");
+    const panesCont = createElement("div");
     panesCont.classList.add("bytm-exim-dialog-panes-cont");
 
     //#region export
 
-    const exportPane = document.createElement("div");
+    const exportPane = createElement("div");
     exportPane.classList.add("bytm-exim-dialog-pane", "export");
 
     {
-      const descEl = document.createElement("p");
+      const descEl = createElement("p");
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
       descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descExport);
 
-      const dataEl = document.createElement("textarea");
+      const dataEl = createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");
       dataEl.readOnly = true;
       dataEl.tabIndex = 0;
@@ -88,7 +89,7 @@ export class ExImDialog extends BytmDialog {
         dataEl.setSelectionRange(0, dataEl.value.length);
       });
 
-      const exportCenterBtnCont = document.createElement("div");
+      const exportCenterBtnCont = createElement("div");
       exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
       const copyBtn = await createLongBtn({
@@ -109,21 +110,21 @@ export class ExImDialog extends BytmDialog {
 
     //#region import
 
-    const importPane = document.createElement("div");
+    const importPane = createElement("div");
     importPane.classList.add("bytm-exim-dialog-pane", "import");
 
     {
-      const descEl = document.createElement("p");
+      const descEl = createElement("p");
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
       descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descImport);
 
-      const dataEl = document.createElement("textarea");
+      const dataEl = createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");
       dataEl.tabIndex = 0;
 
-      const importCenterBtnCont = document.createElement("div");
+      const importCenterBtnCont = createElement("div");
       importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
       const importBtn = await createLongBtn({

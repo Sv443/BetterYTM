@@ -12,6 +12,7 @@ import { reloadAllTabs } from "@util/broadcast.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
 import { getSelector } from "@util/staticData.ts";
+import { createElement } from "@util/element.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { showPrompt, type PromptDialog } from "@dialog/prompt.ts";
@@ -63,7 +64,7 @@ export async function mountCfgMenu() {
     const initLangReloadText = t("lang_changed_prompt_reload");
 
     //#region > bg & container
-    const backgroundElem = document.createElement("div");
+    const backgroundElem = createElement("div");
     backgroundElem.id = "bytm-cfg-menu-bg";
     backgroundElem.classList.add("bytm-menu-bg");
     backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
@@ -78,7 +79,7 @@ export async function mountCfgMenu() {
         closeCfgMenu(e);
     });
 
-    const menuContainer = document.createElement("div");
+    const menuContainer = createElement("div");
     menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
     menuContainer.classList.add("bytm-menu");
     menuContainer.id = "bytm-cfg-menu";
@@ -88,13 +89,13 @@ export async function mountCfgMenu() {
 
 
     //#region > title bar
-    const headerElem = document.createElement("div");
+    const headerElem = createElement("div");
     headerElem.classList.add("bytm-menu-header");
 
-    const titleLogoHeaderCont = document.createElement("div");
+    const titleLogoHeaderCont = createElement("div");
     titleLogoHeaderCont.classList.add("bytm-menu-title-logo-header-cont");
 
-    const titleCont = document.createElement("div");
+    const titleCont = createElement("div");
     titleCont.classList.add("bytm-menu-titlecont");
     titleCont.role = "heading";
     titleCont.ariaLevel = "1";
@@ -113,7 +114,7 @@ export async function mountCfgMenu() {
       focusContentBtn.tabIndex = 0;
     }
 
-    const titleLogoElem = document.createElement("img");
+    const titleLogoElem = createElement("img");
     const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
     titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
     titleLogoElem.tabIndex = 0;
@@ -142,10 +143,10 @@ export async function mountCfgMenu() {
 
     titleLogoHeaderCont.appendChild(titleLogoElem);
 
-    const titleElem = document.createElement("h1");
+    const titleElem = createElement("h1");
     titleElem.classList.add("bytm-menu-title");
 
-    const titleTextElem = document.createElement("div");
+    const titleTextElem = createElement("div");
     titleTextElem.id = "bytm-config-menu-title";
     titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
 
@@ -153,7 +154,7 @@ export async function mountCfgMenu() {
 
     // title links:
 
-    const linksCont = document.createElement("div");
+    const linksCont = createElement("div");
     linksCont.id = "bytm-menu-linkscont";
     linksCont.role = "navigation";
 
@@ -165,7 +166,7 @@ export async function mountCfgMenu() {
     };
 
     const addLink = (imgSrc: string, href: string, title: string, titleKey: keyof typeof linkTitlesShort) => {
-      const anchorElem = document.createElement("a");
+      const anchorElem = createElement("a");
       anchorElem.classList.add("bytm-menu-link", "bytm-no-select");
       anchorElem.rel = "noopener noreferrer";
       anchorElem.href = href;
@@ -174,7 +175,7 @@ export async function mountCfgMenu() {
       anchorElem.role = "button";
       anchorElem.ariaLabel = anchorElem.title = title;
 
-      const extendedAnchorEl = document.createElement("a");
+      const extendedAnchorEl = createElement("a");
       extendedAnchorEl.classList.add("bytm-menu-link", "extended-link", "bytm-no-select");
       extendedAnchorEl.rel = "noopener noreferrer";
       extendedAnchorEl.href = href;
@@ -183,7 +184,7 @@ export async function mountCfgMenu() {
       extendedAnchorEl.textContent = linkTitlesShort[titleKey];
       extendedAnchorEl.ariaLabel = extendedAnchorEl.title = title;
 
-      const imgElem = document.createElement("img");
+      const imgElem = createElement("img");
       imgElem.classList.add("bytm-menu-img");
       imgElem.src = imgSrc;
 
@@ -207,10 +208,10 @@ export async function mountCfgMenu() {
 
     addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
 
-    const headerRightSideElem = document.createElement("div");
+    const headerRightSideElem = createElement("div");
     headerRightSideElem.id = "bytm-menu-header-right-side";
 
-    const closeElem = document.createElement("img");
+    const closeElem = createElement("img");
     closeElem.classList.add("bytm-menu-close");
     closeElem.role = "button";
     closeElem.tabIndex = 0;
@@ -230,13 +231,13 @@ export async function mountCfgMenu() {
     headerElem.appendChild(headerRightSideElem);
 
     //#region > footer
-    const footerCont = document.createElement("div");
+    const footerCont = createElement("div");
     footerCont.classList.add("bytm-menu-footer-cont");
 
-    const leftSideFooterCont = document.createElement("div");
+    const leftSideFooterCont = createElement("div");
     leftSideFooterCont.id = "bytm-menu-footer-left-side-cont";
 
-    const reloadFooterEl = document.createElement("div");
+    const reloadFooterEl = createElement("div");
     reloadFooterEl.id = "bytm-menu-footer-reload-hint";
     reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
     reloadFooterEl.setAttribute("aria-hidden", "true");
@@ -244,7 +245,7 @@ export async function mountCfgMenu() {
     reloadFooterEl.role = "alert";
     reloadFooterEl.ariaLive = "polite";
 
-    const reloadEl = document.createElement("button");
+    const reloadEl = createElement("button");
     reloadEl.classList.add("bytm-btn");
     reloadEl.style.marginLeft = "10px";
     reloadEl.textContent = t("reload_now");
@@ -254,7 +255,7 @@ export async function mountCfgMenu() {
       reloadTab();
     });
 
-    const reloadAllEl = document.createElement("button");
+    const reloadAllEl = createElement("button");
     reloadAllEl.classList.add("bytm-btn");
     reloadAllEl.style.marginLeft = "10px";
     reloadAllEl.textContent = t("reload_all_tabs_now");
@@ -340,12 +341,12 @@ export async function mountCfgMenu() {
       descExport: () => t("bytm_config_export_desc"),
     });
 
-    const exportImportBtn = document.createElement("button");
+    const exportImportBtn = createElement("button");
     exportImportBtn.classList.add("bytm-btn");
     exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
     onInteraction(exportImportBtn, async () => await exImDlg.open());
 
-    const buttonsCont = document.createElement("div");
+    const buttonsCont = createElement("div");
     buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
 
     buttonsCont.appendChild(exportImportBtn);
@@ -356,7 +357,7 @@ export async function mountCfgMenu() {
 
     //#region > main body
 
-    const bodyCont = document.createElement("div");
+    const bodyCont = createElement("div");
     bodyCont.id = "bytm-cfg-menu-main-body";
 
     //#region load cfg & resolve categories
@@ -375,7 +376,7 @@ export async function mountCfgMenu() {
 
     //#region > sidenav
 
-    const sidenavCont = document.createElement("nav");
+    const sidenavCont = createElement("nav");
     sidenavCont.classList.add("bytm-menu-sidenav");
     sidenavCont.id = "bytm-cfg-menu-sidenav";
     sidenavCont.tabIndex = -1;
@@ -384,7 +385,7 @@ export async function mountCfgMenu() {
 
     const createSidenavHeader = (headerId: LooseUnion<FeatureCategory>, selected = false, isExtraInfoHeader = false) => {
       try {
-        const headerElem = document.createElement("h2");
+        const headerElem = createElement("h2");
         headerElem.id = `bytm-menu-nav-header-${headerId}`;
         headerElem.classList.add("bytm-menu-sidenav-header", "bytm-no-select");
         selected && headerElem.classList.add("selected");
@@ -436,7 +437,7 @@ export async function mountCfgMenu() {
     };
 
     // top section:
-    const sidenavTopSectionCont = document.createElement("section");
+    const sidenavTopSectionCont = createElement("section");
     sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
     sidenavTopSectionCont.tabIndex = -1;
@@ -450,7 +451,7 @@ export async function mountCfgMenu() {
         : undefined;
 
       if(catGroupIdx > 0 && catIdx === 0) {
-        const hrElem = document.createElement("hr");
+        const hrElem = createElement("hr");
         hrElem.classList.add("bytm-hr");
         sidenavTopSectionCont.appendChild(hrElem);
       }
@@ -463,7 +464,7 @@ export async function mountCfgMenu() {
     sidenavCont.appendChild(sidenavTopSectionCont);
 
     // bottom section:
-    const sidenavBtmSectionCont = document.createElement("section");
+    const sidenavBtmSectionCont = createElement("section");
     sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
     sidenavBtmSectionCont.tabIndex = -1;
@@ -488,10 +489,10 @@ export async function mountCfgMenu() {
     });
 
     //#region > feature list
-    const featuresCont = document.createElement("div");
+    const featuresCont = createElement("div");
     featuresCont.id = "bytm-menu-opts";
 
-    const topAnchor = document.createElement("div");
+    const topAnchor = createElement("div");
     topAnchor.id = "bytm-menu-top-anchor";
     featuresCont.appendChild(topAnchor);
 
@@ -574,7 +575,7 @@ export async function mountCfgMenu() {
           const isLocalesTextDifferent = t("reload_now") !== tl(initLocale!, "reload_now");
 
           const getReloadAllBtn = async (dialog: PromptDialog): Promise<HTMLButtonElement> => {
-            const reloadAllBtn = document.createElement("button");
+            const reloadAllBtn = createElement("button");
             reloadAllBtn.classList.add("bytm-btn");
             reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
             reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_now")}` : ""}`;
@@ -649,7 +650,7 @@ export async function mountCfgMenu() {
     //#region category conts & feat ctrls
 
     const createCategoryContainer = (category: string) => {
-      const categoryCont = document.createElement("div");
+      const categoryCont = createElement("div");
       categoryCont.id = `bytm-ftconf-category-${category}`;
       categoryCont.classList.add("bytm-ftconf-category");
       categoryCont.tabIndex = 0;
@@ -694,12 +695,12 @@ export async function mountCfgMenu() {
         currentGroup = ftInfo.group ?? undefined;
 
         if(currentGroup && (!groupCont || groupCont.dataset.group !== currentGroup)) {
-          groupCont = document.createElement("div");
+          groupCont = createElement("div");
           groupCont.id = `bytm-ftconf-group-${currentGroup}`;
           groupCont.classList.add("bytm-ftconf-group");
           groupCont.dataset.group = currentGroup;
 
-          const groupHeader = document.createElement("h3");
+          const groupHeader = createElement("h3");
           groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
           groupHeader.classList.add("bytm-ftconf-group-header");
           groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`, {
@@ -719,11 +720,11 @@ export async function mountCfgMenu() {
 
         const initialVal = val ?? ftDefault;
 
-        const ftConfElem = document.createElement("div");
+        const ftConfElem = createElement("div");
         ftConfElem.classList.add("bytm-ftitem");
 
         {
-          const featLeftSideElem = document.createElement("div");
+          const featLeftSideElem = createElement("div");
           featLeftSideElem.classList.add("bytm-ftitem-leftside");
           // dev tooltip
           if(mode === "development") {
@@ -746,7 +747,7 @@ export async function mountCfgMenu() {
             continue;
           }
 
-          const textElem = document.createElement("span");
+          const textElem = createElement("span");
           textElem.id = `bytm-ftitem-text-${featKey}`;
           textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
           textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc.${featKey}`);
@@ -756,7 +757,7 @@ export async function mountCfgMenu() {
 
           if(adornContent && adornContent.length > 0) {
             const adornHtml = adornContent.join(" ");
-            adornmentElem = document.createElement("span");
+            adornmentElem = createElement("span");
             adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
             adornmentElem.classList.add("bytm-ftitem-adornment");
             setInnerHtml(adornmentElem, adornHtml);
@@ -772,7 +773,7 @@ export async function mountCfgMenu() {
           if(await hasKey(`feature_helptext.${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
             const helpElemImgHtml = await resourceAsString("icon-help");
             if(helpElemImgHtml) {
-              helpElem = document.createElement("div");
+              helpElem = createElement("div");
               helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
               helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc.${featKey}`));
               helpElem.role = "button";
@@ -833,7 +834,7 @@ export async function mountCfgMenu() {
 
           const inputElemId = `bytm-ftconf-${featKey}-input`;
 
-          const ctrlElem = document.createElement("span");
+          const ctrlElem = createElement("span");
           ctrlElem.classList.add("bytm-ftconf-ctrl");
           // to prevent dev mode title from propagating:
           ctrlElem.title = "";
@@ -841,13 +842,13 @@ export async function mountCfgMenu() {
           let advCopyHiddenCont: HTMLElement | undefined;
 
           if((getFeature("advancedMode") || mode === "development") && ftInfo.valueHidden) {
-            const advCopyHintElem = document.createElement("span");
+            const advCopyHintElem = createElement("span");
             advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
             advCopyHintElem.textContent = t("copied");
             advCopyHintElem.role = "status";
             advCopyHintElem.style.display = "none";
 
-            const advCopyHiddenBtn = document.createElement("button");
+            const advCopyHiddenBtn = createElement("button");
             advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
             advCopyHiddenBtn.tabIndex = 0;
             advCopyHiddenBtn.textContent = t("copy_hidden");
@@ -870,7 +871,7 @@ export async function mountCfgMenu() {
 
             onInteraction(advCopyHiddenBtn, (e) => copyHiddenInteraction(e));
 
-            advCopyHiddenCont = document.createElement("span");
+            advCopyHiddenCont = createElement("span");
 
             advCopyHiddenCont.appendChild(advCopyHintElem);
             advCopyHiddenCont.appendChild(advCopyHiddenBtn);
@@ -883,7 +884,7 @@ export async function mountCfgMenu() {
 
             const isNumericInput = ["number", "slider"].includes(type);
 
-            const inputElem = document.createElement(inputTag) as HTMLInputElement;
+            const inputElem = createElement(inputTag as keyof HTMLElementTagNameMap) as HTMLInputElement;
             inputElem.classList.add("bytm-ftconf-input");
             inputElem.id = inputElemId;
             inputElem.ariaLabel = t(`feature_desc.${featKey}`);
@@ -922,7 +923,7 @@ export async function mountCfgMenu() {
             let labelElem: HTMLLabelElement | undefined;
             let lastDisplayedVal: string | undefined;
             if(type === "slider") {
-              labelElem = document.createElement("label");
+              labelElem = createElement("label");
               labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
               labelElem.textContent = `${fmtVal(initialVal, featKey as FeatureKey)}${getUnitTxt(inputElem.value)}`;
 
@@ -938,7 +939,7 @@ export async function mountCfgMenu() {
                 ? ftInfo.options()
                 : ftInfo.options;
               for(const { value, label } of ftOpts) {
-                const optionElem = document.createElement("option");
+                const optionElem = createElement("option");
                 optionElem.value = String(value);
                 optionElem.textContent = `${label}${mode === "development" ? ` [${value}]` : ""}`;
                 if(value === initialVal)
@@ -1013,7 +1014,7 @@ export async function mountCfgMenu() {
             // add unit element for number inputs if ftInfo has a unit property:
 
             if(type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
-              const afterInputUnitEl = document.createElement("span");
+              const afterInputUnitEl = createElement("span");
               afterInputUnitEl.classList.add("bytm-ftconf-unit");
               afterInputUnitEl.textContent = getUnitTxt(inputElem.value);
 
@@ -1041,7 +1042,7 @@ export async function mountCfgMenu() {
               });
               break;
             case "button":
-              customInputEl = document.createElement("button");
+              customInputEl = createElement("button");
               customInputEl.classList.add("bytm-btn");
               customInputEl.tabIndex = 0;
               customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
@@ -1112,7 +1113,7 @@ export async function mountCfgMenu() {
 
     const extraInfoCategoryElements = {
       about: async () => {
-        const aboutTextCont = document.createElement("p");
+        const aboutTextCont = createElement("p");
         aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
         aboutTextCont.classList.add("bytm-markdown-container");
         const aboutTrParams = pureObj({
@@ -1140,7 +1141,7 @@ export async function mountCfgMenu() {
         return [aboutTextCont] as HTMLElement[];
       },
       changelog: async () => {
-        const mdContElem = document.createElement("div");
+        const mdContElem = createElement("div");
         mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
         mdContElem.classList.add("bytm-markdown-container");
         setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
@@ -1203,7 +1204,7 @@ export async function mountCfgMenu() {
     });
 
     //#region scroll indicator
-    const scrollIndicator = document.createElement("img");
+    const scrollIndicator = createElement("img");
     scrollIndicator.id = "bytm-menu-scroll-indicator";
     scrollIndicator.classList.add("bytm-no-select");
     scrollIndicator.src = await getResourceUrl("icon-arrow_down");
@@ -1234,7 +1235,7 @@ export async function mountCfgMenu() {
       }
     });
 
-    const bottomAnchor = document.createElement("div");
+    const bottomAnchor = createElement("div");
     bottomAnchor.id = "bytm-menu-bottom-anchor";
     featuresCont.appendChild(bottomAnchor);
 
@@ -1251,7 +1252,7 @@ export async function mountCfgMenu() {
     getFeature("advancedMode") && modeItems.push(["advanced", "advanced_mode", "icon-advanced_mode_large"]);
 
     if(modeItems.length > 0) {
-      const modeDisplayCont = document.createElement("div");
+      const modeDisplayCont = createElement("div");
       modeDisplayCont.id = "bytm-menu-mode-display-cont";
 
       for(const [id, trKey, resourceKey] of modeItems) {
@@ -1259,7 +1260,7 @@ export async function mountCfgMenu() {
 
         const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM_info.scriptHandler ?? "(your userscript manager extension)" });
 
-        const modeDispWrapperEl = document.createElement("div");
+        const modeDispWrapperEl = createElement("div");
         modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
         modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
 
@@ -1291,7 +1292,7 @@ export async function mountCfgMenu() {
         modeDisplayCont.addEventListener("focusout", leaveCont);
 
         if(isSvg) {
-          const modeDisplayWrapperEl = document.createElement("span");
+          const modeDisplayWrapperEl = createElement("span");
           modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
           modeDisplayWrapperEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
           modeDisplayWrapperEl.tabIndex = 0;
@@ -1307,7 +1308,7 @@ export async function mountCfgMenu() {
           modeDispWrapperEl.appendChild(modeDisplayWrapperEl);
         }
         else {
-          const modeDisplayEl = document.createElement("img");
+          const modeDisplayEl = createElement("img");
           modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
           modeDisplayEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
           modeDisplayEl.tabIndex = 0;
@@ -1317,7 +1318,7 @@ export async function mountCfgMenu() {
           modeDispWrapperEl.appendChild(modeDisplayEl);
         }
 
-        const labelEl = document.createElement("span");
+        const labelEl = createElement("span");
         labelEl.classList.add("bytm-menu-mode-display-label");
         labelEl.textContent = t(trKey);
         modeDispWrapperEl.appendChild(labelEl);

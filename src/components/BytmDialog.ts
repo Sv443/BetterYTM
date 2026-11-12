@@ -6,6 +6,7 @@ import { getResourceUrl } from "@util/resourceUrl.ts";
 import { getSelector } from "@util/staticData.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import "@comp/BytmDialog.css";
 import "@dialog/dialogs.css";
@@ -110,7 +111,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       return;
     this.dialogMounted = true;
 
-    const bgElem = document.createElement("div");
+    const bgElem = createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
     bgElem.classList.add("bytm-dialog-bg");
     if(this.options.closeOnBgClick)
@@ -283,7 +284,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogsInitialized = true;
 
     const createContainer = () => {
-      const bytmDialogCont = dialogContainer = document.createElement("div");
+      const bytmDialogCont = dialogContainer = createElement("div");
       bytmDialogCont.id = "bytm-dialog-container";
       document.body.appendChild(bytmDialogCont);
     };
@@ -380,7 +381,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     const header = this.options.renderHeader?.(this);
     const footer = this.options.renderFooter?.(this);
 
-    const dialogWrapperEl = document.createElement("div");
+    const dialogWrapperEl = createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
     dialogWrapperEl.classList.add("bytm-dialog");
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
@@ -394,12 +395,12 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     //#region >header
 
-    const headerWrapperEl = document.createElement("div");
+    const headerWrapperEl = createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
     this.options.small && headerWrapperEl.classList.add("small");
 
     if(header) {
-      const headerTitleWrapperEl = document.createElement("div");
+      const headerTitleWrapperEl = createElement("div");
       headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
       headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
       headerTitleWrapperEl.role = "heading";
@@ -410,14 +411,14 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     }
     else {
       // insert element to pad the header height
-      const padEl = document.createElement("div");
+      const padEl = createElement("div");
       padEl.classList.add("bytm-dialog-header-pad");
       this.options.small && padEl.classList.add("small");
       headerWrapperEl.appendChild(padEl);
     }
 
     if(this.options.closeBtnEnabled) {
-      const closeBtnEl = document.createElement("img");
+      const closeBtnEl = createElement("img");
       closeBtnEl.classList.add("bytm-dialog-close");
       this.options.small && closeBtnEl.classList.add("small");
       closeBtnEl.src = await getResourceUrl("img-close");
@@ -432,7 +433,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     //#region >body
 
-    const dialogBodyElem = document.createElement("div");
+    const dialogBodyElem = createElement("div");
     dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
     dialogBodyElem.classList.add("bytm-dialog-body");
     this.options.small && dialogBodyElem.classList.add("small");
@@ -443,7 +444,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     //#region >footer
 
     if(footer) {
-      const footerWrapper = document.createElement("div");
+      const footerWrapper = createElement("div");
       footerWrapper.classList.add("bytm-dialog-footer-cont");
       this.options.small && footerWrapper.classList.add("small");
       dialogWrapperEl.appendChild(footerWrapper);

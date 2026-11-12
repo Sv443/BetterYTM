@@ -9,6 +9,7 @@ import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
 import { t } from "@util/translations.ts";
 import { getSelector } from "@util/staticData.ts";
+import { createElement } from "@util/element.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, splitVideoTitle } from "@feat/lyrics.ts";
@@ -195,7 +196,7 @@ async function addQueueButtons(
 ) {
   containerParentSelector ??= getSelector("songLists", "allCurrentQueueItemsSongInfo_global");
 
-  const queueBtnsCont = document.createElement("div");
+  const queueBtnsCont = createElement("div");
   queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 
   const [lyricsIconUrl, deleteIconUrl, spinnerIconUrl] = await Promise.all(([
@@ -357,14 +358,14 @@ async function addQueueButtons(
   let deleteBtnElem: HTMLAnchorElement | undefined;
 
   if(getFeature("deleteFromQueueButton")) {
-    deleteBtnElem = document.createElement("a");
+    deleteBtnElem = createElement("a");
     deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
     deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn", "bytm-song-list-item-btn");
     deleteBtnElem.role = "button";
     deleteBtnElem.tabIndex = 0;
     deleteBtnElem.style.visibility = "initial";
 
-    const delImgElem = document.createElement("img");
+    const delImgElem = createElement("img");
     delImgElem.classList.add("bytm-generic-btn-img");
     delImgElem.src = deleteIconUrl;
 

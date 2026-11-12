@@ -15,6 +15,7 @@ import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
 import { getSelector, getString } from "@util/staticData.ts";
+import { createElement } from "@util/element.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
 import { openCfgMenu } from "@menu/menu.ts";
@@ -30,7 +31,7 @@ let logoExchanged = false, improveLogoCalled = false, bytmLogoUrl: string | unde
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
-  const watermarkEl = document.createElement("a");
+  const watermarkEl = createElement("a");
   watermarkEl.role = "button";
   watermarkEl.id = "bytm-watermark";
   watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
@@ -103,7 +104,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const newLogo = document.createElement("img");
+      const newLogo = createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
       newLogo.src = bytmLogoUrl;
       if(logoElem.ariaLabel)
@@ -132,10 +133,10 @@ function exchangeLogo() {
 
 /** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
 export async function addConfigMenuOptionYTM(container: HTMLElement) {
-  const cfgOptElem = document.createElement("div");
+  const cfgOptElem = createElement("div");
   cfgOptElem.classList.add("bytm-cfg-menu-option");
 
-  const cfgOptItemElem = document.createElement("div");
+  const cfgOptItemElem = createElement("div");
   cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
   cfgOptItemElem.role = "button";
   cfgOptItemElem.tabIndex = 0;
@@ -151,12 +152,12 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
       exchangeLogo();
   });
 
-  const cfgOptIconElem = document.createElement("img");
+  const cfgOptIconElem = createElement("img");
   cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
   cfgOptIconElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   cfgOptIconElem.ariaHidden = "true";
 
-  const cfgOptTextElem = document.createElement("div");
+  const cfgOptTextElem = createElement("div");
   cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
   cfgOptTextElem.textContent = t("config_menu_option", scriptInfo.name);
 
@@ -172,21 +173,21 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 export async function addConfigMenuOptionYT(container: HTMLElement) {
-  const cfgOptWrapperElem = document.createElement("div");
+  const cfgOptWrapperElem = createElement("div");
   cfgOptWrapperElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
   cfgOptWrapperElem.role = "button";
   cfgOptWrapperElem.tabIndex = 0;
   cfgOptWrapperElem.ariaLabel = cfgOptWrapperElem.title = t("open_menu_tooltip", scriptInfo.name);
 
-  const cfgOptElem = document.createElement("div");
+  const cfgOptElem = createElement("div");
   cfgOptElem.classList.add("bytm-yt-cfg-menu-option-inner");
 
-  const cfgOptImgElem = document.createElement("img");
+  const cfgOptImgElem = createElement("img");
   cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
   cfgOptImgElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   cfgOptImgElem.ariaHidden = "true";
 
-  const cfgOptItemElem = document.createElement("div");
+  const cfgOptItemElem = createElement("div");
   cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
   cfgOptItemElem.textContent = scriptInfo.name;
 
@@ -234,7 +235,7 @@ export async function addAnchorImprovements() {
         if(!thumbnailElem || !titleElem)
           continue;
 
-        const anchorElem = document.createElement("a");
+        const anchorElem = createElement("a");
         anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
         anchorElem.href = titleElem?.href ?? "#";
         anchorElem.target = "_self";
@@ -401,7 +402,7 @@ const sidebarPaths = [
  */
 function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   sidebarItems.forEach((item, i) => {
-    const anchorElem = document.createElement("a");
+    const anchorElem = createElement("a");
     anchorElem.classList.add("bytm-anchor", "bytm-no-select");
     anchorElem.role = "button";
     anchorElem.target = "_self";
@@ -560,7 +561,7 @@ export async function initAboveQueueBtns() {
     addSelectorListener("sidePanel", getSelector("layout", "queueHeaderButtons_sub_sidePanel"), {
       async listener(rightBtnsEl) {
         try {
-          const aboveQueueBtnCont = document.createElement("div");
+          const aboveQueueBtnCont = createElement("div");
           aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
 
           addParent(rightBtnsEl, aboveQueueBtnCont);
@@ -573,7 +574,7 @@ export async function initAboveQueueBtns() {
             headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
           });
 
-          const wrapperElem = document.createElement("div");
+          const wrapperElem = createElement("div");
           wrapperElem.id = "bytm-above-queue-btn-wrapper";
 
           for(const item of contBtns) {
@@ -856,7 +857,7 @@ export async function initThumbnailOverlay() {
     const createElements = async () => {
       try {
         // overlay
-        const overlayElem = document.createElement("div");
+        const overlayElem = createElement("div");
         overlayElem.id = "bytm-thumbnail-overlay";
         overlayElem.title = ""; // prevent child titles from propagating
         overlayElem.classList.add("bytm-no-select");
@@ -864,7 +865,7 @@ export async function initThumbnailOverlay() {
 
         let indicatorElem: HTMLImageElement | undefined;
         if(getFeature("thumbnailOverlayShowIndicator")) {
-          indicatorElem = document.createElement("img");
+          indicatorElem = createElement("img");
           indicatorElem.id = "bytm-thumbnail-overlay-indicator";
           indicatorElem.src = await getResourceUrl("icon-image");
           indicatorElem.role = "presentation";
@@ -874,7 +875,7 @@ export async function initThumbnailOverlay() {
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
         }
 
-        const thumbImgElem = document.createElement("img");
+        const thumbImgElem = createElement("img");
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
         thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
         thumbImgElem.role = "presentation";
@@ -901,7 +902,7 @@ export async function initThumbnailOverlay() {
 
         // toggle button
         if(getFeature("thumbnailOverlayToggleBtnShown")) {
-          const toggleBtnElem = createRipple(document.createElement("a"));
+          const toggleBtnElem = createRipple(createElement("a"));
           toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
@@ -1233,16 +1234,16 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     return loggers.layout.error("Couldn't find like or dislike button while adding vote numbers");
 
   // wrap buttons in a container
-  const likeBtnCont = document.createElement("div");
+  const likeBtnCont = createElement("div");
   likeBtnCont.id = "bytm-like-btn-cont";
   addParent(likeBtn, likeBtnCont);
 
-  const dislikeBtnCont = document.createElement("div");
+  const dislikeBtnCont = createElement("div");
   dislikeBtnCont.id = "bytm-dislike-btn-cont";
   addParent(dislikeBtn, dislikeBtnCont);
 
   const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
-    const label = document.createElement("span");
+    const label = createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
     label.textContent = String(formatNumber(amount));
     label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatNumber(amount, "long"));
@@ -1449,16 +1450,16 @@ function applyPopupContSearch(popupContainer: HTMLElement, query?: string) {
 function createSearchBarEl(popupContainer: HTMLElement): HTMLElement {
   const applyPopupContSearchDebounced = debounce(applyPopupContSearch, 300);
 
-  const searchWrapper = document.createElement("div");
+  const searchWrapper = createElement("div");
   searchWrapper.classList.add(searchBarContClass, "bytm-flex-row-gap-s");
 
-  const searchBar = document.createElement("input");
+  const searchBar = createElement("input");
   searchBar.classList.add("bytm-list-search-bar");
   searchBar.placeholder = searchBar.title = t("search_placeholder");
 
   searchBar.addEventListener("input", () => applyPopupContSearchDebounced(popupContainer, searchBar.value));
 
-  const clearBtn = document.createElement("button");
+  const clearBtn = createElement("button");
   clearBtn.classList.add("bytm-list-search-clear-btn", "bytm-btn", "no-min-width");
   clearBtn.title = t("search_clear");
   clearBtn.tabIndex = 0;

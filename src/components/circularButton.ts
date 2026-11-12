@@ -2,6 +2,7 @@ import { setInnerHtml } from "@util/dom.ts";
 import { onInteraction } from "@util/input.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
+import { createElement } from "@util/element.ts";
 import { createRipple } from "@comp/ripple.ts";
 import type { ResourceKey } from "@/types.ts";
 
@@ -45,14 +46,14 @@ export async function createCircularBtn({
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
   if("href" in rest && rest.href) {
-    btnElem = document.createElement("a");
+    btnElem = createElement("a");
     (btnElem as HTMLAnchorElement).href = rest.href;
     btnElem.role = "button";
     (btnElem as HTMLAnchorElement).target = "_blank";
     (btnElem as HTMLAnchorElement).rel = "noopener noreferrer";
   }
   else if("onClick" in rest && rest.onClick) {
-    btnElem = document.createElement("div");
+    btnElem = createElement("div");
     rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
   }
   else
@@ -64,7 +65,7 @@ export async function createCircularBtn({
   btnElem.role = "button";
 
   if("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
-    const imgElem = document.createElement("img");
+    const imgElem = createElement("img");
     imgElem.classList.add("bytm-generic-btn-img");
     imgElem.src = "src" in rest
       ? await rest.src

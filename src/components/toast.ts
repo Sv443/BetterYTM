@@ -2,6 +2,7 @@ import { clamp, pauseFor } from "@sv443-network/userutils";
 import { resourceAsString } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
 import { setInnerHtml } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { getFeature } from "@/config.ts";
 import type { ResourceKey } from "@/types.ts";
 import "@comp/toast.css";
@@ -86,17 +87,17 @@ export async function showIconToast({
 
   showingToast = true;
 
-  const toastWrapper = document.createElement("div");
+  const toastWrapper = createElement("div");
   toastWrapper.classList.add("bytm-toast-flex-wrapper");
 
   let toastIcon: HTMLImageElement | HTMLDivElement;
   if("iconSrc" in rest) {
-    toastIcon = document.createElement("img");
+    toastIcon = createElement("img");
     toastIcon.classList.add("bytm-toast-icon", "img");
     (toastIcon as HTMLImageElement).src = await rest.iconSrc;
   }
   else {
-    toastIcon = document.createElement("div");
+    toastIcon = createElement("div");
     toastIcon.classList.add("bytm-toast-icon");
     const iconHtml = await resourceAsString(rest.icon);
     if(iconHtml)
@@ -106,12 +107,12 @@ export async function showIconToast({
       toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
   }
 
-  const toastMessage = document.createElement("div");
+  const toastMessage = createElement("div");
   toastMessage.classList.add("bytm-toast-message");
   if("message" in rest) {
     toastMessage.textContent = rest.message;
     if("subtitle" in rest && rest.subtitle) {
-      const subtitleEl = document.createElement("div");
+      const subtitleEl = createElement("div");
       subtitleEl.classList.add("bytm-toast-subtitle");
       subtitleEl.textContent = rest.subtitle;
       toastMessage.appendChild(subtitleEl);
@@ -181,7 +182,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   if(document.querySelector("#bytm-toast"))
     await closeToast();
 
-  const toastElem = document.createElement("div");
+  const toastElem = createElement("div");
   toastElem.classList.add(`pos-${position.toLowerCase()}`);
   onClick && toastElem.classList.add("clickable");
   toastElem.id = "bytm-toast";

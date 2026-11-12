@@ -9,8 +9,9 @@ import { getterifyObj } from "@util/pure.ts";
 import { getDomain } from "@util/domain.ts";
 import { getStaticDataRef, setStaticData, type StaticData } from "@util/staticData.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
-import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import { onInteraction } from "@util/input.ts";
+import { createElement } from "@util/element.ts";
+import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import { getFeature } from "@/config.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import defaultStaticData from "@asset/data.json" with { type: "json" };
@@ -206,12 +207,12 @@ export function createAlertDialog(alert: GlobalAlert) {
     closeOnBgClick: !alert.important,
     closeOnEscPress: !alert.important,
     async renderHeader() {
-      const headerEl = document.createElement("div");
+      const headerEl = createElement("div");
       headerEl.id = "bytm-static-data-alert-dialog-header";
       headerEl.classList.add("bytm-flex-row");
       setInnerHtml(headerEl, await resourceAsString("icon-alert"));
 
-      const header = document.createElement("h2");
+      const header = createElement("h2");
       header.classList.add("bytm-dialog-title");
       header.role = "heading";
       header.ariaLevel = "1";
@@ -223,10 +224,10 @@ export function createAlertDialog(alert: GlobalAlert) {
       return headerEl;
     },
     renderFooter() {
-      const footer = document.createElement("div");
+      const footer = createElement("div");
       footer.classList.add("bytm-dialog-footer", "align-right");
     
-      const closeBtn = document.createElement("button");
+      const closeBtn = createElement("button");
       closeBtn.classList.add("bytm-btn");
       closeBtn.type = "button";
       closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");

@@ -3,6 +3,7 @@ import { setInnerHtml } from "@util/dom.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { getOS } from "@util/pure.ts";
 import { t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 import "@dialog/prompt.css";
 
@@ -125,7 +126,7 @@ export class PromptDialog extends BytmDialog {
   }
 
   protected async renderHeader({ type }: PromptDialogRenderProps) {
-    const headerEl = document.createElement("div");
+    const headerEl = createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
     setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
 
@@ -133,14 +134,14 @@ export class PromptDialog extends BytmDialog {
   }
 
   protected async renderBody({ type, message, ...rest }: PromptDialogRenderProps) {
-    const contElem = document.createElement("div");
+    const contElem = createElement("div");
     contElem.classList.add(`bytm-prompt-type-${type}`);
 
-    const upperContElem = document.createElement("div");
+    const upperContElem = createElement("div");
     upperContElem.id = "bytm-prompt-dialog-upper-cont";
     contElem.appendChild(upperContElem);
 
-    const messageElem = document.createElement("p");
+    const messageElem = createElement("p");
     messageElem.id = "bytm-prompt-dialog-message";
     messageElem.role = "alert";
     messageElem.ariaLive = "polite";
@@ -150,7 +151,7 @@ export class PromptDialog extends BytmDialog {
 
     if(type === "prompt") {
       const isTA = "textarea" in rest && rest.textarea;
-      const inputElem = document.createElement(isTA ? "textarea" : "input");
+      const inputElem = createElement(isTA ? "textarea" : "input");
       inputElem.id = "bytm-prompt-dialog-input";
       if(isTA) {
         (inputElem as HTMLTextAreaElement).wrap = "off";
@@ -186,15 +187,15 @@ export class PromptDialog extends BytmDialog {
   protected async renderFooter({ type, ...rest }: PromptDialogRenderProps) {
     // wrappers for alignment and spacing:
 
-    const buttonsWrapper = document.createElement("div");
+    const buttonsWrapper = createElement("div");
     buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
 
-    const buttonsCont = document.createElement("div");
+    const buttonsCont = createElement("div");
     buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
 
     // confirm button (only for types "confirm" & "prompt"):
 
-    const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
+    const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : createElement("button"));
     if(confirmBtn) {
       const { confirmBtnText, confirmBtnTooltip } = rest as ConfirmBtnProps;
       confirmBtn.id = "bytm-prompt-dialog-confirm";
@@ -212,7 +213,7 @@ export class PromptDialog extends BytmDialog {
 
     // close/cancel button:
 
-    const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
+    const closeBtn = rest.denyBtnEnabled === false ? undefined : createElement("button");
     if(closeBtn) {
       closeBtn.id = "bytm-prompt-dialog-close";
       closeBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");

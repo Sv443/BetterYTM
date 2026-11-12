@@ -3,11 +3,12 @@ import { BytmDialog } from "@comp/BytmDialog.ts";
 import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins, unregisterPlugins } from "@/interface.ts";
 import { getLocale, activeLocaleDir, t } from "@util/translations.ts";
 import { setInnerHtml } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { PluginIntent } from "@/types.ts";
-import packageJson from "@root/package.json" with { type: "json" };
-import "@dialog/pluginList.css";
 import { createCircularBtn } from "@comp/circularButton.ts";
 import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.ts";
+import packageJson from "@root/package.json" with { type: "json" };
+import "@dialog/pluginList.css";
 
 let pluginListDialog: BytmDialog | null = null;
 
@@ -28,7 +29,7 @@ export async function getPluginListDialog() {
 }
 
 async function renderHeader() {
-  const titleElem = document.createElement("h2");
+  const titleElem = createElement("h2");
   titleElem.id = "bytm-plugin-list-title";
   titleElem.classList.add("bytm-dialog-title");
   titleElem.role = "heading";
@@ -40,13 +41,13 @@ async function renderHeader() {
 }
 
 async function renderBody(dlg: BytmDialog) {
-  const listContainerEl = document.createElement("div");
+  const listContainerEl = createElement("div");
   listContainerEl.id = "bytm-plugin-list-container";
 
   const registeredPlugins = getRegisteredPlugins();
 
   if(registeredPlugins.length === 0) {
-    const noPluginsEl = document.createElement("div");
+    const noPluginsEl = createElement("div");
     noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
     noPluginsEl.tabIndex = 0;
     setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
@@ -58,61 +59,61 @@ async function renderBody(dlg: BytmDialog) {
   for(const [, { def }] of registeredPlugins) {
     const { plugin } = def;
 
-    const rowEl = document.createElement("div");
+    const rowEl = createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");
 
-    const leftEl = document.createElement("div");
+    const leftEl = createElement("div");
     leftEl.classList.add("bytm-plugin-list-row-left");
     rowEl.appendChild(leftEl);
 
-    const leftTopEl = document.createElement("div");
+    const leftTopEl = createElement("div");
     leftTopEl.classList.add("bytm-plugin-list-row-left-top");
     leftEl.appendChild(leftTopEl);
 
-    const leftBottomEl = document.createElement("div");
+    const leftBottomEl = createElement("div");
     leftBottomEl.classList.add("bytm-plugin-list-row-left-bottom");
     leftEl.appendChild(leftBottomEl);
 
-    const headerWrapperEl = document.createElement("div");
+    const headerWrapperEl = createElement("div");
     headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
     leftTopEl.appendChild(headerWrapperEl);
 
     if(plugin.iconUrl) {
-      const iconEl = document.createElement("img");
+      const iconEl = createElement("img");
       iconEl.classList.add("bytm-plugin-list-row-icon");
       iconEl.src = plugin.iconUrl;
       iconEl.alt = "";
       headerWrapperEl.appendChild(iconEl);
     }
 
-    const headerEl = document.createElement("div");
+    const headerEl = createElement("div");
     headerEl.classList.add("bytm-plugin-list-row-header");
     headerWrapperEl.appendChild(headerEl);
 
-    const titleEl = document.createElement("div");
+    const titleEl = createElement("div");
     titleEl.classList.add("bytm-plugin-list-row-title");
     titleEl.tabIndex = 0;
     titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
     headerEl.appendChild(titleEl);
 
-    const verEl = document.createElement("span");
+    const verEl = createElement("span");
     verEl.classList.add("bytm-plugin-list-row-version");
     verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
     titleEl.appendChild(verEl);
 
-    const namespaceEl = document.createElement("div");
+    const namespaceEl = createElement("div");
     namespaceEl.classList.add("bytm-plugin-list-row-namespace");
     namespaceEl.tabIndex = 0;
     namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
     headerEl.appendChild(namespaceEl);
 
-    const descEl = document.createElement("p");
+    const descEl = createElement("p");
     descEl.classList.add("bytm-plugin-list-row-desc");
     descEl.tabIndex = 0;
     descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
     leftTopEl.appendChild(descEl);
 
-    const linksList = document.createElement("div");
+    const linksList = createElement("div");
     linksList.classList.add("bytm-plugin-list-row-links-list");
     leftBottomEl.appendChild(linksList);
 
@@ -123,14 +124,14 @@ async function renderBody(dlg: BytmDialog) {
         continue;
 
       if(linkElCreated) {
-        const bulletEl = document.createElement("span");
+        const bulletEl = createElement("span");
         bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
         bulletEl.textContent = "•";
         linksList.appendChild(bulletEl);
       }
       linkElCreated = true;
 
-      const linkEl = document.createElement("a");
+      const linkEl = createElement("a");
       linkEl.id = `bytm-plugin-list-row-link-${key}`;
       linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
       linkEl.href = url;
@@ -162,15 +163,15 @@ async function renderBody(dlg: BytmDialog) {
       : [];
 
     if(!isDevPlugin) {
-      const rightEl = document.createElement("div");
+      const rightEl = createElement("div");
       rightEl.classList.add("bytm-plugin-list-row-right");
       rowEl.appendChild(rightEl);
 
-      const permContEl = document.createElement("div");
+      const permContEl = createElement("div");
       permContEl.classList.add("bytm-plugin-list-row-permission-container");
       rightEl.appendChild(permContEl);
 
-      const buttonsContEl = document.createElement("div");
+      const buttonsContEl = createElement("div");
       buttonsContEl.classList.add("bytm-plugin-list-row-buttons-container");
 
       const permBtnEl = await createCircularBtn({
@@ -196,14 +197,14 @@ async function renderBody(dlg: BytmDialog) {
 
       rightEl.appendChild(buttonsContEl);
 
-      const permissionsHeaderEl = document.createElement("div");
+      const permissionsHeaderEl = createElement("div");
       permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
       permissionsHeaderEl.tabIndex = 0;
       permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
       permContEl.appendChild(permissionsHeaderEl);
 
       for(const perm of permsArr) {
-        const intentEl = document.createElement("div");
+        const intentEl = createElement("div");
         intentEl.classList.add("bytm-plugin-list-row-perm-item");
         intentEl.tabIndex = 0;
         intentEl.textContent = t(`plugin_intent_name.${PluginIntent[perm]}`);
@@ -212,7 +213,7 @@ async function renderBody(dlg: BytmDialog) {
       }
 
       if(permsArr.length === 0) {
-        const noPermsNoteEl = document.createElement("div");
+        const noPermsNoteEl = createElement("div");
         noPermsNoteEl.classList.add("bytm-plugin-list-row-right", "no-perms");
         noPermsNoteEl.tabIndex = 0;
         noPermsNoteEl.title = t("plugin_list.no_permissions");
@@ -222,7 +223,7 @@ async function renderBody(dlg: BytmDialog) {
       }
     }
     else {
-      const devPluginNoteEl = document.createElement("div");
+      const devPluginNoteEl = createElement("div");
       devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
       devPluginNoteEl.tabIndex = 0;
       devPluginNoteEl.title = t("plugin_list.dev_plugin_note");

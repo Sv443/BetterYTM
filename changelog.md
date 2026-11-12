@@ -45,6 +45,7 @@
   - When multiple dialog windows are opened at a time, the focus locks will now be set correctly.
   - The `yesImStillThere` feature now only dispatches its events when no native modal dialog (like the "add to playlist" dialog) is open.
   - When [Return YouTube Dislike](https://returnyoutubedislike.com/) is installed, the YT Shorts dislike button will now be used for the dislike hotkey feature and internal `getLikeDislikeBtns()` function.
+  - Fixed errors when referencing assets not listed in YT's `img-src` Content Security Policy attribute.
 
 <details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
 <sup>(I did my best to order these by relevance for each section)</sup>
@@ -62,6 +63,7 @@
     - `getSelector()`: Returns a remotely fetched CSS selector for the given category and name. Refer to `assets/data.json` in BYTM's source code for a list of all values.
     - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts whenever possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
     - `preventEvents()`: Prevents the given events' listeners from being called and bubbling, for the given container element, when a predicate function matches.
+    - `createElement()`: Similar to `document.createElement()` but bypasses [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) directives like `img-src`, which is especially important on YT.
   - Added new properties to the object returned by `BYTM.getInternals()`:
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.

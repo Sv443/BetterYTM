@@ -2,11 +2,11 @@ import { DatedError } from "@sv443-network/userutils";
 import { loggers } from "@util/logging.ts";
 
 /**
- * Creates an element using GM_addElement() if available, or falls back to 
- * @param tagName 
- * @param attributes 
- * @param modifyElement 
- * @returns 
+ * Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to `document.createElement()`.  
+ * @param tagName Lowercase tag name.
+ * @param attributes Optional object mapping any number of the element's attribute keys to their values.
+ * @param modifyElement Optional function called to modify the element in a way simple object assignment can't.
+ * @returns Returns the created element with the given attributes (or none).
  */
 export function createElement<
   TTagName extends keyof HTMLElementTagNameMap,

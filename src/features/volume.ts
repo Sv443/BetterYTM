@@ -10,6 +10,7 @@ import { loggers } from "@util/logging.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { t } from "@util/translations.ts";
 import { waitVideoElementReady } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { featDefaults } from "@feat/featDefaults.ts";
 import "@feat/volume.css";
 
@@ -28,7 +29,7 @@ export async function initVolumeFeatures() {
 
   // sliderElem is not technically an input element but behaves pretty much the same
   const onSliderElExists = async (type: "normal" | "expand", sliderElem: HTMLInputElement) => {
-    const volSliderCont = document.createElement("div");
+    const volSliderCont = createElement("div");
     volSliderCont.classList.add("bytm-vol-slider-cont");
 
     sliderElem.setAttribute("step", "1");
@@ -209,7 +210,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 
 /** Adds a percentage label to the volume slider and tooltip */
 async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
-  const labelContElem = document.createElement("div");
+  const labelContElem = createElement("div");
   labelContElem.classList.add("bytm-vol-slider-label");
   labelContElem.style.display = "none";
   labelContElem.setAttribute("aria-hidden", "true");
@@ -218,7 +219,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   if(volShared) {
     const linkIconHtml = await resourceAsString("icon-link");
     if(linkIconHtml) {
-      const linkIconElem = document.createElement("div");
+      const linkIconElem = createElement("div");
       linkIconElem.classList.add("bytm-vol-slider-shared");
       setInnerHtml(linkIconElem, linkIconHtml);
       linkIconElem.role = "alert";
@@ -266,7 +267,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
     return label;
   };
 
-  const labelElem = document.createElement("div");
+  const labelElem = createElement("div");
   labelElem.classList.add("label");
   labelElem.textContent = getLabel(sliderElem.value);
 

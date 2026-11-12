@@ -19,6 +19,7 @@ import { initTranslations, setLocale } from "@util/translations.ts";
 import { loggers } from "@util/logging.ts";
 import { measureInitDuration, perfReport } from "@util/perf.js";
 import { getScriptHandler } from "@util/scriptHandler.ts";
+import { createElement } from "@util/element.ts";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
 import { devPluginToken, preInitInterface, initPlugins, preInitPlugins, unregisterPlugins, getRegisteredPlugins, reloadPluginData } from "@/interface.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
@@ -709,7 +710,7 @@ function registerDevCommands() {
         message: t(`menu_command.compress_or_decompress_text.alert.${type === "compress" ? "compressed" : "decompressed"}`, { initialLength: initial.length, resultLength: result.length, result }),
         extraButtons: [
           (dlg) => {
-            const btn = document.createElement("button");
+            const btn = createElement("button");
             btn.classList.add("bytm-btn");
             btn.textContent = btn.ariaLabel = t("copy");
             const copyResult = () => copyToClipboard(result);
@@ -738,7 +739,7 @@ function registerDevCommands() {
       confirmBtnEnabled: false,
       extraButtons: [
         (dlg) => {
-          const btn = document.createElement("button");
+          const btn = createElement("button");
           btn.textContent = btn.ariaLabel = t("compress");
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();
@@ -758,7 +759,7 @@ function registerDevCommands() {
           return btn;
         },
         (dlg) => {
-          const btn = document.createElement("button");
+          const btn = createElement("button");
           btn.classList.add("bytm-prompt-dialog-button");
           btn.textContent = btn.ariaLabel = t("decompress");
           btn.addEventListener("click", async () => {
@@ -819,7 +820,7 @@ function registerDevCommands() {
       message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
       extraButtons: [
         (dlg) => {
-          const btn = document.createElement("button");
+          const btn = createElement("button");
           btn.textContent = btn.ariaLabel = t("copy");
           const onClick = async () => {
             devPluginToken && copyToClipboard(devPluginToken);

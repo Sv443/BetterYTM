@@ -1,5 +1,6 @@
 import { randomId } from "@sv443-network/userutils";
 import { t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import "@comp/toggleInput.css";
 
 export type ToggleInputProps = {
@@ -20,13 +21,13 @@ export async function createToggleInput({
   id = randomId(6, 36),
   labelPos = "left",
 }: ToggleInputProps) {
-  const wrapperEl = document.createElement("div");
+  const wrapperEl = createElement("div");
   wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
   wrapperEl.ariaChecked = String(initialValue);
 
-  const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
+  const labelEl = labelPos !== "off" ? createElement("label") : undefined;
   if(labelEl) {
     labelEl.id = `bytm-toggle-label-${id}`;
     labelEl.classList.add("bytm-toggle-label");
@@ -35,10 +36,10 @@ export async function createToggleInput({
       labelEl.htmlFor = `bytm-toggle-${id}`;
   }
 
-  const toggleEl = document.createElement("label");
+  const toggleEl = createElement("label");
   toggleEl.classList.add("bytm-toggle");
 
-  const checkboxEl = document.createElement("input");
+  const checkboxEl = createElement("input");
   checkboxEl.type = "checkbox";
   checkboxEl.checked = initialValue;
   checkboxEl.classList.add("bytm-toggle-checkbox");
@@ -46,7 +47,7 @@ export async function createToggleInput({
   if(id)
     checkboxEl.id = `bytm-toggle-${id}`;
 
-  const toggleSwitchEl = document.createElement("div");
+  const toggleSwitchEl = createElement("div");
   toggleSwitchEl.classList.add("bytm-toggle-switch");
 
   const handleToggle = (e: Event) => {

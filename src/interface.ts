@@ -18,6 +18,7 @@ import { Logger } from "@util/Logger.ts";
 import { getSelector } from "@util/staticData.ts";
 import { setPluginPerf } from "@util/perf.ts";
 import { getStaticData } from "@util/data.ts";
+import { createElement } from "@util/element.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
@@ -67,6 +68,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getSelector,
 
   // dom:
+  createElement, // TODO: docs
   setInnerHtml,
   sanitizeHtml,
   addSelectorListener,
@@ -332,15 +334,15 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
         width: 700,
         height: 600,
         renderFooter(dlg) {
-          const footerCont = document.createElement("div");
+          const footerCont = createElement("div");
           footerCont.classList.add("bytm-dialog-footer", "align-right");
 
-          const reloadAllBtn = document.createElement("button");
+          const reloadAllBtn = createElement("button");
           reloadAllBtn.classList.add("bytm-btn");
           reloadAllBtn.textContent = t("reload_all_tabs_now");
           onInteraction(reloadAllBtn, () => reloadAllTabs());
 
-          const closeBtn = document.createElement("button");
+          const closeBtn = createElement("button");
           closeBtn.classList.add("bytm-btn");
           closeBtn.textContent = t("close");
           closeBtn.title = t("close_menu_tooltip");
