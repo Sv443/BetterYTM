@@ -280,6 +280,7 @@ function buildHeader(args: HeaderArgs): string {
 // @noframes
 // @updateURL         ${hostMetaUrl}
 // @downloadURL       ${hostScriptUrl}
+// @grant             GM_addElement
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue

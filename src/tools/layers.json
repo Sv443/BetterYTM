@@ -30,6 +30,7 @@
       "src/utils/logging.ts"
     ],
     [
+      "src/utils/element.ts",
       "src/configSchema.ts",
       "src/core/interfaceEvents.ts",
       "src/utils/resourceUrl.ts",
