@@ -9,6 +9,7 @@ import { createTable } from "@sv443-network/coreutils";
 import type { Plugin, PluginOption, ResolvedConfig } from "vite";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import ghEmojisJson from "../../assets/images/external/gh_emojis.json" with { type: "json" };
 import type en_US from "../../assets/translations/en-US.json";
 import pkg from "../../package.json" with { type: "json" };
 
@@ -133,7 +134,8 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
 
       for(const [fileName, chunk] of Object.entries(bundle)) {
         if(chunk.type === "chunk" && fileName.endsWith(".user.js")) {
-          chunk.code = `${header}\n${linkedPkgs}${chunk.code}`;
+          const finalCodeChunk = replaceMarkers(chunk.code);
+          chunk.code = `${header}\n${linkedPkgs}${finalCodeChunk}`;
           finalSizeKiB = Number((Buffer.byteLength(chunk.code, "utf8") / 1024).toFixed(2));
           break;
         }
@@ -464,6 +466,16 @@ async function getResourceDirectives(ref: string, options: BtymPluginOptions): P
     console.warn("No resource directives found:", err);
     return undefined;
   }
+}
+
+/**
+ * Replaces markers in the code with their resolved value:
+ * - `<$GH_EMOJI_URL:key>` with value of `https://api.github.com/emojis`
+ */
+function replaceMarkers(code: string) {
+  for(const [key, url] of Object.entries(ghEmojisJson))
+    code = code.replace(new RegExp(`<\\$GH_EMOJI_URL:${key}>`, "gm"), url);
+  return code;
 }
 
 //#region @require

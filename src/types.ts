@@ -27,11 +27,10 @@ import type { createRipple } from "@comp/ripple.ts";
 import type { showIconToast, showToast } from "@comp/toast.ts";
 import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
+import type ghEmojis from "@asset/images/external/gh_emojis.json";
 import type { featInfo } from "@feat/featInfo.ts";
 import type { Logger } from "@util/Logger.ts";
 import type { getSelector } from "@util/staticData.ts";
-
-void ["type imports only:", resources, locales];
 
 //#region other
 
@@ -257,6 +256,12 @@ export type PerformanceReport = {
     [pluginKey: string]: Record<string, unknown> | undefined;
   };
 };
+
+/** Key of the emojis served by GitHub. See [`https://api.github.com/emojis`](https://api.github.com/emojis) */
+export type GHEmojiKey = keyof typeof ghEmojis;
+
+/** Identifiers that will be replaced by the GitHub emoji URL at build time. See [`https://api.github.com/emojis`](https://api.github.com/emojis) */
+export type GHEmoji = `<$GH_EMOJI_URL:${GHEmojiKey}>`;
 
 //#region utility
 
