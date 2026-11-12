@@ -3,7 +3,6 @@
   "enforceLayers": true,
   "layers": [
     [
-      "src/components/ripple.ts",
       "src/core/globals.ts",
       "src/core/hooks.ts",
       "src/core/siteEventNames.ts",
@@ -38,6 +37,7 @@
       "src/utils/unloadGuard.ts"
     ],
     [
+      "src/components/ripple.ts",
       "src/config.ts"
     ],
     [
