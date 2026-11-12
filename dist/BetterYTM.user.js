@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@613c19fa/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9541c3ce/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -98,6 +98,7 @@
 // @noframes
 // @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/refs/heads/main/dist/BetterYTM.meta.js
 // @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/refs/heads/main/dist/BetterYTM.user.js
+// @grant             GM_addElement
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -133,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Thu, 12 Nov 2026 20:17:26 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Thu, 12 Nov 2026 20:56:12 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 613c19fa                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 9541c3ce                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 03LbJFjUdJhM                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ MJwJh2ADLntz                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -286,9 +287,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "613c19fa";
+	var buildNumber$1 = "9541c3ce";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1794514646816;
+	var buildTimestamp = 1794516972475;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -3130,6 +3131,30 @@
 		}
 	}
 	//#endregion
+	//#region src/utils/element.ts
+	/**
+	* Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to `document.createElement()`.  
+	* @param tagName Lowercase tag name.
+	* @param attributes Optional object mapping any number of the element's attribute keys to their values.
+	* @param modifyElement Optional function called to modify the element in a way simple object assignment can't.
+	* @returns Returns the created element with the given attributes (or none).
+	*/
+	function createElement(tagName, attributes, modifyElement) {
+		try {
+			const elem = GM_addElement(tagName, attributes ?? {});
+			if (!(elem instanceof HTMLElement)) throw new _sv443_network_userutils.DatedError(`Value returned by GM_addElement() of type '${typeof elem}' is not an instance of HTMLElement.`);
+			modifyElement?.(elem);
+			if (!(elem instanceof HTMLElement)) throw new _sv443_network_userutils.DatedError(`Value returned by modifyElement() of type '${typeof elem}' is not an instance of HTMLElement.`);
+			return elem;
+		} catch (err) {
+			loggers.misc.warn("Couldn't create element using GM.createElement() API, defaulting to document.createElement() at the cost of potential CSP-related issues...", { cause: err });
+			const elem = document.createElement(tagName);
+			for (const [key, val] of Object.entries(attributes ?? {})) elem[key] = val;
+			modifyElement?.(elem);
+			return elem;
+		}
+	}
+	//#endregion
 	//#region src/siteEvents.ts
 	/** EventEmitter instance that is used to detect various changes to the site and userscript */
 	var siteEvents = new _sv443_network_userutils.NanoEmitter({ publicEmit: true });
@@ -3518,7 +3543,7 @@
 	/** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
 	function downloadFile(fileName, data, mimeType = "text/plain") {
 		const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
-		const a = document.createElement("a");
+		const a = createElement("a");
 		a.classList.add("bytm-hidden");
 		a.href = URL.createObjectURL(blob);
 		a.download = fileName;
@@ -3844,26 +3869,26 @@
 			...rest
 		}));
 		showingToast = true;
-		const toastWrapper = document.createElement("div");
+		const toastWrapper = createElement("div");
 		toastWrapper.classList.add("bytm-toast-flex-wrapper");
 		let toastIcon;
 		if ("iconSrc" in rest) {
-			toastIcon = document.createElement("img");
+			toastIcon = createElement("img");
 			toastIcon.classList.add("bytm-toast-icon", "img");
 			toastIcon.src = await rest.iconSrc;
 		} else {
-			toastIcon = document.createElement("div");
+			toastIcon = createElement("div");
 			toastIcon.classList.add("bytm-toast-icon");
 			const iconHtml = await resourceAsString(rest.icon);
 			if (iconHtml) setInnerHtml(toastIcon, iconHtml);
 			if ("iconFill" in rest && rest.iconFill) toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
 		}
-		const toastMessage = document.createElement("div");
+		const toastMessage = createElement("div");
 		toastMessage.classList.add("bytm-toast-message");
 		if ("message" in rest) {
 			toastMessage.textContent = rest.message;
 			if ("subtitle" in rest && rest.subtitle) {
-				const subtitleEl = document.createElement("div");
+				const subtitleEl = createElement("div");
 				subtitleEl.classList.add("bytm-toast-subtitle");
 				subtitleEl.textContent = rest.subtitle;
 				toastMessage.appendChild(subtitleEl);
@@ -3903,7 +3928,7 @@
 		if (showingToast) return void toastQueue.push(() => showToast(props));
 		showingToast = true;
 		if (document.querySelector("#bytm-toast")) await closeToast();
-		const toastElem = document.createElement("div");
+		const toastElem = createElement("div");
 		toastElem.classList.add(`pos-${position.toLowerCase()}`);
 		onClick && toastElem.classList.add("clickable");
 		toastElem.id = "bytm-toast";
@@ -4022,7 +4047,7 @@
 		async mount() {
 			if (this.dialogMounted) return;
 			this.dialogMounted = true;
-			const bgElem = document.createElement("div");
+			const bgElem = createElement("div");
 			bgElem.id = `bytm-${this.id}-dialog-bg`;
 			bgElem.classList.add("bytm-dialog-bg");
 			if (this.options.closeOnBgClick) bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
@@ -4127,7 +4152,7 @@
 			if (dialogsInitialized) return;
 			dialogsInitialized = true;
 			const createContainer = () => {
-				const bytmDialogCont = dialogContainer = document.createElement("div");
+				const bytmDialogCont = dialogContainer = createElement("div");
 				bytmDialogCont.id = "bytm-dialog-container";
 				document.body.appendChild(bytmDialogCont);
 			};
@@ -4173,7 +4198,7 @@
 		async getDialogContent() {
 			const header = this.options.renderHeader?.(this);
 			const footer = this.options.renderFooter?.(this);
-			const dialogWrapperEl = document.createElement("div");
+			const dialogWrapperEl = createElement("div");
 			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
 			dialogWrapperEl.classList.add("bytm-dialog");
 			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
@@ -4182,11 +4207,11 @@
 			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
 			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
 			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
-			const headerWrapperEl = document.createElement("div");
+			const headerWrapperEl = createElement("div");
 			headerWrapperEl.classList.add("bytm-dialog-header");
 			this.options.small && headerWrapperEl.classList.add("small");
 			if (header) {
-				const headerTitleWrapperEl = document.createElement("div");
+				const headerTitleWrapperEl = createElement("div");
 				headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
 				headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
 				headerTitleWrapperEl.role = "heading";
@@ -4194,13 +4219,13 @@
 				headerTitleWrapperEl.appendChild(await header);
 				headerWrapperEl.appendChild(headerTitleWrapperEl);
 			} else {
-				const padEl = document.createElement("div");
+				const padEl = createElement("div");
 				padEl.classList.add("bytm-dialog-header-pad");
 				this.options.small && padEl.classList.add("small");
 				headerWrapperEl.appendChild(padEl);
 			}
 			if (this.options.closeBtnEnabled) {
-				const closeBtnEl = document.createElement("img");
+				const closeBtnEl = createElement("img");
 				closeBtnEl.classList.add("bytm-dialog-close");
 				this.options.small && closeBtnEl.classList.add("small");
 				closeBtnEl.src = await getResourceUrl("img-close");
@@ -4211,14 +4236,14 @@
 				headerWrapperEl.appendChild(closeBtnEl);
 			}
 			dialogWrapperEl.appendChild(headerWrapperEl);
-			const dialogBodyElem = document.createElement("div");
+			const dialogBodyElem = createElement("div");
 			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
 			dialogBodyElem.classList.add("bytm-dialog-body");
 			this.options.small && dialogBodyElem.classList.add("small");
 			dialogBodyElem.appendChild(await this.options.renderBody(this));
 			dialogWrapperEl.appendChild(dialogBodyElem);
 			if (footer) {
-				const footerWrapper = document.createElement("div");
+				const footerWrapper = createElement("div");
 				footerWrapper.classList.add("bytm-dialog-footer-cont");
 				this.options.small && footerWrapper.classList.add("small");
 				dialogWrapperEl.appendChild(footerWrapper);
@@ -4250,10 +4275,10 @@
 		}
 		/** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
 		async renderBody() {
-			const bodyEl = document.createElement("div");
+			const bodyEl = createElement("div");
 			bodyEl.classList.add("bytm-md-dialog-body");
 			const mdCont = await (0, _sv443_network_userutils.consumeStringGen)(this.opts.body);
-			const markdownEl = document.createElement("div");
+			const markdownEl = createElement("div");
 			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
 			markdownEl.tabIndex = 0;
 			setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
@@ -4277,7 +4302,7 @@
 			small: true,
 			destroyOnClose: true,
 			renderHeader() {
-				const header = document.createElement("h2");
+				const header = createElement("h2");
 				header.classList.add("bytm-dialog-title");
 				header.role = "heading";
 				header.ariaLevel = "1";
@@ -4286,15 +4311,15 @@
 				return header;
 			},
 			renderFooter(dlg) {
-				const footer = document.createElement("div");
+				const footer = createElement("div");
 				footer.classList.add("bytm-dialog-footer", "align-right");
-				const dlLogsBtn = document.createElement("button");
+				const dlLogsBtn = createElement("button");
 				dlLogsBtn.classList.add("bytm-btn");
 				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
 				onInteraction(dlLogsBtn, () => {
 					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
 				});
-				const closeBtn = document.createElement("button");
+				const closeBtn = createElement("button");
 				closeBtn.classList.add("bytm-btn");
 				closeBtn.textContent = t("close");
 				closeBtn.ariaLabel = t("close_menu_tooltip");
@@ -4350,18 +4375,18 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			return document.querySelector("#bytm-dialog-container #bytm-prompt-dialog-input")?.value?.trim() ?? null;
 		}
 		async renderHeader({ type }) {
-			const headerEl = document.createElement("div");
+			const headerEl = createElement("div");
 			headerEl.id = "bytm-prompt-dialog-header";
 			setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
 			return headerEl;
 		}
 		async renderBody({ type, message, ...rest }) {
-			const contElem = document.createElement("div");
+			const contElem = createElement("div");
 			contElem.classList.add(`bytm-prompt-type-${type}`);
-			const upperContElem = document.createElement("div");
+			const upperContElem = createElement("div");
 			upperContElem.id = "bytm-prompt-dialog-upper-cont";
 			contElem.appendChild(upperContElem);
-			const messageElem = document.createElement("p");
+			const messageElem = createElement("p");
 			messageElem.id = "bytm-prompt-dialog-message";
 			messageElem.role = "alert";
 			messageElem.ariaLive = "polite";
@@ -4370,7 +4395,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			upperContElem.appendChild(messageElem);
 			if (type === "prompt") {
 				const isTA = "textarea" in rest && rest.textarea;
-				const inputElem = document.createElement(isTA ? "textarea" : "input");
+				const inputElem = createElement(isTA ? "textarea" : "input");
 				inputElem.id = "bytm-prompt-dialog-input";
 				if (isTA) {
 					inputElem.wrap = "off";
@@ -4394,11 +4419,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			return contElem;
 		}
 		async renderFooter({ type, ...rest }) {
-			const buttonsWrapper = document.createElement("div");
+			const buttonsWrapper = createElement("div");
 			buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
-			const buttonsCont = document.createElement("div");
+			const buttonsCont = createElement("div");
 			buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
-			const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? void 0 : document.createElement("button"));
+			const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? void 0 : createElement("button"));
 			if (confirmBtn) {
 				const { confirmBtnText, confirmBtnTooltip } = rest;
 				confirmBtn.id = "bytm-prompt-dialog-confirm";
@@ -4412,7 +4437,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					promptDialog?.close();
 				}, { once: true });
 			}
-			const closeBtn = rest.denyBtnEnabled === false ? void 0 : document.createElement("button");
+			const closeBtn = rest.denyBtnEnabled === false ? void 0 : createElement("button");
 			if (closeBtn) {
 				closeBtn.id = "bytm-prompt-dialog-close";
 				closeBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
@@ -4653,27 +4678,27 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#region src/components/toggleInput.ts
 	/** Creates a simple toggle element */
 	async function createToggleInput({ onChange, initialValue = false, id = (0, _sv443_network_userutils.randomId)(6, 36), labelPos = "left" }) {
-		const wrapperEl = document.createElement("div");
+		const wrapperEl = createElement("div");
 		wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
 		wrapperEl.role = "switch";
 		wrapperEl.tabIndex = 0;
 		wrapperEl.ariaChecked = String(initialValue);
-		const labelEl = labelPos !== "off" ? document.createElement("label") : void 0;
+		const labelEl = labelPos !== "off" ? createElement("label") : void 0;
 		if (labelEl) {
 			labelEl.id = `bytm-toggle-label-${id}`;
 			labelEl.classList.add("bytm-toggle-label");
 			labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
 			if (id) labelEl.htmlFor = `bytm-toggle-${id}`;
 		}
-		const toggleEl = document.createElement("label");
+		const toggleEl = createElement("label");
 		toggleEl.classList.add("bytm-toggle");
-		const checkboxEl = document.createElement("input");
+		const checkboxEl = createElement("input");
 		checkboxEl.type = "checkbox";
 		checkboxEl.checked = initialValue;
 		checkboxEl.classList.add("bytm-toggle-checkbox");
 		checkboxEl.tabIndex = -1;
 		if (id) checkboxEl.id = `bytm-toggle-${id}`;
-		const toggleSwitchEl = document.createElement("div");
+		const toggleSwitchEl = createElement("div");
 		toggleSwitchEl.classList.add("bytm-toggle-switch");
 		const handleToggle = (e) => {
 			e.preventDefault();
@@ -4736,7 +4761,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return verNotifDialog;
 	}
 	async function renderHeader$5() {
-		const logoEl = document.createElement("img");
+		const logoEl = createElement("img");
 		logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
 		logoEl.src = await getResourceUrl("img-logo_dev");
 		logoEl.alt = "BetterYTM logo";
@@ -4745,14 +4770,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	var disableUpdateCheck = false;
 	async function renderBody$5({ latestTag, changelogHtml }) {
 		disableUpdateCheck = false;
-		const wrapperEl = document.createElement("div");
-		const pEl = document.createElement("p");
+		const wrapperEl = createElement("div");
+		const pEl = createElement("p");
 		pEl.textContent = t("new_version_available", scriptInfo$1.name, scriptInfo$1.version, latestTag, platformNames[host$1]);
 		wrapperEl.appendChild(pEl);
-		const changelogDetailsEl = document.createElement("details");
+		const changelogDetailsEl = createElement("details");
 		changelogDetailsEl.id = "bytm-version-notif-changelog-details";
 		changelogDetailsEl.open = false;
-		const changelogSummaryEl = document.createElement("summary");
+		const changelogSummaryEl = createElement("summary");
 		changelogSummaryEl.role = "button";
 		changelogSummaryEl.tabIndex = 0;
 		changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
@@ -4760,7 +4785,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		changelogDetailsEl.addEventListener("toggle", () => {
 			changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
 		});
-		const changelogEl = document.createElement("p");
+		const changelogEl = createElement("p");
 		changelogEl.id = "bytm-version-notif-changelog-cont";
 		changelogEl.classList.add("bytm-markdown-container");
 		setInnerHtml(changelogEl, changelogHtml);
@@ -4770,7 +4795,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 		changelogDetailsEl.appendChild(changelogEl);
 		wrapperEl.appendChild(changelogDetailsEl);
-		const disableUpdCheckEl = document.createElement("div");
+		const disableUpdCheckEl = createElement("div");
 		disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 		if (!getFeature("versionCheck")) disableUpdateCheck = true;
 		const disableToggleEl = await createToggleInput({
@@ -4783,12 +4808,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				else btnClose.textContent = t("close_and_ignore_for_24h");
 			}
 		});
-		const labelWrapperEl = document.createElement("div");
+		const labelWrapperEl = createElement("div");
 		labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
-		const labelEl = document.createElement("label");
+		const labelEl = createElement("label");
 		labelEl.htmlFor = "bytm-toggle-disable-update-check";
 		labelEl.textContent = t("disable_update_check");
-		const secondaryLabelEl = document.createElement("span");
+		const secondaryLabelEl = createElement("span");
 		secondaryLabelEl.classList.add("bytm-secondary-label");
 		secondaryLabelEl.textContent = t("reenable_in_config_menu");
 		labelWrapperEl.appendChild(labelEl);
@@ -4804,9 +4829,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			await setFeatures(config);
 			recreateCfgMenu && emitSiteEvent("recreateCfgMenu");
 		});
-		const btnWrapper = document.createElement("div");
+		const btnWrapper = createElement("div");
 		btnWrapper.id = "bytm-version-notif-dialog-btns";
-		const btnUpdate = document.createElement("button");
+		const btnUpdate = createElement("button");
 		btnUpdate.classList.add("bytm-btn");
 		btnUpdate.tabIndex = 0;
 		btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host$1]);
@@ -4814,7 +4839,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			window.open(package_default.updates[host$1]);
 			verNotifDialog?.close();
 		});
-		const btnClose = document.createElement("button");
+		const btnClose = createElement("button");
 		btnClose.classList.add("bytm-btn");
 		btnClose.tabIndex = 0;
 		btnClose.textContent = t("close_and_ignore_for_24h");
@@ -4873,7 +4898,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			loggers.volume.error("Couldn't add volume slider style due to error:", err);
 		}
 		const onSliderElExists = async (type, sliderElem) => {
-			const volSliderCont = document.createElement("div");
+			const volSliderCont = createElement("div");
 			volSliderCont.classList.add("bytm-vol-slider-cont");
 			sliderElem.setAttribute("step", "1");
 			if (getFeature("volumeSliderScrollStep") !== featDefaults.volumeSliderScrollStep.default) initScrollStep(volSliderCont, sliderElem);
@@ -4979,14 +5004,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** Adds a percentage label to the volume slider and tooltip */
 	async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
-		const labelContElem = document.createElement("div");
+		const labelContElem = createElement("div");
 		labelContElem.classList.add("bytm-vol-slider-label");
 		labelContElem.style.display = "none";
 		labelContElem.setAttribute("aria-hidden", "true");
 		if (getFeature("volumeSharedBetweenTabs")) {
 			const linkIconHtml = await resourceAsString("icon-link");
 			if (linkIconHtml) {
-				const linkIconElem = document.createElement("div");
+				const linkIconElem = createElement("div");
 				linkIconElem.classList.add("bytm-vol-slider-shared");
 				setInnerHtml(linkIconElem, linkIconHtml);
 				linkIconElem.role = "alert";
@@ -5017,7 +5042,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			return label;
 		};
-		const labelElem = document.createElement("div");
+		const labelElem = createElement("div");
 		labelElem.classList.add("label");
 		labelElem.textContent = getLabel(sliderElem.value);
 		labelContElem.appendChild(labelElem);
@@ -5279,7 +5304,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			speed: "normal",
 			...properties
 		};
-		const rippleEl = rippleElement ?? document.createElement("div");
+		const rippleEl = rippleElement ?? createElement("div");
 		"additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
 		rippleEl.classList.add("bytm-ripple", props.speed);
 		const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
@@ -5287,7 +5312,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			updateRippleWidth();
 			const x = e.clientX - rippleEl.getBoundingClientRect().left;
 			const y = e.clientY - rippleEl.getBoundingClientRect().top;
-			const rippleAreaEl = document.createElement("span");
+			const rippleAreaEl = createElement("span");
 			rippleAreaEl.classList.add("bytm-ripple-area");
 			rippleAreaEl.style.left = `${Math.round(x)}px`;
 			rippleAreaEl.style.top = `${Math.round(y)}px`;
@@ -5315,12 +5340,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		].every((key) => !(key in rest))) throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
 		let btnElem;
 		if ("href" in rest && rest.href) {
-			btnElem = document.createElement("a");
+			btnElem = createElement("a");
 			btnElem.href = rest.href;
 			btnElem.role = "button";
 			btnElem.target = "_blank";
 			btnElem.rel = "noopener noreferrer";
-		} else btnElem = document.createElement("div");
+		} else btnElem = createElement("div");
 		if ("toggle" in rest && rest.toggle) {
 			btnElem.classList.add("bytm-toggle");
 			if ("toggleInitialState" in rest && rest.toggleInitialState) btnElem.classList.add("toggled");
@@ -5333,11 +5358,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		btnElem.ariaLabel = btnElem.title = title;
 		btnElem.tabIndex = 0;
 		btnElem.role = "button";
-		const imgElem = document.createElement("src" in rest ? "img" : "div");
+		const imgElem = createElement("src" in rest ? "img" : "div");
 		imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
 		if ("src" in rest) imgElem.src = rest.src;
 		else setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
-		const txtElem = document.createElement("span");
+		const txtElem = createElement("span");
 		txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
 		txtElem.textContent = txtElem.ariaLabel = text;
 		iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
@@ -5574,7 +5599,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			});
 		}
 		static async renderHeader(opts) {
-			const headerEl = document.createElement("h2");
+			const headerEl = createElement("h2");
 			headerEl.classList.add("bytm-menu-title");
 			headerEl.role = "heading";
 			headerEl.ariaLevel = "1";
@@ -5583,17 +5608,17 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			return headerEl;
 		}
 		static async renderBody(opts) {
-			const panesCont = document.createElement("div");
+			const panesCont = createElement("div");
 			panesCont.classList.add("bytm-exim-dialog-panes-cont");
-			const exportPane = document.createElement("div");
+			const exportPane = createElement("div");
 			exportPane.classList.add("bytm-exim-dialog-pane", "export");
 			{
-				const descEl = document.createElement("p");
+				const descEl = createElement("p");
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
 				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_userutils.consumeStringGen)(opts.descExport);
-				const dataEl = document.createElement("textarea");
+				const dataEl = createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.readOnly = true;
 				dataEl.tabIndex = 0;
@@ -5602,7 +5627,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					dataEl.value = await (0, _sv443_network_userutils.consumeStringGen)(opts.exportData);
 					dataEl.setSelectionRange(0, dataEl.value.length);
 				});
-				const exportCenterBtnCont = document.createElement("div");
+				const exportCenterBtnCont = createElement("div");
 				exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 				const copyBtn = await createLongBtn({
 					title: t("copy_to_clipboard"),
@@ -5617,18 +5642,18 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				exportCenterBtnCont.appendChild(copyBtn);
 				exportPane.append(descEl, dataEl, exportCenterBtnCont);
 			}
-			const importPane = document.createElement("div");
+			const importPane = createElement("div");
 			importPane.classList.add("bytm-exim-dialog-pane", "import");
 			{
-				const descEl = document.createElement("p");
+				const descEl = createElement("p");
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
 				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_userutils.consumeStringGen)(opts.descImport);
-				const dataEl = document.createElement("textarea");
+				const dataEl = createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.tabIndex = 0;
-				const importCenterBtnCont = document.createElement("div");
+				const importCenterBtnCont = createElement("div");
 				importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 				const importBtn = await createLongBtn({
 					title: t("start_import_tooltip"),
@@ -5655,13 +5680,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	async function createCircularBtn({ title, ripple = true, modifyElement, ...rest }) {
 		let btnElem;
 		if ("href" in rest && rest.href) {
-			btnElem = document.createElement("a");
+			btnElem = createElement("a");
 			btnElem.href = rest.href;
 			btnElem.role = "button";
 			btnElem.target = "_blank";
 			btnElem.rel = "noopener noreferrer";
 		} else if ("onClick" in rest && rest.onClick) {
-			btnElem = document.createElement("div");
+			btnElem = createElement("div");
 			rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
 		} else throw new TypeError("Either 'href' or 'onClick' must be provided");
 		btnElem.classList.add("bytm-generic-btn");
@@ -5669,7 +5694,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		btnElem.tabIndex = 0;
 		btnElem.role = "button";
 		if ("src" in rest || "resourceName" in rest && !rest.resourceName.startsWith("icon-")) {
-			const imgElem = document.createElement("img");
+			const imgElem = createElement("img");
 			imgElem.classList.add("bytm-generic-btn-img");
 			imgElem.src = "src" in rest ? await rest.src : await getResourceUrl(rest.resourceName);
 			btnElem.appendChild(imgElem);
@@ -5752,7 +5777,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return autoLikeDialog;
 	}
 	async function renderHeader$4() {
-		const headerEl = document.createElement("h2");
+		const headerEl = createElement("h2");
 		headerEl.classList.add("bytm-dialog-title");
 		headerEl.role = "heading";
 		headerEl.ariaLevel = "1";
@@ -5761,29 +5786,29 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return headerEl;
 	}
 	async function renderBody$4() {
-		const contElem = document.createElement("div");
-		const descriptionEl = document.createElement("p");
+		const contElem = createElement("div");
+		const descriptionEl = createElement("p");
 		descriptionEl.classList.add("bytm-auto-like-channels-desc");
 		descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
 		descriptionEl.tabIndex = 0;
 		contElem.appendChild(descriptionEl);
-		const hr1El = document.createElement("hr");
+		const hr1El = createElement("hr");
 		hr1El.classList.add("bytm-hr");
 		contElem.appendChild(hr1El);
-		const searchCont = document.createElement("div");
+		const searchCont = createElement("div");
 		searchCont.classList.add("bytm-auto-like-channels-search-cont");
 		contElem.appendChild(searchCont);
-		const hr2El = document.createElement("hr");
+		const hr2El = createElement("hr");
 		hr2El.classList.add("bytm-hr", "less-margin");
 		contElem.appendChild(hr2El);
-		const searchContLeftSideEl = document.createElement("div");
+		const searchContLeftSideEl = createElement("div");
 		searchContLeftSideEl.classList.add("left-side");
 		searchCont.appendChild(searchContLeftSideEl);
-		const searchContRightSideEl = document.createElement("div");
+		const searchContRightSideEl = createElement("div");
 		searchContRightSideEl.tabIndex = 0;
 		searchContRightSideEl.classList.add("right-side");
 		searchCont.appendChild(searchContRightSideEl);
-		const searchbarEl = document.createElement("input");
+		const searchbarEl = createElement("input");
 		const updateCountElem = () => {
 			const count = searchbarEl.value.trim().length === 0 ? autoLikeStore.getData().channels.length : document.querySelectorAll(".bytm-auto-like-channel-row:not(.hidden)").length;
 			searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
@@ -5809,7 +5834,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			updateCountElem();
 		}, 300));
 		searchContLeftSideEl.appendChild(searchbarEl);
-		const searchClearEl = document.createElement("button");
+		const searchClearEl = createElement("button");
 		searchClearEl.classList.add("bytm-btn", "no-min-width");
 		searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
 		searchClearEl.tabIndex = 0;
@@ -5819,7 +5844,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			searchbarEl.dispatchEvent(new Event("input"));
 		});
 		searchContLeftSideEl.appendChild(searchClearEl);
-		const channelListCont = document.createElement("div");
+		const channelListCont = createElement("div");
 		channelListCont.id = "bytm-auto-like-channels-list";
 		const setChannelEnabled = (0, _sv443_network_userutils.debounce)((id, enabled) => {
 			autoLikeStore.setData({ channels: autoLikeStore.getData().channels.map((ch) => ch.id === id ? {
@@ -5829,23 +5854,23 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}, 100);
 		const sortedChannels = autoLikeStore.getData().channels.sort((a, b) => a.name.localeCompare(b.name));
 		for (const { name: chanName, id: chanId, enabled } of sortedChannels) {
-			const rowElem = document.createElement("div");
+			const rowElem = createElement("div");
 			rowElem.classList.add("bytm-auto-like-channel-row");
-			const leftCont = document.createElement("div");
+			const leftCont = createElement("div");
 			leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
-			const nameLabelEl = document.createElement("label");
+			const nameLabelEl = createElement("label");
 			nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
 			nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
 			nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
 			const chanHref = !chanId.startsWith("@") && getDomain() === "ytm" ? `https://music.youtube.com/channel/${chanId}` : `https://www.youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
-			const nameElem = document.createElement("a");
+			const nameElem = createElement("a");
 			nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
 			nameElem.ariaLabel = nameElem.textContent = chanName;
 			nameElem.href = chanHref;
 			nameElem.target = "_blank";
 			nameElem.rel = "noopener noreferrer";
 			nameElem.tabIndex = 0;
-			const idElem = document.createElement("a");
+			const idElem = createElement("a");
 			idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
 			idElem.textContent = idElem.title = chanId;
 			idElem.href = chanHref;
@@ -5862,7 +5887,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			});
 			toggleElem.classList.add("bytm-auto-like-channel-toggle");
 			toggleElem.title = toggleElem.ariaLabel = t("auto_like_channel_toggle_tooltip", chanName);
-			const btnCont = document.createElement("div");
+			const btnCont = createElement("div");
 			btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
 			const editBtn = await createCircularBtn({
 				resourceName: "icon-edit",
@@ -5911,21 +5936,21 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return contElem;
 	}
 	function renderFooter$2() {
-		const wrapperEl = document.createElement("div");
+		const wrapperEl = createElement("div");
 		wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
-		const addNewBtnElem = document.createElement("button");
+		const addNewBtnElem = createElement("button");
 		addNewBtnElem.classList.add("bytm-btn");
 		addNewBtnElem.textContent = t("new_entry");
 		addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
 		wrapperEl.appendChild(addNewBtnElem);
-		const rightBtnsCont = document.createElement("div");
+		const rightBtnsCont = createElement("div");
 		rightBtnsCont.classList.add("bytm-flex-row");
-		const deleteAllBtnElem = document.createElement("button");
+		const deleteAllBtnElem = createElement("button");
 		deleteAllBtnElem.classList.add("bytm-btn");
 		deleteAllBtnElem.textContent = t("delete_all");
 		deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
 		rightBtnsCont.appendChild(deleteAllBtnElem);
-		const importExportBtnElem = document.createElement("button");
+		const importExportBtnElem = createElement("button");
 		importExportBtnElem.classList.add("bytm-btn");
 		importExportBtnElem.textContent = t("export_import");
 		importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
@@ -6187,11 +6212,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			closeOnBgClick: !alert.important,
 			closeOnEscPress: !alert.important,
 			async renderHeader() {
-				const headerEl = document.createElement("div");
+				const headerEl = createElement("div");
 				headerEl.id = "bytm-static-data-alert-dialog-header";
 				headerEl.classList.add("bytm-flex-row");
 				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
-				const header = document.createElement("h2");
+				const header = createElement("h2");
 				header.classList.add("bytm-dialog-title");
 				header.role = "heading";
 				header.ariaLevel = "1";
@@ -6201,9 +6226,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				return headerEl;
 			},
 			renderFooter() {
-				const footer = document.createElement("div");
+				const footer = createElement("div");
 				footer.classList.add("bytm-dialog-footer", "align-right");
-				const closeBtn = document.createElement("button");
+				const closeBtn = createElement("button");
 				closeBtn.classList.add("bytm-btn");
 				closeBtn.type = "button";
 				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
@@ -6409,7 +6434,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** Creates the base lyrics button element */
 	async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-		const linkElem = document.createElement("a");
+		const linkElem = createElement("a");
 		linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
 		linkElem.dataset.state = geniusUrl ? "ready" : "loading";
 		linkElem.role = "button";
@@ -6605,7 +6630,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 	}
 	async function renderHeader$3() {
-		const titleElem = document.createElement("h2");
+		const titleElem = createElement("h2");
 		titleElem.id = "bytm-plugin-perms-title";
 		titleElem.classList.add("bytm-dialog-title");
 		titleElem.role = "heading";
@@ -6616,7 +6641,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	async function renderBody$3(permDlg, def) {
 		const pluginKey = getPluginKey(def);
-		const permsListCont = document.createElement("div");
+		const permsListCont = createElement("div");
 		permsListCont.id = "bytm-plugin-perms-container";
 		if (!def) {
 			await showPrompt({
@@ -6627,16 +6652,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			return permsListCont;
 		}
 		const intents = parseBitSetEnumArray(defToIntentsBitSet(def), PluginIntent);
-		const descriptionElem = document.createElement("div");
+		const descriptionElem = createElement("div");
 		descriptionElem.id = "bytm-plugin-perms-description";
 		descriptionElem.textContent = descriptionElem.title = t("plugin_permissions_dialog.description", { pluginName: def.plugin.name });
 		permsListCont.appendChild(descriptionElem);
-		const hrElem = document.createElement("hr");
+		const hrElem = createElement("hr");
 		hrElem.classList.add("bytm-hr");
 		permsListCont.appendChild(hrElem);
 		const perms = getPermStorePerms(def);
 		for (const intent of intents) {
-			const itemEl = document.createElement("div");
+			const itemEl = createElement("div");
 			itemEl.classList.add("bytm-plugin-perms-item");
 			itemEl.tabIndex = 0;
 			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
@@ -6647,7 +6672,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				labelPos: "off",
 				onChange: () => void 0
 			});
-			const nameEl = document.createElement("div");
+			const nameEl = createElement("div");
 			nameEl.classList.add("bytm-plugin-perms-item-name");
 			nameEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
 			itemEl.appendChild(toggleEl);
@@ -6658,11 +6683,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	async function renderFooter$1(permDlg, def) {
 		const pluginKey = getPluginKey(def);
-		const footerEl = document.createElement("div");
+		const footerEl = createElement("div");
 		footerEl.id = "bytm-plugin-perms-footer";
 		footerEl.classList.add("bytm-dialog-footer", "align-right");
 		const requestedIntents = defToIntentsBitSet(def);
-		const confirmBtn = document.createElement("button");
+		const confirmBtn = createElement("button");
 		confirmBtn.classList.add("bytm-btn");
 		confirmBtn.textContent = t("prompt_confirm");
 		confirmBtn.title = t("click_to_confirm_tooltip");
@@ -6683,7 +6708,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			permDlg.close();
 		});
 		footerEl.appendChild(confirmBtn);
-		const cancelBtn = document.createElement("button");
+		const cancelBtn = createElement("button");
 		cancelBtn.classList.add("bytm-btn");
 		cancelBtn.textContent = t("prompt_cancel");
 		cancelBtn.title = t("click_to_cancel_tooltip");
@@ -6711,11 +6736,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const initialHotkey = initialValue;
 		let currentHotkey;
 		if (!createTitle) createTitle = (value) => value;
-		const wrapperElem = document.createElement("div");
+		const wrapperElem = createElement("div");
 		wrapperElem.classList.add("bytm-hotkey-wrapper");
-		const infoElem = document.createElement("span");
+		const infoElem = createElement("span");
 		infoElem.classList.add("bytm-hotkey-info");
-		const inputElem = document.createElement("button");
+		const inputElem = createElement("button");
 		inputElem.role = "button";
 		inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
 		inputElem.dataset.state = infoElem.dataset.state = "inactive";
@@ -6724,7 +6749,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 		else inputElem.innerText = t("hotkey_input_click_to_change");
 		inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-		const resetElem = document.createElement("span");
+		const resetElem = createElement("span");
 		resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
 		resetElem.role = "button";
 		resetElem.tabIndex = 0;
@@ -6889,6 +6914,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		getSessionId,
 		reloadTab,
 		getSelector,
+		createElement,
 		setInnerHtml,
 		sanitizeHtml,
 		addSelectorListener,
@@ -7065,13 +7091,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				width: 700,
 				height: 600,
 				renderFooter(dlg) {
-					const footerCont = document.createElement("div");
+					const footerCont = createElement("div");
 					footerCont.classList.add("bytm-dialog-footer", "align-right");
-					const reloadAllBtn = document.createElement("button");
+					const reloadAllBtn = createElement("button");
 					reloadAllBtn.classList.add("bytm-btn");
 					reloadAllBtn.textContent = t("reload_all_tabs_now");
 					onInteraction(reloadAllBtn, () => reloadAllTabs());
-					const closeBtn = document.createElement("button");
+					const closeBtn = createElement("button");
 					closeBtn.classList.add("bytm-btn");
 					closeBtn.textContent = t("close");
 					closeBtn.title = t("close_menu_tooltip");
@@ -7312,7 +7338,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 	}
 	async function renderHeader$2() {
-		const titleElem = document.createElement("h2");
+		const titleElem = createElement("h2");
 		titleElem.id = "bytm-plugin-list-title";
 		titleElem.classList.add("bytm-dialog-title");
 		titleElem.role = "heading";
@@ -7322,11 +7348,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return titleElem;
 	}
 	async function renderBody$2(dlg) {
-		const listContainerEl = document.createElement("div");
+		const listContainerEl = createElement("div");
 		listContainerEl.id = "bytm-plugin-list-container";
 		const registeredPlugins = getRegisteredPlugins();
 		if (registeredPlugins.length === 0) {
-			const noPluginsEl = document.createElement("div");
+			const noPluginsEl = createElement("div");
 			noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
 			noPluginsEl.tabIndex = 0;
 			setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${package_default.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
@@ -7336,50 +7362,50 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 		for (const [, { def }] of registeredPlugins) {
 			const { plugin } = def;
-			const rowEl = document.createElement("div");
+			const rowEl = createElement("div");
 			rowEl.classList.add("bytm-plugin-list-row");
-			const leftEl = document.createElement("div");
+			const leftEl = createElement("div");
 			leftEl.classList.add("bytm-plugin-list-row-left");
 			rowEl.appendChild(leftEl);
-			const leftTopEl = document.createElement("div");
+			const leftTopEl = createElement("div");
 			leftTopEl.classList.add("bytm-plugin-list-row-left-top");
 			leftEl.appendChild(leftTopEl);
-			const leftBottomEl = document.createElement("div");
+			const leftBottomEl = createElement("div");
 			leftBottomEl.classList.add("bytm-plugin-list-row-left-bottom");
 			leftEl.appendChild(leftBottomEl);
-			const headerWrapperEl = document.createElement("div");
+			const headerWrapperEl = createElement("div");
 			headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
 			leftTopEl.appendChild(headerWrapperEl);
 			if (plugin.iconUrl) {
-				const iconEl = document.createElement("img");
+				const iconEl = createElement("img");
 				iconEl.classList.add("bytm-plugin-list-row-icon");
 				iconEl.src = plugin.iconUrl;
 				iconEl.alt = "";
 				headerWrapperEl.appendChild(iconEl);
 			}
-			const headerEl = document.createElement("div");
+			const headerEl = createElement("div");
 			headerEl.classList.add("bytm-plugin-list-row-header");
 			headerWrapperEl.appendChild(headerEl);
-			const titleEl = document.createElement("div");
+			const titleEl = createElement("div");
 			titleEl.classList.add("bytm-plugin-list-row-title");
 			titleEl.tabIndex = 0;
 			titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
 			headerEl.appendChild(titleEl);
-			const verEl = document.createElement("span");
+			const verEl = createElement("span");
 			verEl.classList.add("bytm-plugin-list-row-version");
 			verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
 			titleEl.appendChild(verEl);
-			const namespaceEl = document.createElement("div");
+			const namespaceEl = createElement("div");
 			namespaceEl.classList.add("bytm-plugin-list-row-namespace");
 			namespaceEl.tabIndex = 0;
 			namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
 			headerEl.appendChild(namespaceEl);
-			const descEl = document.createElement("p");
+			const descEl = createElement("p");
 			descEl.classList.add("bytm-plugin-list-row-desc");
 			descEl.tabIndex = 0;
 			descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
 			leftTopEl.appendChild(descEl);
-			const linksList = document.createElement("div");
+			const linksList = createElement("div");
 			linksList.classList.add("bytm-plugin-list-row-links-list");
 			leftBottomEl.appendChild(linksList);
 			let linkElCreated = false;
@@ -7387,13 +7413,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const url = plugin.homepage[key];
 				if (!url) continue;
 				if (linkElCreated) {
-					const bulletEl = document.createElement("span");
+					const bulletEl = createElement("span");
 					bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
 					bulletEl.textContent = "•";
 					linksList.appendChild(bulletEl);
 				}
 				linkElCreated = true;
-				const linkEl = document.createElement("a");
+				const linkEl = createElement("a");
 				linkEl.id = `bytm-plugin-list-row-link-${key}`;
 				linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
 				linkEl.href = url;
@@ -7414,13 +7440,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				return arr;
 			})() : [] : [];
 			if (!isDevPlugin) {
-				const rightEl = document.createElement("div");
+				const rightEl = createElement("div");
 				rightEl.classList.add("bytm-plugin-list-row-right");
 				rowEl.appendChild(rightEl);
-				const permContEl = document.createElement("div");
+				const permContEl = createElement("div");
 				permContEl.classList.add("bytm-plugin-list-row-permission-container");
 				rightEl.appendChild(permContEl);
-				const buttonsContEl = document.createElement("div");
+				const buttonsContEl = createElement("div");
 				buttonsContEl.classList.add("bytm-plugin-list-row-buttons-container");
 				const permBtnEl = await createCircularBtn({
 					resourceName: "icon-gear",
@@ -7442,13 +7468,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				});
 				buttonsContEl.appendChild(unregisterBtnEl);
 				rightEl.appendChild(buttonsContEl);
-				const permissionsHeaderEl = document.createElement("div");
+				const permissionsHeaderEl = createElement("div");
 				permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
 				permissionsHeaderEl.tabIndex = 0;
 				permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
 				permContEl.appendChild(permissionsHeaderEl);
 				for (const perm of permsArr) {
-					const intentEl = document.createElement("div");
+					const intentEl = createElement("div");
 					intentEl.classList.add("bytm-plugin-list-row-perm-item");
 					intentEl.tabIndex = 0;
 					intentEl.textContent = t(`plugin_intent_name.${PluginIntent[perm]}`);
@@ -7456,7 +7482,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					permContEl.appendChild(intentEl);
 				}
 				if (permsArr.length === 0) {
-					const noPermsNoteEl = document.createElement("div");
+					const noPermsNoteEl = createElement("div");
 					noPermsNoteEl.classList.add("bytm-plugin-list-row-right", "no-perms");
 					noPermsNoteEl.tabIndex = 0;
 					noPermsNoteEl.title = t("plugin_list.no_permissions");
@@ -7465,7 +7491,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					permContEl.appendChild(noPermsNoteEl);
 				}
 			} else {
-				const devPluginNoteEl = document.createElement("div");
+				const devPluginNoteEl = createElement("div");
 				devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
 				devPluginNoteEl.tabIndex = 0;
 				devPluginNoteEl.title = t("plugin_list.dev_plugin_note");
@@ -7501,13 +7527,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return welcomeDialog;
 	}
 	async function renderHeader$1() {
-		const titleWrapperElem = document.createElement("div");
+		const titleWrapperElem = createElement("div");
 		titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
-		const titleLogoElem = document.createElement("img");
+		const titleLogoElem = createElement("img");
 		titleLogoElem.id = "bytm-welcome-menu-title-logo";
 		titleLogoElem.classList.add("bytm-no-select");
 		titleLogoElem.src = await getResourceUrl("img-logo_dev");
-		const titleElem = document.createElement("h2");
+		const titleElem = createElement("h2");
 		titleElem.id = "bytm-welcome-menu-title";
 		titleElem.classList.add("bytm-dialog-title");
 		titleElem.role = "heading";
@@ -7518,14 +7544,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return titleWrapperElem;
 	}
 	async function renderBody$1() {
-		const contentWrapper = document.createElement("div");
+		const contentWrapper = createElement("div");
 		contentWrapper.id = "bytm-welcome-menu-content-wrapper";
-		const horSegmentCont = document.createElement("div");
+		const horSegmentCont = createElement("div");
 		horSegmentCont.id = "bytm-welcome-menu-horizontal-segment-container";
 		const getHorSegmentElements = async (imgKey) => {
-			const segCont = document.createElement("div");
+			const segCont = createElement("div");
 			segCont.classList.add("bytm-welcome-menu-segment-cont");
-			const segImg = document.createElement("img");
+			const segImg = createElement("img");
 			segImg.classList.add("bytm-welcome-menu-horizontal-segment-img", "bytm-no-select");
 			segImg.src = await getResourceUrl(imgKey);
 			return [segCont, segImg];
@@ -7533,11 +7559,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		{
 			const [localeCont, localeImg] = await getHorSegmentElements("icon-globe");
 			localeImg.id = "bytm-welcome-menu-locale-img";
-			const localeSelectElem = document.createElement("select");
+			const localeSelectElem = createElement("select");
 			localeSelectElem.id = "bytm-welcome-menu-locale-select";
 			localeSelectElem.classList.add("bytm-welcome-menu-select");
 			for (const [locale, { name, emoji }] of Object.entries(locales_default)) {
-				const optionElem = document.createElement("option");
+				const optionElem = createElement("option");
 				optionElem.value = locale;
 				optionElem.textContent = `${emoji} ${name}`;
 				localeSelectElem.appendChild(optionElem);
@@ -7560,7 +7586,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		{
 			const [privacyCont, privacyImg] = await getHorSegmentElements("icon-shield_question");
 			privacyImg.id = "bytm-welcome-menu-privacy-img";
-			const privacySelectElem = document.createElement("select");
+			const privacySelectElem = createElement("select");
 			privacySelectElem.id = "bytm-welcome-menu-privacy-select";
 			privacySelectElem.classList.add("bytm-welcome-menu-select");
 			privacyImg.title = privacySelectElem.title = t("welcome_menu_privacy_tooltip");
@@ -7572,7 +7598,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				label: t("privacy_mode.enhanced")
 			}];
 			for (const { value, label } of options) {
-				const optionElem = document.createElement("option");
+				const optionElem = createElement("option");
 				optionElem.id = `bytm-welcome-menu-privacy-option-${value}`;
 				optionElem.value = value;
 				optionElem.textContent = label;
@@ -7599,43 +7625,43 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			horSegmentCont.appendChild(privacyCont);
 		}
 		contentWrapper.appendChild(horSegmentCont);
-		const hrElem = document.createElement("hr");
+		const hrElem = createElement("hr");
 		hrElem.classList.add("bytm-hr");
 		contentWrapper.appendChild(hrElem);
-		const textCont = document.createElement("div");
+		const textCont = createElement("div");
 		textCont.id = "bytm-welcome-menu-text-cont";
-		const textElem = document.createElement("p");
+		const textElem = createElement("p");
 		textElem.id = "bytm-welcome-menu-text";
 		const textElems = [];
-		const line1Elem = document.createElement("span");
+		const line1Elem = createElement("span");
 		line1Elem.id = "bytm-welcome-text-line1";
 		line1Elem.tabIndex = 0;
 		textElems.push(line1Elem);
-		const br1Elem = document.createElement("br");
+		const br1Elem = createElement("br");
 		textElems.push(br1Elem);
-		const line2Elem = document.createElement("span");
+		const line2Elem = createElement("span");
 		line2Elem.id = "bytm-welcome-text-line2";
 		line2Elem.tabIndex = 0;
 		textElems.push(line2Elem);
-		const br2Elem = document.createElement("br");
+		const br2Elem = createElement("br");
 		textElems.push(br2Elem);
-		const br3Elem = document.createElement("br");
+		const br3Elem = createElement("br");
 		textElems.push(br3Elem);
-		const line3Elem = document.createElement("span");
+		const line3Elem = createElement("span");
 		line3Elem.id = "bytm-welcome-text-line3";
 		line3Elem.tabIndex = 0;
 		textElems.push(line3Elem);
-		const br4Elem = document.createElement("br");
+		const br4Elem = createElement("br");
 		textElems.push(br4Elem);
-		const line4Elem = document.createElement("span");
+		const line4Elem = createElement("span");
 		line4Elem.id = "bytm-welcome-text-line4";
 		line4Elem.tabIndex = 0;
 		textElems.push(line4Elem);
-		const br5Elem = document.createElement("br");
+		const br5Elem = createElement("br");
 		textElems.push(br5Elem);
-		const br6Elem = document.createElement("br");
+		const br6Elem = createElement("br");
 		textElems.push(br6Elem);
-		const line5Elem = document.createElement("span");
+		const line5Elem = createElement("span");
 		line5Elem.id = "bytm-welcome-text-line5";
 		line5Elem.tabIndex = 0;
 		textElems.push(line5Elem);
@@ -7693,22 +7719,22 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 	}
 	async function renderFooter() {
-		const footerCont = document.createElement("div");
+		const footerCont = createElement("div");
 		footerCont.id = "bytm-welcome-menu-footer-cont";
-		const openCfgElem = document.createElement("button");
+		const openCfgElem = createElement("button");
 		openCfgElem.id = "bytm-welcome-menu-open-cfg";
 		openCfgElem.classList.add("bytm-btn");
 		openCfgElem.addEventListener("click", () => {
 			welcomeDialog?.close();
 			tryUse("openCfgMenu")?.();
 		});
-		const closeBtnElem = document.createElement("button");
+		const closeBtnElem = createElement("button");
 		closeBtnElem.id = "bytm-welcome-menu-footer-close";
 		closeBtnElem.classList.add("bytm-btn");
 		closeBtnElem.addEventListener("click", async () => {
 			welcomeDialog?.close();
 		});
-		const leftButtonsCont = document.createElement("div");
+		const leftButtonsCont = createElement("div");
 		leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
 		leftButtonsCont.appendChild(openCfgElem);
 		footerCont.appendChild(leftButtonsCont);
@@ -8996,24 +9022,24 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return featHelpDialog;
 	}
 	async function renderHeader() {
-		const headerEl = document.createElement("div");
+		const headerEl = createElement("div");
 		headerEl.id = "bytm-feat-help-dialog-header";
 		headerEl.classList.add("bytm-flex-row");
 		setInnerHtml(headerEl, await resourceAsString("icon-help"));
 		return headerEl;
 	}
 	async function renderBody() {
-		const contElem = document.createElement("div");
+		const contElem = createElement("div");
 		const localeObj = locales_default?.[getLocale()];
 		let featText = t(`feature_desc.${curFeatKey}`);
 		const isLtr = localeObj?.textDir !== "rtl";
 		if (localeObj && !localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))) featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
-		const featDescElem = document.createElement("h3");
+		const featDescElem = createElement("h3");
 		featDescElem.role = "subheading";
 		featDescElem.tabIndex = 0;
 		featDescElem.textContent = featDescElem.title = featText;
 		featDescElem.id = "bytm-feat-help-dialog-desc";
-		const helpTextElem = document.createElement("div");
+		const helpTextElem = createElement("div");
 		helpTextElem.id = "bytm-feat-help-dialog-text";
 		helpTextElem.tabIndex = 0;
 		helpTextElem.textContent = helpTextElem.title = featInfo[curFeatKey]?.helpText?.() ?? t(`feature_helptext.${curFeatKey}`);
@@ -9049,7 +9075,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			initLocale = getFeature("locale");
 			initConfig$1 = getFeatures();
 			const initLangReloadText = t("lang_changed_prompt_reload");
-			const backgroundElem = document.createElement("div");
+			const backgroundElem = createElement("div");
 			backgroundElem.id = "bytm-cfg-menu-bg";
 			backgroundElem.classList.add("bytm-menu-bg");
 			backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
@@ -9061,18 +9087,18 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			document.body.addEventListener("keydown", (e) => {
 				if (isCfgMenuOpen && e.key === "Escape" && (BytmDialog.getCurrentDialogId() === "cfg-menu" || BytmDialog.getCurrentDialogId() === null)) closeCfgMenu(e);
 			});
-			const menuContainer = document.createElement("div");
+			const menuContainer = createElement("div");
 			menuContainer.ariaLabel = menuContainer.title = "";
 			menuContainer.classList.add("bytm-menu");
 			menuContainer.id = "bytm-cfg-menu";
 			menuContainer.role = "dialog";
 			menuContainer.ariaModal = "true";
 			menuContainer.setAttribute("aria-labelledby", "bytm-config-menu-title");
-			const headerElem = document.createElement("div");
+			const headerElem = createElement("div");
 			headerElem.classList.add("bytm-menu-header");
-			const titleLogoHeaderCont = document.createElement("div");
+			const titleLogoHeaderCont = createElement("div");
 			titleLogoHeaderCont.classList.add("bytm-menu-title-logo-header-cont");
-			const titleCont = document.createElement("div");
+			const titleCont = createElement("div");
 			titleCont.classList.add("bytm-menu-titlecont");
 			titleCont.role = "heading";
 			titleCont.ariaLevel = "1";
@@ -9088,7 +9114,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				focusContentBtn.role = "button";
 				focusContentBtn.tabIndex = 0;
 			}
-			const titleLogoElem = document.createElement("img");
+			const titleLogoElem = createElement("img");
 			const logoSrc = await getResourceUrl(`img-logo_dev`);
 			titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
 			titleLogoElem.tabIndex = 0;
@@ -9111,13 +9137,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}, { once: true });
 			});
 			titleLogoHeaderCont.appendChild(titleLogoElem);
-			const titleElem = document.createElement("h1");
+			const titleElem = createElement("h1");
 			titleElem.classList.add("bytm-menu-title");
-			const titleTextElem = document.createElement("div");
+			const titleTextElem = createElement("div");
 			titleTextElem.id = "bytm-config-menu-title";
 			titleTextElem.textContent = t("config_menu_title", scriptInfo$1.name);
 			titleElem.appendChild(titleTextElem);
-			const linksCont = document.createElement("div");
+			const linksCont = createElement("div");
 			linksCont.id = "bytm-menu-linkscont";
 			linksCont.role = "navigation";
 			const linkTitlesShort = {
@@ -9127,7 +9153,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				discord: "Discord"
 			};
 			const addLink = (imgSrc, href, title, titleKey) => {
-				const anchorElem = document.createElement("a");
+				const anchorElem = createElement("a");
 				anchorElem.classList.add("bytm-menu-link", "bytm-no-select");
 				anchorElem.rel = "noopener noreferrer";
 				anchorElem.href = href;
@@ -9135,7 +9161,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				anchorElem.tabIndex = 0;
 				anchorElem.role = "button";
 				anchorElem.ariaLabel = anchorElem.title = title;
-				const extendedAnchorEl = document.createElement("a");
+				const extendedAnchorEl = createElement("a");
 				extendedAnchorEl.classList.add("bytm-menu-link", "extended-link", "bytm-no-select");
 				extendedAnchorEl.rel = "noopener noreferrer";
 				extendedAnchorEl.href = href;
@@ -9143,7 +9169,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				extendedAnchorEl.tabIndex = -1;
 				extendedAnchorEl.textContent = linkTitlesShort[titleKey];
 				extendedAnchorEl.ariaLabel = extendedAnchorEl.title = title;
-				const imgElem = document.createElement("img");
+				const imgElem = createElement("img");
 				imgElem.classList.add("bytm-menu-img");
 				imgElem.src = imgSrc;
 				anchorElem.appendChild(imgElem);
@@ -9178,9 +9204,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
 			for (const [, ...args] of reorderedLinks) addLink(...args);
 			addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
-			const headerRightSideElem = document.createElement("div");
+			const headerRightSideElem = createElement("div");
 			headerRightSideElem.id = "bytm-menu-header-right-side";
-			const closeElem = document.createElement("img");
+			const closeElem = createElement("img");
 			closeElem.classList.add("bytm-menu-close");
 			closeElem.role = "button";
 			closeElem.tabIndex = 0;
@@ -9194,18 +9220,18 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			titleLogoHeaderCont.appendChild(titleCont);
 			headerElem.appendChild(titleLogoHeaderCont);
 			headerElem.appendChild(headerRightSideElem);
-			const footerCont = document.createElement("div");
+			const footerCont = createElement("div");
 			footerCont.classList.add("bytm-menu-footer-cont");
-			const leftSideFooterCont = document.createElement("div");
+			const leftSideFooterCont = createElement("div");
 			leftSideFooterCont.id = "bytm-menu-footer-left-side-cont";
-			const reloadFooterEl = document.createElement("div");
+			const reloadFooterEl = createElement("div");
 			reloadFooterEl.id = "bytm-menu-footer-reload-hint";
 			reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
 			reloadFooterEl.setAttribute("aria-hidden", "true");
 			reloadFooterEl.textContent = t("reload_hint");
 			reloadFooterEl.role = "alert";
 			reloadFooterEl.ariaLive = "polite";
-			const reloadEl = document.createElement("button");
+			const reloadEl = createElement("button");
 			reloadEl.classList.add("bytm-btn");
 			reloadEl.style.marginLeft = "10px";
 			reloadEl.textContent = t("reload_now");
@@ -9214,7 +9240,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				closeCfgMenu();
 				reloadTab();
 			});
-			const reloadAllEl = document.createElement("button");
+			const reloadAllEl = createElement("button");
 			reloadAllEl.classList.add("bytm-btn");
 			reloadAllEl.style.marginLeft = "10px";
 			reloadAllEl.textContent = t("reload_all_tabs_now");
@@ -9301,16 +9327,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				descImport: () => t("bytm_config_import_desc"),
 				descExport: () => t("bytm_config_export_desc")
 			});
-			const exportImportBtn = document.createElement("button");
+			const exportImportBtn = createElement("button");
 			exportImportBtn.classList.add("bytm-btn");
 			exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
 			onInteraction(exportImportBtn, async () => await exImDlg.open());
-			const buttonsCont = document.createElement("div");
+			const buttonsCont = createElement("div");
 			buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
 			buttonsCont.appendChild(exportImportBtn);
 			footerCont.appendChild(leftSideFooterCont);
 			footerCont.appendChild(buttonsCont);
-			const bodyCont = document.createElement("div");
+			const bodyCont = createElement("div");
 			bodyCont.id = "bytm-cfg-menu-main-body";
 			const featureCfg = getFeatures();
 			const featureCfgWithCategories = Object.entries(featInfo).reduce((acc, [key, { category }]) => {
@@ -9318,14 +9344,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				acc[category][key] = featureCfg[key];
 				return acc;
 			}, {});
-			const sidenavCont = document.createElement("nav");
+			const sidenavCont = createElement("nav");
 			sidenavCont.classList.add("bytm-menu-sidenav");
 			sidenavCont.id = "bytm-cfg-menu-sidenav";
 			sidenavCont.tabIndex = -1;
 			bodyCont.appendChild(sidenavCont);
 			const createSidenavHeader = (headerId, selected = false, isExtraInfoHeader = false) => {
 				try {
-					const headerElem = document.createElement("h2");
+					const headerElem = createElement("h2");
 					headerElem.id = `bytm-menu-nav-header-${headerId}`;
 					headerElem.classList.add("bytm-menu-sidenav-header", "bytm-no-select");
 					selected && headerElem.classList.add("selected");
@@ -9364,7 +9390,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					loggers.configMenu.error(`Error while creating sidenav header for category '${headerId}':`, err);
 				}
 			};
-			const sidenavTopSectionCont = document.createElement("section");
+			const sidenavTopSectionCont = createElement("section");
 			sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
 			sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
 			sidenavTopSectionCont.tabIndex = -1;
@@ -9373,7 +9399,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const catGroupIdx = groupedCategories.findIndex((group) => group.includes(category));
 				const catIdx = catGroupIdx >= 0 ? groupedCategories[catGroupIdx].findIndex((cat) => cat === category) : void 0;
 				if (catGroupIdx > 0 && catIdx === 0) {
-					const hrElem = document.createElement("hr");
+					const hrElem = createElement("hr");
 					hrElem.classList.add("bytm-hr");
 					sidenavTopSectionCont.appendChild(hrElem);
 				}
@@ -9382,7 +9408,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				firstCatHeader = false;
 			}
 			sidenavCont.appendChild(sidenavTopSectionCont);
-			const sidenavBtmSectionCont = document.createElement("section");
+			const sidenavBtmSectionCont = createElement("section");
 			sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
 			sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
 			sidenavBtmSectionCont.tabIndex = -1;
@@ -9398,9 +9424,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				});
 				document.querySelector("#bytm-ftconf-category-changelog details")?.setAttribute("open", "true");
 			});
-			const featuresCont = document.createElement("div");
+			const featuresCont = createElement("div");
 			featuresCont.id = "bytm-menu-opts";
-			const topAnchor = document.createElement("div");
+			const topAnchor = createElement("div");
 			topAnchor.id = "bytm-menu-top-anchor";
 			featuresCont.appendChild(topAnchor);
 			const onCfgChange = async (key, initialVal, newVal) => {
@@ -9442,7 +9468,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
 						const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
 						const getReloadAllBtn = async (dialog) => {
-							const reloadAllBtn = document.createElement("button");
+							const reloadAllBtn = createElement("button");
 							reloadAllBtn.classList.add("bytm-btn");
 							reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
 							reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_now")}` : ""}`;
@@ -9507,7 +9533,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}
 			};
 			const createCategoryContainer = (category) => {
-				const categoryCont = document.createElement("div");
+				const categoryCont = createElement("div");
 				categoryCont.id = `bytm-ftconf-category-${category}`;
 				categoryCont.classList.add("bytm-ftconf-category");
 				categoryCont.tabIndex = 0;
@@ -9539,11 +9565,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					}
 					currentGroup = ftInfo.group ?? void 0;
 					if (currentGroup && (!groupCont || groupCont.dataset.group !== currentGroup)) {
-						groupCont = document.createElement("div");
+						groupCont = createElement("div");
 						groupCont.id = `bytm-ftconf-group-${currentGroup}`;
 						groupCont.classList.add("bytm-ftconf-group");
 						groupCont.dataset.group = currentGroup;
-						const groupHeader = document.createElement("h3");
+						const groupHeader = createElement("h3");
 						groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
 						groupHeader.classList.add("bytm-ftconf-group-header");
 						groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`, { scriptName: scriptInfo$1.name });
@@ -9555,10 +9581,10 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const { type, default: ftDefault } = ftInfo;
 					const step = "step" in ftInfo ? ftInfo.step : void 0;
 					const initialVal = featureCfg[featKey] ?? ftDefault;
-					const ftConfElem = document.createElement("div");
+					const ftConfElem = createElement("div");
 					ftConfElem.classList.add("bytm-ftitem");
 					{
-						const featLeftSideElem = document.createElement("div");
+						const featLeftSideElem = createElement("div");
 						featLeftSideElem.classList.add("bytm-ftitem-leftside");
 						{
 							const defVal = fmtVal(ftDefault, featKey);
@@ -9574,7 +9600,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							loggers.configMenu.error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
 							continue;
 						}
-						const textElem = document.createElement("span");
+						const textElem = createElement("span");
 						textElem.id = `bytm-ftitem-text-${featKey}`;
 						textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
 						textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc.${featKey}`);
@@ -9582,7 +9608,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						let adornmentElem;
 						if (adornContent && adornContent.length > 0) {
 							const adornHtml = adornContent.join(" ");
-							adornmentElem = document.createElement("span");
+							adornmentElem = createElement("span");
 							adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
 							adornmentElem.classList.add("bytm-ftitem-adornment");
 							setInnerHtml(adornmentElem, adornHtml);
@@ -9592,7 +9618,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						if (await hasKey(`feature_helptext.${featKey}`) || helpTextVal && await hasKey(helpTextVal)) {
 							const helpElemImgHtml = await resourceAsString("icon-help");
 							if (helpElemImgHtml) {
-								helpElem = document.createElement("div");
+								helpElem = createElement("div");
 								helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
 								helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc.${featKey}`));
 								helpElem.role = "button";
@@ -9641,17 +9667,17 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 								break;
 						}
 						const inputElemId = `bytm-ftconf-${featKey}-input`;
-						const ctrlElem = document.createElement("span");
+						const ctrlElem = createElement("span");
 						ctrlElem.classList.add("bytm-ftconf-ctrl");
 						ctrlElem.title = "";
 						let advCopyHiddenCont;
 						if (getFeature("advancedMode"), ftInfo.valueHidden) {
-							const advCopyHintElem = document.createElement("span");
+							const advCopyHintElem = createElement("span");
 							advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
 							advCopyHintElem.textContent = t("copied");
 							advCopyHintElem.role = "status";
 							advCopyHintElem.style.display = "none";
-							const advCopyHiddenBtn = document.createElement("button");
+							const advCopyHiddenBtn = createElement("button");
 							advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
 							advCopyHiddenBtn.tabIndex = 0;
 							advCopyHiddenBtn.textContent = t("copy_hidden");
@@ -9667,14 +9693,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 								}, 3e3);
 							};
 							onInteraction(advCopyHiddenBtn, (e) => copyHiddenInteraction(e));
-							advCopyHiddenCont = document.createElement("span");
+							advCopyHiddenCont = createElement("span");
 							advCopyHiddenCont.appendChild(advCopyHintElem);
 							advCopyHiddenCont.appendChild(advCopyHiddenBtn);
 						}
 						advCopyHiddenCont && ctrlElem.appendChild(advCopyHiddenCont);
 						if (inputTag) {
 							const isNumericInput = ["number", "slider"].includes(type);
-							const inputElem = document.createElement(inputTag);
+							const inputElem = createElement(inputTag);
 							inputElem.classList.add("bytm-ftconf-input");
 							inputElem.id = inputElemId;
 							inputElem.ariaLabel = t(`feature_desc.${featKey}`);
@@ -9692,7 +9718,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							let labelElem;
 							let lastDisplayedVal;
 							if (type === "slider") {
-								labelElem = document.createElement("label");
+								labelElem = createElement("label");
 								labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
 								labelElem.textContent = `${fmtVal(initialVal, featKey)}${getUnitTxt(inputElem.value)}`;
 								inputElem.addEventListener("input", () => {
@@ -9704,7 +9730,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							} else if (type === "select") {
 								const ftOpts = typeof ftInfo.options === "function" ? ftInfo.options() : ftInfo.options;
 								for (const { value, label } of ftOpts) {
-									const optionElem = document.createElement("option");
+									const optionElem = createElement("option");
 									optionElem.value = String(value);
 									optionElem.textContent = `${label}${` [${value}]`}`;
 									if (value === initialVal) optionElem.selected = true;
@@ -9753,7 +9779,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							}
 							ctrlElem.appendChild(inputElem);
 							if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
-								const afterInputUnitEl = document.createElement("span");
+								const afterInputUnitEl = createElement("span");
 								afterInputUnitEl.classList.add("bytm-ftconf-unit");
 								afterInputUnitEl.textContent = getUnitTxt(inputElem.value);
 								ctrlElem.appendChild(afterInputUnitEl);
@@ -9777,7 +9803,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 									});
 									break;
 								case "button":
-									customInputEl = document.createElement("button");
+									customInputEl = createElement("button");
 									customInputEl.classList.add("bytm-btn");
 									customInputEl.tabIndex = 0;
 									customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
@@ -9823,7 +9849,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			const extraInfoCategoryElements = {
 				about: async () => {
-					const aboutTextCont = document.createElement("p");
+					const aboutTextCont = createElement("p");
 					aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
 					aboutTextCont.classList.add("bytm-markdown-container");
 					setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", (0, _sv443_network_userutils.pureObj)({
@@ -9848,7 +9874,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					return [aboutTextCont];
 				},
 				changelog: async () => {
-					const mdContElem = document.createElement("div");
+					const mdContElem = createElement("div");
 					mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
 					mdContElem.classList.add("bytm-markdown-container");
 					setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
@@ -9883,7 +9909,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}
 				loggers.configMenu.info("Rebuilt config menu");
 			});
-			const scrollIndicator = document.createElement("img");
+			const scrollIndicator = createElement("img");
 			scrollIndicator.id = "bytm-menu-scroll-indicator";
 			scrollIndicator.classList.add("bytm-no-select");
 			scrollIndicator.src = await getResourceUrl("icon-arrow_down");
@@ -9900,7 +9926,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				if (scrollIndicatorEnabled && scrollPos > scrollIndicatorOffsetThreshold && !scrollIndicator.classList.contains("bytm-hidden")) scrollIndicator.classList.add("bytm-hidden");
 				else if (scrollIndicatorEnabled && scrollPos <= scrollIndicatorOffsetThreshold && scrollIndicator.classList.contains("bytm-hidden")) scrollIndicator.classList.remove("bytm-hidden");
 			});
-			const bottomAnchor = document.createElement("div");
+			const bottomAnchor = createElement("div");
 			bottomAnchor.id = "bytm-menu-bottom-anchor";
 			featuresCont.appendChild(bottomAnchor);
 			bodyCont.appendChild(featuresCont);
@@ -9918,12 +9944,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				"icon-advanced_mode_large"
 			]);
 			if (modeItems.length > 0) {
-				const modeDisplayCont = document.createElement("div");
+				const modeDisplayCont = createElement("div");
 				modeDisplayCont.id = "bytm-menu-mode-display-cont";
 				for (const [id, trKey, resourceKey] of modeItems) {
 					const isSvg = resourceKey.startsWith("icon-");
 					const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM_info.scriptHandler ?? "(your userscript manager extension)" });
-					const modeDispWrapperEl = document.createElement("div");
+					const modeDispWrapperEl = createElement("div");
 					modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
 					modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
 					let transitionEnded = false;
@@ -9954,7 +9980,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					modeDisplayCont.addEventListener("mouseleave", leaveCont);
 					modeDisplayCont.addEventListener("focusout", leaveCont);
 					if (isSvg) {
-						const modeDisplayWrapperEl = document.createElement("span");
+						const modeDisplayWrapperEl = createElement("span");
 						modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
 						modeDisplayWrapperEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
 						modeDisplayWrapperEl.tabIndex = 0;
@@ -9968,7 +9994,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						setInnerHtml(modeDisplayWrapperEl, svgContent);
 						modeDispWrapperEl.appendChild(modeDisplayWrapperEl);
 					} else {
-						const modeDisplayEl = document.createElement("img");
+						const modeDisplayEl = createElement("img");
 						modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
 						modeDisplayEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
 						modeDisplayEl.tabIndex = 0;
@@ -9977,7 +10003,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						modeDisplayEl.src = await getResourceUrl(resourceKey);
 						modeDispWrapperEl.appendChild(modeDisplayEl);
 					}
-					const labelEl = document.createElement("span");
+					const labelEl = createElement("span");
 					labelEl.classList.add("bytm-menu-mode-display-label");
 					labelEl.textContent = t(trKey);
 					modeDispWrapperEl.appendChild(labelEl);
@@ -10131,7 +10157,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	var logoExchanged = false, improveLogoCalled = false, bytmLogoUrl;
 	/** Adds a watermark beneath the logo */
 	async function addWatermark() {
-		const watermarkEl = document.createElement("a");
+		const watermarkEl = createElement("a");
 		watermarkEl.role = "button";
 		watermarkEl.id = "bytm-watermark";
 		watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
@@ -10183,7 +10209,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl) return;
 			logoExchanged = true;
 			logoElem.classList.add("bytm-logo-exchanged");
-			const newLogo = document.createElement("img");
+			const newLogo = createElement("img");
 			newLogo.classList.add("bytm-mod-logo-img");
 			newLogo.src = bytmLogoUrl;
 			if (logoElem.ariaLabel) newLogo.alt = logoElem.ariaLabel;
@@ -10204,9 +10230,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
 	async function addConfigMenuOptionYTM(container) {
-		const cfgOptElem = document.createElement("div");
+		const cfgOptElem = createElement("div");
 		cfgOptElem.classList.add("bytm-cfg-menu-option");
-		const cfgOptItemElem = document.createElement("div");
+		const cfgOptItemElem = createElement("div");
 		cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
 		cfgOptItemElem.role = "button";
 		cfgOptItemElem.tabIndex = 0;
@@ -10216,11 +10242,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (!e.shiftKey && !e.ctrlKey || logoExchanged) openCfgMenu();
 			if (!logoExchanged && (e.shiftKey || e.ctrlKey)) exchangeLogo();
 		});
-		const cfgOptIconElem = document.createElement("img");
+		const cfgOptIconElem = createElement("img");
 		cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
 		cfgOptIconElem.src = await getResourceUrl("img-logo_dev");
 		cfgOptIconElem.ariaHidden = "true";
-		const cfgOptTextElem = document.createElement("div");
+		const cfgOptTextElem = createElement("div");
 		cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
 		cfgOptTextElem.textContent = t("config_menu_option", scriptInfo$1.name);
 		cfgOptItemElem.appendChild(cfgOptIconElem);
@@ -10231,18 +10257,18 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 	async function addConfigMenuOptionYT(container) {
-		const cfgOptWrapperElem = document.createElement("div");
+		const cfgOptWrapperElem = createElement("div");
 		cfgOptWrapperElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
 		cfgOptWrapperElem.role = "button";
 		cfgOptWrapperElem.tabIndex = 0;
 		cfgOptWrapperElem.ariaLabel = cfgOptWrapperElem.title = t("open_menu_tooltip", scriptInfo$1.name);
-		const cfgOptElem = document.createElement("div");
+		const cfgOptElem = createElement("div");
 		cfgOptElem.classList.add("bytm-yt-cfg-menu-option-inner");
-		const cfgOptImgElem = document.createElement("img");
+		const cfgOptImgElem = createElement("img");
 		cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
 		cfgOptImgElem.src = await getResourceUrl("img-logo_dev");
 		cfgOptImgElem.ariaHidden = "true";
-		const cfgOptItemElem = document.createElement("div");
+		const cfgOptItemElem = createElement("div");
 		cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
 		cfgOptItemElem.textContent = scriptInfo$1.name;
 		cfgOptElem.appendChild(cfgOptImgElem);
@@ -10270,7 +10296,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const thumbnailElem = item.querySelector(getSelector("layout", "listItemLeftItems_sub_listItem"));
 					const titleElem = item.querySelector(getSelector("layout", "listItemTitle_sub_listItem"));
 					if (!thumbnailElem || !titleElem) continue;
-					const anchorElem = document.createElement("a");
+					const anchorElem = createElement("a");
 					anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
 					anchorElem.href = titleElem?.href ?? "#";
 					anchorElem.target = "_self";
@@ -10390,7 +10416,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	*/
 	function improveSidebarAnchors(sidebarItems) {
 		sidebarItems.forEach((item, i) => {
-			const anchorElem = document.createElement("a");
+			const anchorElem = createElement("a");
 			anchorElem.classList.add("bytm-anchor", "bytm-no-select");
 			anchorElem.role = "button";
 			anchorElem.target = "_self";
@@ -10500,7 +10526,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (!contBtns.some((b) => Boolean(b.condition))) return;
 			addSelectorListener("sidePanel", getSelector("layout", "queueHeaderButtons_sub_sidePanel"), { async listener(rightBtnsEl) {
 				try {
-					const aboveQueueBtnCont = document.createElement("div");
+					const aboveQueueBtnCont = createElement("div");
 					aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
 					(0, _sv443_network_userutils.addParent)(rightBtnsEl, aboveQueueBtnCont);
 					const headerEl = rightBtnsEl.closest(getSelector("layout", "queueHeaderRenderer_sub_sidePanel"));
@@ -10508,7 +10534,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					siteEvents.on("fullscreenToggled", (isFullscreen) => {
 						headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
 					});
-					const wrapperElem = document.createElement("div");
+					const wrapperElem = createElement("div");
 					wrapperElem.id = "bytm-above-queue-btn-wrapper";
 					for (const item of contBtns) {
 						if (Boolean(item.condition) === false) continue;
@@ -10666,14 +10692,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			};
 			const createElements = async () => {
 				try {
-					const overlayElem = document.createElement("div");
+					const overlayElem = createElement("div");
 					overlayElem.id = "bytm-thumbnail-overlay";
 					overlayElem.title = "";
 					overlayElem.classList.add("bytm-no-select");
 					overlayElem.style.display = "none";
 					let indicatorElem;
 					if (getFeature("thumbnailOverlayShowIndicator")) {
-						indicatorElem = document.createElement("img");
+						indicatorElem = createElement("img");
 						indicatorElem.id = "bytm-thumbnail-overlay-indicator";
 						indicatorElem.src = await getResourceUrl("icon-image");
 						indicatorElem.role = "presentation";
@@ -10682,7 +10708,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						indicatorElem.style.display = "none";
 						indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
 					}
-					const thumbImgElem = document.createElement("img");
+					const thumbImgElem = createElement("img");
 					thumbImgElem.id = "bytm-thumbnail-overlay-img";
 					thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
 					thumbImgElem.role = "presentation";
@@ -10700,7 +10726,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						updateOverlayVisibility();
 					}
 					if (getFeature("thumbnailOverlayToggleBtnShown")) {
-						const toggleBtnElem = createRipple(document.createElement("a"));
+						const toggleBtnElem = createRipple(createElement("a"));
 						toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
 						toggleBtnElem.role = "button";
 						toggleBtnElem.tabIndex = 0;
@@ -10917,14 +10943,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const likeBtn = voteCont.querySelector(getSelector("watchPage", "likeBtnShape_sub_votesRenderer"));
 		const dislikeBtn = voteCont.querySelector(getSelector("watchPage", "dislikeBtnShape_sub_votesRenderer"));
 		if (!likeBtn || !dislikeBtn) return loggers.layout.error("Couldn't find like or dislike button while adding vote numbers");
-		const likeBtnCont = document.createElement("div");
+		const likeBtnCont = createElement("div");
 		likeBtnCont.id = "bytm-like-btn-cont";
 		(0, _sv443_network_userutils.addParent)(likeBtn, likeBtnCont);
-		const dislikeBtnCont = document.createElement("div");
+		const dislikeBtnCont = createElement("div");
 		dislikeBtnCont.id = "bytm-dislike-btn-cont";
 		(0, _sv443_network_userutils.addParent)(dislikeBtn, dislikeBtnCont);
 		const createLabel = (amount, type) => {
-			const label = document.createElement("span");
+			const label = createElement("span");
 			label.classList.add("bytm-vote-label", "bytm-no-select", type);
 			label.textContent = String(formatNumber(amount));
 			label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatNumber(amount, "long"));
@@ -11063,13 +11089,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	/** Creates a search bar element, a clear button, and their flex wrapper and returns it */
 	function createSearchBarEl(popupContainer) {
 		const applyPopupContSearchDebounced = (0, _sv443_network_userutils.debounce)(applyPopupContSearch, 300);
-		const searchWrapper = document.createElement("div");
+		const searchWrapper = createElement("div");
 		searchWrapper.classList.add(searchBarContClass, "bytm-flex-row-gap-s");
-		const searchBar = document.createElement("input");
+		const searchBar = createElement("input");
 		searchBar.classList.add("bytm-list-search-bar");
 		searchBar.placeholder = searchBar.title = t("search_placeholder");
 		searchBar.addEventListener("input", () => applyPopupContSearchDebounced(popupContainer, searchBar.value));
-		const clearBtn = document.createElement("button");
+		const clearBtn = createElement("button");
 		clearBtn.classList.add("bytm-list-search-clear-btn", "bytm-btn", "no-min-width");
 		clearBtn.title = t("search_clear");
 		clearBtn.tabIndex = 0;
@@ -11312,7 +11338,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	*/
 	async function addQueueButtons(queueItem, containerParentSelector = void 0, listType = "currentQueue", classes = [], insertPosition = "child") {
 		containerParentSelector ??= getSelector("songLists", "allCurrentQueueItemsSongInfo_global");
-		const queueBtnsCont = document.createElement("div");
+		const queueBtnsCont = createElement("div");
 		queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 		const [lyricsIconUrl, deleteIconUrl, spinnerIconUrl] = await Promise.all([
 			"icon-lyrics",
@@ -11421,13 +11447,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 		let deleteBtnElem;
 		if (getFeature("deleteFromQueueButton")) {
-			deleteBtnElem = document.createElement("a");
+			deleteBtnElem = createElement("a");
 			deleteBtnElem.ariaLabel = deleteBtnElem.title = listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list");
 			deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn", "bytm-song-list-item-btn");
 			deleteBtnElem.role = "button";
 			deleteBtnElem.tabIndex = 0;
 			deleteBtnElem.style.visibility = "initial";
-			const delImgElem = document.createElement("img");
+			const delImgElem = createElement("img");
 			delImgElem.classList.add("bytm-generic-btn-img");
 			delImgElem.src = deleteIconUrl;
 			onInteraction(deleteBtnElem, async (e) => {
@@ -12042,7 +12068,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	/** Disables Dark Reader if it is present */
 	async function disableDarkReader() {
 		if (getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all") return;
-		const metaElem = document.createElement("meta");
+		const metaElem = createElement("meta");
 		metaElem.name = "darkreader-lock";
 		metaElem.id = "bytm-disable-dark-reader";
 		document.head.appendChild(metaElem);
@@ -12439,7 +12465,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 						result
 					}),
 					extraButtons: [(dlg) => {
-						const btn = document.createElement("button");
+						const btn = createElement("button");
 						btn.classList.add("bytm-btn");
 						btn.textContent = btn.ariaLabel = t("copy");
 						const copyResult = () => copyToClipboard(result);
@@ -12464,7 +12490,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				textarea: true,
 				confirmBtnEnabled: false,
 				extraButtons: [(dlg) => {
-					const btn = document.createElement("button");
+					const btn = createElement("button");
 					btn.textContent = btn.ariaLabel = t("compress");
 					btn.addEventListener("click", async () => {
 						const val = dlg.getInputValue();
@@ -12482,7 +12508,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 					});
 					return btn;
 				}, (dlg) => {
-					const btn = document.createElement("button");
+					const btn = createElement("button");
 					btn.classList.add("bytm-prompt-dialog-button");
 					btn.textContent = btn.ariaLabel = t("decompress");
 					btn.addEventListener("click", async () => {
@@ -12536,7 +12562,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			type: "alert",
 			message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
 			extraButtons: [(dlg) => {
-				const btn = document.createElement("button");
+				const btn = createElement("button");
 				btn.textContent = btn.ariaLabel = t("copy");
 				const onClick = async () => {
 					devPluginToken && copyToClipboard(devPluginToken);
@@ -12554,7 +12580,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && registerCmd("🗂️", "https://github.githubassets.com/images/icons/emoji/unicode/1f5c2.png?v8", "menu_command.collect_sessions", () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "613c19fa",
+				buildNumber: "9541c3ce",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
