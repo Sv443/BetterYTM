@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0dfb1f47/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@613c19fa/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 07 Nov 2026 22:25:56 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Thu, 12 Nov 2026 20:17:26 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 0dfb1f47                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 613c19fa                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ MBuoD3teh3yh                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 03LbJFjUdJhM                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -212,288 +212,6 @@
 		if (!impl) throw new Error(`Late binding '${key}' is not available yet`);
 		return impl;
 	}
-	var resources_default = {
-		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
-		preloadAssetPattern: "^(icon|img)-",
-		resources: {
-			"css-above_queue_btns": "styles/aboveQueueBtns.css",
-			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
-			"css-anchor_improvements": "styles/anchorImprovements.css",
-			"css-auto_like": "styles/autoLike.css",
-			"css-bundle": "/dist/BetterYTM.css",
-			"css-fix_hdr": "styles/fixHDR.css",
-			"css-fix_spacing": "styles/fixSpacing.css",
-			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
-			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
-			"css-queue_header_opaque": "styles/queueHeaderOpaque.css",
-			"css-queue_header_transparent": "styles/queueHeaderTransparent.css",
-			"css-queue_item_gradient": "styles/queueItemGradient.css",
-			"css-queue_item_opaque": "styles/queueItemOpaque.css",
-			"css-queue_item_transparent": "styles/queueItemTransparent.css",
-			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
-			"css-show_votes": "styles/showVotes.css",
-			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
-			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
-			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
-			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
-			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
-			"css-vol_slider_gradient": "styles/volSliderGradient.css",
-			"css-vol_slider_opaque": "styles/volSliderOpaque.css",
-			"css-vol_slider_size": "styles/volSliderSize.css",
-			"css-vol_slider_transparent": "styles/volSliderTransparent.css",
-			"css-watch_page_full_size": "styles/watchPageFullSize.css",
-			"doc-data": {
-				"path": "data.json",
-				"ref": "main",
-				"integrity": false
-			},
-			"doc-license": {
-				"path": "/LICENSE.txt",
-				"ref": "$BRANCH",
-				"integrity": false
-			},
-			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
-			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
-			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
-			"icon-advanced_mode": "icons/plus_circle_small.svg",
-			"icon-advanced_mode_large": "icons/plus_circle.svg",
-			"icon-alert": "icons/alert.svg",
-			"icon-arrow_down": "icons/arrow_down.svg",
-			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
-			"icon-auto_like": "icons/auto_like.svg",
-			"icon-clear_list": "icons/clear_list.svg",
-			"icon-copy": "icons/copy.svg",
-			"icon-delete": "icons/delete.svg",
-			"icon-edit": "icons/edit.svg",
-			"icon-error": "icons/error.svg",
-			"icon-experimental": "icons/beaker_small.svg",
-			"icon-gear": "icons/gear.svg",
-			"icon-globe_small": "icons/globe_small.svg",
-			"icon-globe": "icons/globe.svg",
-			"icon-help": "icons/help.svg",
-			"icon-image_filled_am": "icons/image_filled_am.svg",
-			"icon-image_filled_yt": "icons/image_filled_yt.svg",
-			"icon-image_filled": "icons/image_filled.svg",
-			"icon-image": "icons/image.svg",
-			"icon-link": "icons/link.svg",
-			"icon-lock": "icons/lock.svg",
-			"icon-lyrics": "icons/lyrics.svg",
-			"icon-new": "icons/new.svg",
-			"icon-prompt": "icons/help.svg",
-			"icon-reload": "icons/refresh.svg",
-			"icon-shield_info": "icons/shield_info.svg",
-			"icon-shield_question": "icons/shield_question.svg",
-			"icon-history": "icons/history.svg",
-			"icon-plugin": "icons/plugin.svg",
-			"icon-plugin_off": "icons/plugin_off.svg",
-			"icon-skip_to": "icons/skip_to.svg",
-			"icon-speed": "icons/speed.svg",
-			"icon-spinner": "icons/spinner.svg",
-			"icon-upload": "icons/upload.svg",
-			"icon-ytm": "icons/ytm.svg",
-			"img-close": "images/close.png",
-			"img-discord": "images/external/discord.png",
-			"img-github": "images/external/github.png",
-			"img-greasyfork": "images/external/greasyfork.png",
-			"img-logo_dev": "images/logo/logo_dev_48.png",
-			"img-logo": "images/logo/logo_48.png",
-			"img-openuserjs": "images/external/openuserjs.png",
-			"trans-de-DE": "translations/de-DE.json",
-			"trans-en-GB": "translations/en-GB.json",
-			"trans-en-US": "translations/en-US.json",
-			"trans-es-ES": "translations/es-ES.json",
-			"trans-fr-FR": "translations/fr-FR.json",
-			"trans-hi-IN": "translations/hi-IN.json",
-			"trans-ja-JP": "translations/ja-JP.json",
-			"trans-pt-BR": "translations/pt-BR.json",
-			"trans-tr-TR": "translations/tr-TR.json",
-			"trans-zh-CN": "translations/zh-CN.json"
-		}
-	};
-	//#endregion
-	//#region assets/locales.json
-	var locales_default = {
-		"de-DE": {
-			"name": "Deutsch (Deutschland)",
-			"nameEnglish": "German (Germany)",
-			"emoji": "🇩🇪",
-			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"de",
-				"de-AT",
-				"de-BE",
-				"de-CH",
-				"de-LI",
-				"de-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-US": {
-			"name": "English (United States)",
-			"nameEnglish": "English (United States)",
-			"emoji": "🇺🇸",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["en", "en-CA"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-GB": {
-			"name": "English (Great Britain)",
-			"nameEnglish": "English (Great Britain)",
-			"emoji": "🇬🇧",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"en-AU",
-				"en-IE",
-				"en-NZ",
-				"en-ZA"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"es-ES": {
-			"name": "Español (España)",
-			"nameEnglish": "Spanish (Spain)",
-			"emoji": "🇪🇸",
-			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["es", "es-MX"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"fr-FR": {
-			"name": "Français (France)",
-			"nameEnglish": "French (France)",
-			"emoji": "🇫🇷",
-			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"fr",
-				"fr-CA",
-				"fr-BE",
-				"fr-CH",
-				"fr-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"hi-IN": {
-			"name": "हिंदी (भारत)",
-			"nameEnglish": "Hindi (India)",
-			"emoji": "🇮🇳",
-			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-			"authors": ["Sv443"],
-			"altLocales": ["hi", "hi-NP"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "।",
-			"sentenceTerminators": [
-				"।",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"ja-JP": {
-			"name": "日本語 (日本)",
-			"nameEnglish": "Japanese (Japan)",
-			"emoji": "🇯🇵",
-			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-			"authors": ["Sv443"],
-			"altLocales": ["ja"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"pt-BR": {
-			"name": "Português (Brasil)",
-			"nameEnglish": "Portuguese (Brazil)",
-			"emoji": "🇧🇷",
-			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["pt", "pt-PT"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"tr-TR": {
-			"name": "Türkçe (Türkiye)",
-			"nameEnglish": "Turkish (Turkey)",
-			"emoji": "🇹🇷",
-			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
-			"authors": ["kcangny"],
-			"altLocales": ["tr"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"zh-CN": {
-			"name": "中文（简化，中国）",
-			"nameEnglish": "Chinese (Simplified, China)",
-			"emoji": "🇨🇳",
-			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"zh",
-				"zh-TW",
-				"zh-HK",
-				"zh-SG"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		}
-	};
 	//#endregion
 	//#region src/types.ts
 	var LogLevel = /* @__PURE__ */ function(LogLevel) {
@@ -568,9 +286,9 @@
 	/** Which host the userscript was installed from - github, greasyfork or openuserjs. */
 	var host$1 = "github";
 	/** The build number of the userscript. This is the 8 character SHA1 hash of the commit that was made prior to building. */
-	var buildNumber$1 = "0dfb1f47";
+	var buildNumber$1 = "613c19fa";
 	/** When the script was built, as a 13 digit UNIX timestamp. */
-	var buildTimestamp = 1794090356036;
+	var buildTimestamp = 1794514646816;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. Only used in dev builds when `assetSource` is set to `local`. */
@@ -854,6 +572,104 @@
 			this.name = "PluginError";
 		}
 	};
+	var resources_default = {
+		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
+		preloadAssetPattern: "^(icon|img)-",
+		resources: {
+			"css-above_queue_btns": "styles/aboveQueueBtns.css",
+			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
+			"css-anchor_improvements": "styles/anchorImprovements.css",
+			"css-auto_like": "styles/autoLike.css",
+			"css-bundle": "/dist/BetterYTM.css",
+			"css-fix_hdr": "styles/fixHDR.css",
+			"css-fix_spacing": "styles/fixSpacing.css",
+			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
+			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+			"css-queue_header_opaque": "styles/queueHeaderOpaque.css",
+			"css-queue_header_transparent": "styles/queueHeaderTransparent.css",
+			"css-queue_item_gradient": "styles/queueItemGradient.css",
+			"css-queue_item_opaque": "styles/queueItemOpaque.css",
+			"css-queue_item_transparent": "styles/queueItemTransparent.css",
+			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
+			"css-show_votes": "styles/showVotes.css",
+			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
+			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
+			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+			"css-vol_slider_gradient": "styles/volSliderGradient.css",
+			"css-vol_slider_opaque": "styles/volSliderOpaque.css",
+			"css-vol_slider_size": "styles/volSliderSize.css",
+			"css-vol_slider_transparent": "styles/volSliderTransparent.css",
+			"css-watch_page_full_size": "styles/watchPageFullSize.css",
+			"doc-data": {
+				"path": "data.json",
+				"ref": "main",
+				"integrity": false
+			},
+			"doc-license": {
+				"path": "/LICENSE.txt",
+				"ref": "$BRANCH",
+				"integrity": false
+			},
+			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
+			"icon-advanced_mode": "icons/plus_circle_small.svg",
+			"icon-advanced_mode_large": "icons/plus_circle.svg",
+			"icon-alert": "icons/alert.svg",
+			"icon-arrow_down": "icons/arrow_down.svg",
+			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+			"icon-auto_like": "icons/auto_like.svg",
+			"icon-clear_list": "icons/clear_list.svg",
+			"icon-copy": "icons/copy.svg",
+			"icon-delete": "icons/delete.svg",
+			"icon-edit": "icons/edit.svg",
+			"icon-error": "icons/error.svg",
+			"icon-experimental": "icons/beaker_small.svg",
+			"icon-gear": "icons/gear.svg",
+			"icon-globe_small": "icons/globe_small.svg",
+			"icon-globe": "icons/globe.svg",
+			"icon-help": "icons/help.svg",
+			"icon-image_filled_am": "icons/image_filled_am.svg",
+			"icon-image_filled_yt": "icons/image_filled_yt.svg",
+			"icon-image_filled": "icons/image_filled.svg",
+			"icon-image": "icons/image.svg",
+			"icon-link": "icons/link.svg",
+			"icon-lock": "icons/lock.svg",
+			"icon-lyrics": "icons/lyrics.svg",
+			"icon-new": "icons/new.svg",
+			"icon-prompt": "icons/help.svg",
+			"icon-reload": "icons/refresh.svg",
+			"icon-shield_info": "icons/shield_info.svg",
+			"icon-shield_question": "icons/shield_question.svg",
+			"icon-history": "icons/history.svg",
+			"icon-plugin": "icons/plugin.svg",
+			"icon-plugin_off": "icons/plugin_off.svg",
+			"icon-skip_to": "icons/skip_to.svg",
+			"icon-speed": "icons/speed.svg",
+			"icon-spinner": "icons/spinner.svg",
+			"icon-upload": "icons/upload.svg",
+			"icon-ytm": "icons/ytm.svg",
+			"img-close": "images/close.png",
+			"img-discord": "images/external/discord.png",
+			"img-github": "images/external/github.png",
+			"img-greasyfork": "images/external/greasyfork.png",
+			"img-logo_dev": "images/logo/logo_dev_48.png",
+			"img-logo": "images/logo/logo_48.png",
+			"img-openuserjs": "images/external/openuserjs.png",
+			"trans-de-DE": "translations/de-DE.json",
+			"trans-en-GB": "translations/en-GB.json",
+			"trans-en-US": "translations/en-US.json",
+			"trans-es-ES": "translations/es-ES.json",
+			"trans-fr-FR": "translations/fr-FR.json",
+			"trans-hi-IN": "translations/hi-IN.json",
+			"trans-ja-JP": "translations/ja-JP.json",
+			"trans-pt-BR": "translations/pt-BR.json",
+			"trans-tr-TR": "translations/tr-TR.json",
+			"trans-zh-CN": "translations/zh-CN.json"
+		}
+	};
 	//#endregion
 	//#region src/utils/resourceUrl.ts
 	/**
@@ -1014,6 +830,190 @@
 			loggers.interface.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
 		}
 	}
+	//#endregion
+	//#region assets/locales.json
+	var locales_default = {
+		"de-DE": {
+			"name": "Deutsch (Deutschland)",
+			"nameEnglish": "German (Germany)",
+			"emoji": "🇩🇪",
+			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"de",
+				"de-AT",
+				"de-BE",
+				"de-CH",
+				"de-LI",
+				"de-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-US": {
+			"name": "English (United States)",
+			"nameEnglish": "English (United States)",
+			"emoji": "🇺🇸",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["en", "en-CA"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-GB": {
+			"name": "English (Great Britain)",
+			"nameEnglish": "English (Great Britain)",
+			"emoji": "🇬🇧",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"en-AU",
+				"en-IE",
+				"en-NZ",
+				"en-ZA"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"es-ES": {
+			"name": "Español (España)",
+			"nameEnglish": "Spanish (Spain)",
+			"emoji": "🇪🇸",
+			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["es", "es-MX"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"fr-FR": {
+			"name": "Français (France)",
+			"nameEnglish": "French (France)",
+			"emoji": "🇫🇷",
+			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"fr",
+				"fr-CA",
+				"fr-BE",
+				"fr-CH",
+				"fr-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"hi-IN": {
+			"name": "हिंदी (भारत)",
+			"nameEnglish": "Hindi (India)",
+			"emoji": "🇮🇳",
+			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+			"authors": ["Sv443"],
+			"altLocales": ["hi", "hi-NP"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "।",
+			"sentenceTerminators": [
+				"।",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"ja-JP": {
+			"name": "日本語 (日本)",
+			"nameEnglish": "Japanese (Japan)",
+			"emoji": "🇯🇵",
+			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+			"authors": ["Sv443"],
+			"altLocales": ["ja"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"pt-BR": {
+			"name": "Português (Brasil)",
+			"nameEnglish": "Portuguese (Brazil)",
+			"emoji": "🇧🇷",
+			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["pt", "pt-PT"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"tr-TR": {
+			"name": "Türkçe (Türkiye)",
+			"nameEnglish": "Turkish (Turkey)",
+			"emoji": "🇹🇷",
+			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
+			"authors": ["kcangny"],
+			"altLocales": ["tr"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"zh-CN": {
+			"name": "中文（简化，中国）",
+			"nameEnglish": "Chinese (Simplified, China)",
+			"emoji": "🇨🇳",
+			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"zh",
+				"zh-TW",
+				"zh-HK",
+				"zh-SG"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		}
+	};
 	//#endregion
 	//#region src/utils/locale.ts
 	/**
@@ -1700,28 +1700,6 @@
 			},
 			since: "3.1.0"
 		},
-		interactionLockHotkeyEnabled: {
-			type: "toggle",
-			default: true,
-			since: "4.0.0"
-		},
-		interactionLockHotkey: {
-			type: "hotkey",
-			default: {
-				code: "Pause",
-				shift: false,
-				ctrl: false,
-				alt: true
-			},
-			since: "4.0.0"
-		},
-		interactionLockOverlayTimeout: {
-			type: "slider",
-			default: 5,
-			min: 0,
-			max: 10,
-			since: "4.0.0"
-		},
 		rebindNextAndPrevious: {
 			type: "toggle",
 			default: false,
@@ -2066,9 +2044,6 @@
 				"globalAlertMode",
 				"openWelcomeMenu",
 				"verboseObservers",
-				"interactionLockHotkeyEnabled",
-				"interactionLockHotkey",
-				"interactionLockOverlayTimeout",
 				"songListTrackNumbersDomains",
 				"listButtonsStyle",
 				"aboveQueueHeaderStyle",
@@ -8893,29 +8868,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm", "yt"],
 			reloadRequired: false
 		},
-		interactionLockHotkeyEnabled: {
-			...featDefaults.interactionLockHotkeyEnabled,
-			category: "hotkeys",
-			group: "interactionLockHotkey",
-			supportedSites: ["ytm", "yt"],
-			reloadRequired: false
-		},
-		interactionLockHotkey: {
-			...featDefaults.interactionLockHotkey,
-			category: "hotkeys",
-			group: "interactionLockHotkey",
-			supportedSites: ["ytm", "yt"],
-			reloadRequired: false
-		},
-		interactionLockOverlayTimeout: {
-			...featDefaults.interactionLockOverlayTimeout,
-			category: "hotkeys",
-			group: "interactionLockHotkey",
-			supportedSites: ["ytm", "yt"],
-			step: .5,
-			renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
-			reloadRequired: false
-		},
 		rebindNextAndPrevious: {
 			...featDefaults.rebindNextAndPrevious,
 			category: "hotkeys",
@@ -11797,7 +11749,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const tryClick = () => {
 			if (isInFullscreen) return loggers.behavior.warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
 			if (isDragging || Date.now() - lastClick < lastInteractionTimeout) return loggers.behavior.warn("Click is currently held down - not dispatching \"Are you still there?\" events");
-			if ([...document.querySelectorAll("ytmusic-popup-container tp-yt-paper-dialog")].every((el) => el.getAttribute("aria-hidden") !== "true")) return loggers.behavior.warn("Dialog is currently open - not dispatching \"Are you still there?\" events");
+			const ytPaperDialogs = [...document.querySelectorAll("ytmusic-popup-container tp-yt-paper-dialog")];
+			if (ytPaperDialogs.length > 0 && ytPaperDialogs.every((el) => el.getAttribute("aria-hidden") !== "true")) return loggers.behavior.warn("Dialog is currently open - not dispatching \"Are you still there?\" events");
 			const navBar = document.querySelector("ytmusic-nav-bar .center-content");
 			navBar?.dispatchEvent(new MouseEvent("click", {
 				altitudeAngle: 1 + Math.random(),
@@ -11861,7 +11814,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	async function initHotkeys() {
 		const inits = [];
 		if (getDomain() === "ytm") inits.push(["initOpenLyricsHotkey", initOpenLyricsHotkey()]);
-		inits.push(["initSearchLyricsPromptHotkey", initSearchLyricsPromptHotkey()], ["initLikeDislikeHotkeys", initLikeDislikeHotkeys()], ["initSiteSwitchHotkey", initSiteSwitchHotkey()], ["initProxyHotkeys", initProxyHotkeys()], ["initSkipToRemTimeHotkey", initSkipToRemTimeHotkey()], ["initSearchBarHotkeys", initSearchBarHotkeys()], ["initInteractionLockHotkey", initInteractionLockHotkey()]);
+		inits.push(["initSearchLyricsPromptHotkey", initSearchLyricsPromptHotkey()], ["initLikeDislikeHotkeys", initLikeDislikeHotkeys()], ["initSiteSwitchHotkey", initSiteSwitchHotkey()], ["initProxyHotkeys", initProxyHotkeys()], ["initSkipToRemTimeHotkey", initSkipToRemTimeHotkey()], ["initSearchBarHotkeys", initSearchBarHotkeys()]);
 		const results = await Promise.allSettled(inits.map(([, promise]) => promise));
 		results.forEach((res, i) => {
 			if (res.status === "rejected") loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
@@ -12006,128 +11959,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			hotkeyMatches(e, getFeature("focusSearchBarHotkey")) && checkFocusHotkey(e);
 			hotkeyMatches(e, getFeature("clearSearchBarHotkey")) && checkClearHotkey(e);
 		}, { capture: true });
-	}
-	async function initInteractionLockHotkey() {
-		const ilOverlayEl = document.createElement("div");
-		ilOverlayEl.id = "bytm-interaction-lock-overlay";
-		ilOverlayEl.classList.add("hidden");
-		ilOverlayEl.inert = true;
-		const ilContainerEl = document.createElement("div");
-		ilContainerEl.id = "bytm-interaction-lock-overlay-cont";
-		const ilLockEl = document.createElement("span");
-		ilLockEl.id = "bytm-interaction-lock-overlay-lock-img";
-		resourceAsString("icon-lock").then((svg) => setInnerHtml(ilLockEl, svg));
-		ilContainerEl.appendChild(ilLockEl);
-		const getHotkeyParts = (hk, asHtml = false) => {
-			const hotkeyPartsRaw = [
-				...hk.ctrl ? [t("hotkey_modifier.ctrl")] : [],
-				...hk.shift ? [t("hotkey_modifier.shift")] : [],
-				...hk.alt ? [t("hotkey_modifier.alt")] : [],
-				hk.code
-			];
-			return t("interaction_lock_message", { hotkeyParts: (asHtml ? hotkeyPartsRaw.map((p) => `<kbd class="bytm-kbd">${p}</kbd>`) : hotkeyPartsRaw).join(" + ") });
-		};
-		const ilMessageEl = document.createElement("span");
-		ilMessageEl.id = "bytm-interaction-lock-overlay-message";
-		ilMessageEl.ariaLive = "polite";
-		ilMessageEl.tabIndex = 0;
-		ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
-		ilContainerEl.appendChild(ilMessageEl);
-		/** Forces the aria-live region to (re-)announce the lock message, since toggling visibility alone doesn't count as a content update for screen readers. */
-		const announceMessage = () => {
-			const html = getHotkeyParts(getFeature("interactionLockHotkey"), true);
-			setInnerHtml(ilMessageEl, "");
-			requestAnimationFrame(() => setInnerHtml(ilMessageEl, html));
-		};
-		const ilButtonEl = document.createElement("button");
-		ilButtonEl.id = "bytm-interaction-lock-disable-btn";
-		ilButtonEl.classList.add("bytm-btn");
-		ilButtonEl.type = "button";
-		ilButtonEl.tabIndex = 0;
-		ilButtonEl.textContent = ilButtonEl.ariaLabel = t("interaction_lock_unlock_button");
-		ilContainerEl.appendChild(ilButtonEl);
-		ilOverlayEl.appendChild(ilContainerEl);
-		document.body.appendChild(ilOverlayEl);
-		let ilOverlayEnabled = false;
-		let ilHideTimeout;
-		/** Shows the overlay and (re-)starts the timer that automatically hides it again. */
-		const show = () => {
-			if (getFeature("interactionLockOverlayTimeout") === 0) return;
-			const initial = Boolean(document.querySelector("#bytm-interaction-lock-overlay.hidden"));
-			loggers.hotkey.log("Showing the interaction lock overlay");
-			clearTimeout(ilHideTimeout);
-			ilOverlayEl.classList.remove("hidden");
-			ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1e3);
-			initial && document.querySelector("#bytm-interaction-lock-overlay-message")?.focus();
-			setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
-		};
-		/** Hides the overlay without changing the locked state. */
-		const hide = () => {
-			loggers.hotkey.log("Hiding the interaction lock overlay");
-			clearTimeout(ilHideTimeout);
-			ilOverlayEl.classList.add("hidden");
-			setInnerHtml(ilMessageEl, "");
-		};
-		/** Locks all page interactions outside of the overlay and shows it. */
-		const lock = () => {
-			ilOverlayEnabled = true;
-			ilOverlayEl.inert = false;
-			for (const child of Array.from(document.body.children)) if (child !== ilOverlayEl) child.inert = true;
-			loggers.hotkey.log("Locked page interactions");
-			show();
-			announceMessage();
-			ilMessageEl.focus();
-		};
-		/** Unlocks all page interactions and hides the overlay. */
-		const unlock = () => {
-			ilOverlayEnabled = false;
-			ilOverlayEl.inert = true;
-			for (const child of Array.from(document.body.children)) if (child !== ilOverlayEl) child.inert = false;
-			loggers.hotkey.log("Unlocked page interactions");
-			hide();
-		};
-		onInteraction(ilButtonEl, () => unlock());
-		ilOverlayEl.addEventListener("focusin", () => {
-			if (ilOverlayEnabled) show();
-		});
-		for (const evtName of [
-			"keydown",
-			"keyup",
-			"mousedown",
-			"click"
-		]) ilOverlayEl.addEventListener(evtName, (e) => {
-			if (ilOverlayEnabled) e.stopPropagation();
-		});
-		document.addEventListener("keydown", (e) => {
-			if (getFeature("interactionLockHotkeyEnabled")) {
-				if (hotkeyMatches(e, getFeature("interactionLockHotkey"))) {
-					preventBubble(e);
-					ilOverlayEnabled ? unlock() : lock();
-				} else if (ilOverlayEnabled) {
-					if (e.target?.closest("#bytm-interaction-lock-overlay")) return;
-					preventBubble(e);
-					show();
-					const hk = {
-						ctrl: e.ctrlKey,
-						shift: e.shiftKey,
-						alt: e.altKey,
-						code: e.code
-					};
-					loggers.hotkey.log(`Dismissing key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
-				}
-			} else if (ilOverlayEnabled) unlock();
-		}, { capture: true });
-		document.addEventListener("mousedown", (e) => {
-			if (getFeature("interactionLockHotkeyEnabled") && ilOverlayEnabled) {
-				if (e instanceof KeyboardEvent && hotkeyMatches(e, getFeature("interactionLockHotkey"))) return;
-				if (!e.target?.closest("#bytm-interaction-lock-overlay")) {
-					loggers.hotkey.log(`Dismissing mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
-					preventBubble(e);
-					show();
-				}
-			}
-		}, { capture: true });
-		loggers.hotkey.log(`Initialized interaction lock hotkey (currently ${getFeature("interactionLockHotkeyEnabled") ? "enabled" : "disabled"})`);
 	}
 	var lastProxyHkTime = 0;
 	/** All proxy hotkey groups, identified by the feature key that toggles them off or on */
@@ -12517,12 +12348,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		const isDev = mode$1 === "development";
 		const isAdv = getFeature("advancedMode");
 		const isAny = isDev || isAdv;
-		const registerCmd = (emoji, trKey, fn, opts) => {
-			if (scriptHandler === "violentmonkey" && !opts?.icon) (opts ??= {}).icon = emoji;
+		const registerCmd = (emoji, emojiUrl, trKey, fn, opts) => {
+			if (scriptHandler === "violentmonkey" && !opts?.icon) (opts ??= {}).icon = emojiUrl;
 			GM.registerMenuCommand(scriptHandler === "violentmonkey" ? t(trKey) : isLtr ? `${emoji} ${t(trKey)}` : `${t(trKey)} ${emoji}`, fn, scriptHandler === "violentmonkey" ? opts : opts?.accessKey);
 		};
-		registerCmd("⚙️", "menu_command.open_cfg_menu", () => openCfgMenu());
-		registerCmd("♻️", "menu_command.reset_config", async () => {
+		registerCmd("⚙️", "https://github.githubassets.com/images/icons/emoji/unicode/2699.png?v8", "menu_command.open_cfg_menu", () => openCfgMenu());
+		registerCmd("♻️", "https://github.githubassets.com/images/icons/emoji/unicode/267b.png?v8", "menu_command.reset_config", async () => {
 			const message = t("menu_command.reset_config.confirm");
 			try {
 				if (await showPrompt({
@@ -12540,7 +12371,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}
 			}
 		});
-		isAny && registerCmd("🔍", "menu_command.gm_storage_list_decompressed", async () => {
+		isAny && registerCmd("🔍", "https://github.githubassets.com/images/icons/emoji/unicode/1f50d.png?v8", "menu_command.gm_storage_list_decompressed", async () => {
 			const keys = await GM.listValues();
 			loggers.command.log(`GM values (${keys.length}):`);
 			if (keys.length === 0) loggers.command.log("  No values found.");
@@ -12567,7 +12398,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				decodeError(key, err);
 			}
 		});
-		isAny && registerCmd("🗑️", "menu_command.gm_storage_delete_all", async () => {
+		isAny && registerCmd("🗑️", "https://github.githubassets.com/images/icons/emoji/unicode/1f5d1.png?v8", "menu_command.gm_storage_delete_all", async () => {
 			const keys = await GM.listValues();
 			if (await showPrompt({
 				type: "confirm",
@@ -12582,7 +12413,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}
 			}
 		});
-		isAny && registerCmd("👂", "menu_command.list_selectorobserver_listeners", async () => {
+		isAny && registerCmd("👂", "https://github.githubassets.com/images/icons/emoji/unicode/1f442.png?v8", "menu_command.list_selectorobserver_listeners", async () => {
 			const lines = [];
 			let listenersAmt = 0;
 			for (const [obsName, obs] of Object.entries(globservers)) {
@@ -12598,7 +12429,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}
 			loggers.command.log(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
 		});
-		isAny && registerCmd("🗜️", "menu_command.compress_or_decompress_text", async () => {
+		isAny && registerCmd("🗜️", "https://github.githubassets.com/images/icons/emoji/unicode/1f5dc.png?v8", "menu_command.compress_or_decompress_text", async () => {
 			const showFinalPrompt = async (type, initial, result) => {
 				await showPrompt({
 					type: "alert",
@@ -12673,9 +12504,9 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				extraButtonsPosition: "before"
 			});
 		});
-		isAny && registerCmd("📤", "menu_command.export_config", () => downloadData(false));
-		isAny && registerCmd("💾", "menu_command.export_full", () => downloadData(false, true));
-		isAny && registerCmd("📥", "menu_command.import_full", async () => {
+		isAny && registerCmd("📤", "https://github.githubassets.com/images/icons/emoji/unicode/1f4e4.png?v8", "menu_command.export_config", () => downloadData(false));
+		isAny && registerCmd("💾", "https://github.githubassets.com/images/icons/emoji/unicode/1f4be.png?v8", "menu_command.export_full", () => downloadData(false, true));
+		isAny && registerCmd("📥", "https://github.githubassets.com/images/icons/emoji/unicode/1f4e5.png?v8", "menu_command.import_full", async () => {
 			const input = await showPrompt({
 				type: "prompt",
 				message: t("menu_command.import_full.prompt"),
@@ -12691,7 +12522,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				})) await reloadTab();
 			}
 		});
-		isAny && registerCmd("🧪", "menu_command.toggle_dev_treatments", async () => {
+		isAny && registerCmd("🧪", "https://github.githubassets.com/images/icons/emoji/unicode/1f9ea.png?v8", "menu_command.toggle_dev_treatments", async () => {
 			const val = !await GM.getValue("bytm-dev-treatments", false);
 			await GM.setValue("bytm-dev-treatments", val);
 			if (await showPrompt({
@@ -12701,7 +12532,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				denyBtnText: t("close")
 			})) await reloadTab();
 		});
-		isDev && registerCmd("🔑", "menu_command.get_dev_plugin_token", () => showPrompt({
+		isDev && registerCmd("🔑", "https://github.githubassets.com/images/icons/emoji/unicode/1f527.png?v8", "menu_command.get_dev_plugin_token", () => showPrompt({
 			type: "alert",
 			message: devPluginToken ? t("menu_command.get_dev_plugin_token.alert.success", { devPluginToken }) : t("menu_command.get_dev_plugin_token.alert.error"),
 			extraButtons: [(dlg) => {
@@ -12716,14 +12547,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}],
 			extraButtonsPosition: "before"
 		}));
-		registerCmd("🧩", "menu_command.unregister_all_plugins", () => {
+		registerCmd("🧩", "https://github.githubassets.com/images/icons/emoji/unicode/1f9e9.png?v8", "menu_command.unregister_all_plugins", () => {
 			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
 		});
-		isDev && registerCmd("💥", "menu_command.throw_example_error", () => loggers.command.error("Test error thrown by user command:", new _sv443_network_userutils.CustomError("ExampleError", "Test error")));
-		isAny && registerCmd("🗂️", "menu_command.collect_sessions", () => {
+		isDev && registerCmd("💥", "https://github.githubassets.com/images/icons/emoji/unicode/1f4a5.png?v8", "menu_command.throw_example_error", () => loggers.command.error("Test error thrown by user command:", new _sv443_network_userutils.CustomError("ExampleError", "Test error")));
+		isAny && registerCmd("🗂️", "https://github.githubassets.com/images/icons/emoji/unicode/1f5c2.png?v8", "menu_command.collect_sessions", () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "0dfb1f47",
+				buildNumber: "613c19fa",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -12784,14 +12615,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}, 300);
 			emitBroadcast({ type: "discoverSessions" });
 		});
-		isAny && registerCmd("🔄", "menu_command.reload_all_tabs", async () => {
+		isAny && registerCmd("🔃", "https://github.githubassets.com/images/icons/emoji/unicode/1f503.png?v8", "menu_command.reload_all_tabs", async () => {
 			await showPrompt({
 				type: "confirm",
 				message: t("menu_command.reload_all_tabs.confirm", { scriptName: scriptInfo$1.name }),
 				confirmBtnText: t("reload_now")
 			}) && await reloadAllTabs();
 		});
-		registerCmd("⏱️", "menu_command.get_performance_report", () => {
+		registerCmd("⏱️", "https://github.githubassets.com/images/icons/emoji/unicode/23f1.png?v8", "menu_command.get_performance_report", () => {
 			perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
 				...a,
 				[key]: vals
@@ -12804,7 +12635,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			if (fileName === trKey) fileName = tl("en-US", trKey);
 			downloadFile(fileName, JSON.stringify(perfReport, null, 2), "application/json");
 		});
-		registerCmd("📄", "menu_command.download_log_file", () => {
+		registerCmd("📄", "https://github.githubassets.com/images/icons/emoji/unicode/1f4c4.png?v8", "menu_command.download_log_file", () => {
 			const trKey = "menu_command.download_log_file.file_name";
 			let fileName = t(trKey, {
 				scriptName: scriptInfo$1.name,
