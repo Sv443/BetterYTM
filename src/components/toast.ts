@@ -1,5 +1,8 @@
-import { clamp, pauseFor } from "@sv443-network/coreutils";
-import { info, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { clamp, pauseFor } from "@sv443-network/userutils";
+import { resourceAsString } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { getFeature } from "@/config.ts";
 import type { ResourceKey } from "@/types.ts";
 import "@comp/toast.css";
@@ -62,8 +65,6 @@ let showingToast = false;
 /** Timeout ID for the currently shown toast */
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
-// TODO:FIXME: no workis
-
 //#region icon toast
 
 /**
@@ -79,24 +80,24 @@ export async function showIconToast({
   if(typeof duration !== "number" || isNaN(duration))
     duration = getFeature("toastDuration") * 1000;
   if(duration <= 0)
-    return info("Toast duration is <= 0, so it won't be shown");
+    return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
 
   if(showingToast)
     return void toastQueue.push(() => showIconToast({ duration, position, iconPos, ...rest }));
 
   showingToast = true;
 
-  const toastWrapper = document.createElement("div");
+  const toastWrapper = createElement("div");
   toastWrapper.classList.add("bytm-toast-flex-wrapper");
 
   let toastIcon: HTMLImageElement | HTMLDivElement;
   if("iconSrc" in rest) {
-    toastIcon = document.createElement("img");
+    toastIcon = createElement("img");
     toastIcon.classList.add("bytm-toast-icon", "img");
     (toastIcon as HTMLImageElement).src = await rest.iconSrc;
   }
   else {
-    toastIcon = document.createElement("div");
+    toastIcon = createElement("div");
     toastIcon.classList.add("bytm-toast-icon");
     const iconHtml = await resourceAsString(rest.icon);
     if(iconHtml)
@@ -106,12 +107,12 @@ export async function showIconToast({
       toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
   }
 
-  const toastMessage = document.createElement("div");
+  const toastMessage = createElement("div");
   toastMessage.classList.add("bytm-toast-message");
   if("message" in rest) {
     toastMessage.textContent = rest.message;
     if("subtitle" in rest && rest.subtitle) {
-      const subtitleEl = document.createElement("div");
+      const subtitleEl = createElement("div");
       subtitleEl.classList.add("bytm-toast-subtitle");
       subtitleEl.textContent = rest.subtitle;
       toastMessage.appendChild(subtitleEl);
@@ -124,6 +125,7 @@ export async function showIconToast({
   toastWrapper.appendChild(toastMessage);
   iconPos === "right" && toastWrapper.appendChild(toastIcon);
 
+  showingToast = false;
   const elem = await showToast({
     duration,
     position,
@@ -170,7 +172,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   } = props;
 
   if(durationMs <= 0)
-    return info("Toast duration is <= 0, so it won't be shown");
+    return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
 
   if(showingToast)
     return void toastQueue.push(() => showToast(props));
@@ -180,7 +182,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   if(document.querySelector("#bytm-toast"))
     await closeToast();
 
-  const toastElem = document.createElement("div");
+  const toastElem = createElement("div");
   toastElem.classList.add(`pos-${position.toLowerCase()}`);
   onClick && toastElem.classList.add("clickable");
   toastElem.id = "bytm-toast";

@@ -1,4 +1,7 @@
-import { onInteraction, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { createElement } from "@util/element.ts";
 import { createRipple } from "@comp/ripple.ts";
 import type { ResourceKey } from "@/types.ts";
 
@@ -60,14 +63,14 @@ export async function createLongBtn({
 
   let btnElem: HTMLElement;
   if("href" in rest && rest.href) {
-    btnElem = document.createElement("a");
+    btnElem = createElement("a");
     (btnElem as HTMLAnchorElement).href = rest.href;
     btnElem.role = "button";
     (btnElem as HTMLAnchorElement).target = "_blank";
     (btnElem as HTMLAnchorElement).rel = "noopener noreferrer";
   }
   else
-    btnElem = document.createElement("div");
+    btnElem = createElement("div");
 
   if("toggle" in rest && rest.toggle) {
     btnElem.classList.add("bytm-toggle");
@@ -87,14 +90,14 @@ export async function createLongBtn({
   btnElem.tabIndex = 0;
   btnElem.role = "button";
 
-  const imgElem = document.createElement("src" in rest ? "img" : "div");
+  const imgElem = createElement("src" in rest ? "img" : "div");
   imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
   if("src" in rest)
     (imgElem as HTMLImageElement).src = rest.src;
   else
     setInnerHtml(imgElem, await resourceAsString(rest.resourceName as "_"));
 
-  const txtElem = document.createElement("span");
+  const txtElem = createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
   txtElem.textContent = txtElem.ariaLabel = text;
 

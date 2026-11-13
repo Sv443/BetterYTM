@@ -1,4 +1,8 @@
-import { getResourceUrl, onInteraction, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
+import { createElement } from "@util/element.ts";
 import { createRipple } from "@comp/ripple.ts";
 import type { ResourceKey } from "@/types.ts";
 
@@ -7,6 +11,8 @@ type CircularBtnOptions = {
   title: string;
   /** Whether the button should have a ripple effect - defaults to true */
   ripple?: boolean;
+  /** Function to modify the element before it's returned. */
+  modifyElement?: (element: HTMLElement) => HTMLElement | Promise<HTMLElement>;
 } & (
   | {
     /** Resource key for the button icon */
@@ -17,11 +23,11 @@ type CircularBtnOptions = {
   }
 ) & (
   | {
-    /** URL to navigate to when the button is clicked */
+    /** URL to navigate to when the button is clicked. This makes the button use an `<a>` element with `target="_blank"` by default */
     href: string;
   }
   | {
-    /** Callback function to execute when the button is clicked */
+    /** Callback function to execute when the button is interacted with (using {@linkcode onInteraction()}). This makes the button use a `<div>` element. */
     onClick: (event: MouseEvent | KeyboardEvent) => void;
   }
 );
@@ -35,18 +41,19 @@ type CircularBtnOptions = {
 export async function createCircularBtn({
   title,
   ripple = true,
+  modifyElement,
   ...rest
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
   if("href" in rest && rest.href) {
-    btnElem = document.createElement("a");
+    btnElem = createElement("a");
     (btnElem as HTMLAnchorElement).href = rest.href;
     btnElem.role = "button";
     (btnElem as HTMLAnchorElement).target = "_blank";
     (btnElem as HTMLAnchorElement).rel = "noopener noreferrer";
   }
   else if("onClick" in rest && rest.onClick) {
-    btnElem = document.createElement("div");
+    btnElem = createElement("div");
     rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
   }
   else
@@ -58,7 +65,7 @@ export async function createCircularBtn({
   btnElem.role = "button";
 
   if("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
-    const imgElem = document.createElement("img");
+    const imgElem = createElement("img");
     imgElem.classList.add("bytm-generic-btn-img");
     imgElem.src = "src" in rest
       ? await rest.src
@@ -71,5 +78,10 @@ export async function createCircularBtn({
     btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
   }
 
-  return ripple ? createRipple(btnElem) : btnElem;
+  const rippleElem = ripple ? createRipple(btnElem) : btnElem;
+
+  if(modifyElement)
+    await modifyElement(btnElem);
+
+  return rippleElem;
 }

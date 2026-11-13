@@ -1,4 +1,5 @@
-import type { LooseUnion } from "@sv443-network/coreutils";
+import type { LooseUnion } from "@sv443-network/userutils";
+import { createElement } from "@util/element.ts";
 import "@comp/ripple.css";
 
 type RippleProps<TElem extends HTMLElement> = {
@@ -33,7 +34,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
     ...properties,
   };
 
-  const rippleEl = rippleElement ?? document.createElement("div");
+  const rippleEl = rippleElement ?? createElement("div");
 
   "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
   rippleEl.classList.add("bytm-ripple", props.speed);
@@ -46,7 +47,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
     const x = (e as MouseEvent).clientX - rippleEl.getBoundingClientRect().left;
     const y = (e as MouseEvent).clientY - rippleEl.getBoundingClientRect().top;
 
-    const rippleAreaEl = document.createElement("span");
+    const rippleAreaEl = createElement("span");
     rippleAreaEl.classList.add("bytm-ripple-area");
     rippleAreaEl.style.left = `${Math.round(x)}px`;
     rippleAreaEl.style.top = `${Math.round(y)}px`;

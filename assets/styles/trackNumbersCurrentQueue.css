@@ -1,8 +1,8 @@
-ytmusic-player-page ytmusic-player-queue {
+.bytm-dom-ytm ytmusic-player-page ytmusic-player-queue {
   counter-reset: section;
 }
 
-ytmusic-player-page ytmusic-player-queue-item::before {
+.bytm-dom-ytm ytmusic-player-page ytmusic-player-queue-item::before {
   counter-increment: section;
   content: counter(section, decimal-leading-zero);
   font-size: 1.5em;

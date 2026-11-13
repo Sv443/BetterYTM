@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["maxSccFiles", "enforceLayers", "layers"],
+  "description": "Definition of \"code layers\". Every file can only import other files from layers *below its own layer*, which is why the entrypoint file (\"src/index.ts\") is in its own isolated layer at the very bottom.",
+  "properties": {
+    "maxSccFiles": {
+      "type": "number",
+      "description": "Target amount of SCCs (strongly connected components). Should approach 0 via refactors, and then stay there.",
+      "minimum": 0
+    },
+    "enforceLayers": {
+      "type": "boolean",
+      "description": "Whether to make the \"pnpm check-deps\" (and subsequently the \"pnpm lint\") script fail when the strict import layers were breached by a module in the codebase. This should realistically never be turned off, unless a major refactor is currently underway.",
+      "default": true
+    },
+    "layers": {
+      "type": "array",
+      "description": "The index inside this array dictates the layer number. Modules can only import other modules that are in *lower layers than themselves* (layers with a lower index / further up), which is why the entrypoint file (\"src/index.ts\") is in its own isolated layer at the very bottom.",
+      "items": {
+        "type": "array",
+        "description": "Contains paths to all modules that are part of this layer. These items' ordering doesn't matter.",
+        "items": {
+          "type": "string",
+          "description": "A relative module path, starting at the project root. Accepts simple ** and * glob patterns.",
+          "minLength": 1,
+          "pattern": "^.+\\.(?:ts|js|mts|mjs|cts|cjs)"
+        }
+      }
+    }
+  }
+}

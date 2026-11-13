@@ -1,5 +1,9 @@
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { getOS, hasKey, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { interactionKeys, onInteraction } from "@util/input.ts";
+import { getOS } from "@util/pure.ts";
+import { hasKey, t } from "@util/translations.ts";
+import { createElement } from "@util/element.ts";
 import type { HotkeyObj } from "@/types.ts";
 import "@comp/hotkeyInput.css";
 
@@ -22,13 +26,13 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   if(!createTitle)
     createTitle = (value) => value;
 
-  const wrapperElem = document.createElement("div");
+  const wrapperElem = createElement("div");
   wrapperElem.classList.add("bytm-hotkey-wrapper");
 
-  const infoElem = document.createElement("span");
+  const infoElem = createElement("span");
   infoElem.classList.add("bytm-hotkey-info");
 
-  const inputElem = document.createElement("button");
+  const inputElem = createElement("button");
   inputElem.role = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
   inputElem.dataset.state = infoElem.dataset.state = "inactive";
@@ -40,7 +44,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = t("hotkey_input_click_to_change");
   inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
 
-  const resetElem = document.createElement("span");
+  const resetElem = createElement("span");
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
   resetElem.role = "button";
   resetElem.tabIndex = 0;
@@ -128,7 +132,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
       return;
     if(inputElem.dataset.state !== "active")
       return;
-    if(e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+    if(e.code === "Tab" || e.code === "Escape" || interactionKeys.includes(e.code)) {
       deactivate();
       return;
     }
@@ -189,15 +193,15 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 /** Returns HTML for the hotkey modifier keys info element */
 function getHotkeyModifiersHtml(hotkey: HotkeyObj) {
   const modifiers = [] as string[];
-  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
-  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
-  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
+  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd unclickable">${t("hotkey_modifier.ctrl")}</kbd>`);
+  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd unclickable">${t("hotkey_modifier.shift")}</kbd>`);
+  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd unclickable">${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}</kbd>`);
   return `\
-<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
+<div class="bytm-hotkey-input-modifier-container">
   <span>
     ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
   </span>
-  <span style="padding: 0px 5px; height: 20px;">
+  <span class="bytm-hotkey-input-modifier-plus">
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
@@ -221,17 +225,17 @@ async function getHkInputContent(hotkey: HotkeyObj) {
 }
 
 /** Converts a hotkey object to a string, with optional whitespace padding between symbols */
-function hotkeyToString(hotkey: HotkeyObj | undefined, padding = false) {
+export function hotkeyToString(hotkey: HotkeyObj | undefined, padding = false) {
   if(!hotkey)
     return t("hotkey_input_none_selected");
   let str = "";
   const p = padding ? " " : "";
   if(hotkey.ctrl)
-    str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
+    str += `${t("hotkey_modifier.ctrl")}${p}+${p}`;
   if(hotkey.shift)
-    str += `${t("hotkey_modifier_shift")}${p}+${p}`;
+    str += `${t("hotkey_modifier.shift")}${p}+${p}`;
   if(hotkey.alt)
-    str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
+    str += `${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}${p}+${p}`;
   str += hotkey.code;
   return str;
 }

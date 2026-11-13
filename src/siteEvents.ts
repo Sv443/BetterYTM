@@ -1,9 +1,9 @@
-import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { error, getDomain, info, log, warn } from "@util/index.ts";
-import { getFeature } from "@/config.ts";
-import { emitInterface } from "@/interface.ts";
+import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/userutils";
+import { getDomain } from "@util/domain.ts";
+import { loggers } from "@util/logging.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { addSelectorListener, globserversReady } from "@/observers.ts";
-import { FeatureConfig, type FeatureCategory } from "@/types.ts";
+import type { FeatureConfig, FeatureCategory } from "@/types.ts";
 import type { BroadcastPacketType, BroadcastTransitPacket } from "@util/broadcast.ts";
 
 /** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:discoverSessionsReply"` */
@@ -11,7 +11,10 @@ export type BroadcastSiteEventsMapped = {
   [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void;
 };
 
-/** Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object. */
+/**
+ * Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object.  
+ * Also relays all received broadcast packets using the prefix `broadcast:` before the packet ID.
+ */
 export type SiteEventsMap = Prettify<
   & {
     //#region misc:
@@ -33,6 +36,8 @@ export type SiteEventsMap = Prettify<
     welcomeMenuClosed: () => void;
     /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
     hotkeyInputActive: (active: boolean) => void;
+    /** Emitted whenever the remote static data has been initialized. */
+    staticDataInitialized: () => void;
 
     //#region DOM:
     /** Emitted whenever child nodes are added to or removed from the song queue */
@@ -72,7 +77,7 @@ export type SiteEventsMap = Prettify<
      * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
      * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
      */
-    broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
+    broadcast: (packetType: BroadcastPacketType, transitPacket: BroadcastTransitPacket) => void;
   }
   & BroadcastSiteEventsMapped
 >;
@@ -82,27 +87,7 @@ export type SiteEventsMapPrefixed = {
   [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
 };
 
-/** Array of all site events. */
-export const allSiteEvents = [
-  "configChanged",
-  "configHeaderSelected",
-  "configOptionChanged",
-  "rebuildCfgMenu",
-  "recreateCfgMenu",
-  "cfgMenuClosed",
-  "welcomeMenuClosed",
-  "hotkeyInputActive",
-  "queueChanged",
-  "autoplayQueueChanged",
-  "songTitleChanged",
-  "watchIdChanged",
-  "pathChanged",
-  "fullscreenToggled",
-  "updateVolumeSliderLabel",
-  "autoLikeChannelsUpdated",
-  "voteLabelsAdded",
-  "broadcast",
-] as const satisfies readonly (keyof SiteEventsMap)[];
+export { allSiteEvents } from "@/core/siteEventNames.ts";
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
 export const siteEvents = new NanoEmitter<SiteEventsMap>({
@@ -129,7 +114,7 @@ export function initSiteEvents() {
       // the queue container always exists so it doesn't need an extra init function
       const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
-          info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          loggers.siteEvent.info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
           emitSiteEvent("queueChanged", target as HTMLElement);
         }
       });
@@ -145,7 +130,7 @@ export function initSiteEvents() {
 
       const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
-          info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          loggers.siteEvent.info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
           emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
         }
       });
@@ -170,13 +155,13 @@ export function initSiteEvents() {
           if(newTitle === lastTitle || !newTitle)
             return;
           lastTitle = newTitle;
-          info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+          loggers.siteEvent.info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
           emitSiteEvent("songTitleChanged", newTitle, oldTitle);
           runIntervalChecks();
         },
       });
 
-      info("Successfully initialized SiteEvents observers");
+      loggers.siteEvent.info("Successfully initialized SiteEvents observers");
 
       observers = observers.concat([
         queueObs,
@@ -234,12 +219,18 @@ export function initSiteEvents() {
     });
   }
   catch(err) {
-    error("Couldn't initialize site event observers due to an error:\n", err);
+    loggers.siteEvent.error("Couldn't initialize site event observers due to an error:\n", err);
   }
 }
 
 let bytmReady = false;
 window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true });
+
+/** Whether emitted site events should be logged. Pushed in by the config init so this module doesn't depend on the config store. */
+let siteEventLoggingEnabled = false;
+
+/** Sets whether emitted site events are logged - called by the config init */
+export const setSiteEventLogging = (enabled: boolean) => void (siteEventLoggingEnabled = enabled);
 
 // FIXME: not a big fan of delaying events until `bytm:allReady`, but changing it requires refactoring a lot of ugly code
 
@@ -247,10 +238,10 @@ window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true })
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
     const logEmit = () => {
-      if(getFeature("logEvents")) {
+      if(siteEventLoggingEnabled) {
         args.length > 0
-          ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
-          : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+          ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
+          : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
       }
     };
 
@@ -262,7 +253,7 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
         forceEmitSiteEvent(key, ...args);
         logEmit();
         if(Date.now() - startTs > 500)
-          warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
+          loggers.siteEvent.warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
@@ -272,7 +263,7 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
     }
   }
   catch(err) {
-    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    loggers.siteEvent.error(`Couldn't emit site event "${key}" due to an error:\n`, err);
   }
 }
 
@@ -286,7 +277,7 @@ export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, 
     emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }
   catch(err) {
-    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    loggers.siteEvent.error(`Couldn't emit site event "${key}" due to an error:\n`, err);
   }
 }
 
@@ -296,7 +287,7 @@ export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, 
 function checkVideoIdChange(newID?: string | null) {
   newID ??= new URL(location.href).searchParams.get("v");
   if(newID && newID !== lastVidId) {
-    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+    loggers.siteEvent.info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
     emitSiteEvent("watchIdChanged", newID, lastVidId);
     lastVidId = newID;
   }

@@ -1,6 +1,7 @@
 import { marked } from "marked";
-import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
+import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
 import { sanitizeHtml, setInnerHtml } from "@util/dom.ts";
+import { createElement } from "@util/element.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 
 /** Options for the MarkdownDialog - a `body` prop is required instead of `renderBody` */
@@ -38,12 +39,12 @@ export class MarkdownDialog extends BytmDialog {
 
   /** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
   protected async renderBody(): Promise<HTMLElement> {
-    const bodyEl = document.createElement("div");
+    const bodyEl = createElement("div");
     bodyEl.classList.add("bytm-md-dialog-body");
 
     const mdCont = await consumeStringGen(this.opts.body);
 
-    const markdownEl = document.createElement("div");
+    const markdownEl = createElement("div");
     markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
     markdownEl.tabIndex = 0;
     setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));

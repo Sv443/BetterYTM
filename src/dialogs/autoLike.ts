@@ -1,24 +1,26 @@
-import { compress, debounce } from "@sv443-network/coreutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "@util/index.ts";
-import { autoLikeStore, initAutoLikeStore } from "@feat/index.ts";
-import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { ExImDialog } from "@comp/ExImDialog.ts";
-import { compressionFormat } from "@/constants.ts";
-import type { AutoLikeData } from "@/types.ts";
+import { compress, debounce } from "@sv443-network/userutils";
+import { compressionSupported, tryToDecompressAndParse } from "@util/misc.ts";
+import { getDomain, isValidChannelId, parseChannelIdFromUrl } from "@util/domain.ts";
+import { loggers } from "@util/logging.ts";
+import { t, tp } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { createElement } from "@util/element.ts";
+import { autoLikeStore, initAutoLikeStore } from "@feat/autoLike.ts";
 import { showPrompt } from "@dialog/prompt.ts";
+import { ExImDialog } from "@comp/ExImDialog.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { showToast } from "@comp/toast.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
 import { createCircularBtn } from "@comp/circularButton.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { compressionFormat } from "@/constants.ts";
+import type { AutoLikeData } from "@/types.ts";
 import "@dialog/autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeExImDialog: ExImDialog | null = null;
 
-// TODO:FIXME: dialog isnt properly closed?
-// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
-
-/** Creates and/or returns the import dialog */
+/** Creates and/or returns the auto-like dialog */
 export async function getAutoLikeDialog() {
   if(!autoLikeDialog) {
     await initAutoLikeStore();
@@ -46,11 +48,11 @@ export async function getAutoLikeDialog() {
         if(autoLikeDialog?.isOpen()) {
           autoLikeDialog.unmount();
           await autoLikeDialog.open();
-          log("Auto-like channels updated, refreshed dialog");
+          loggers.dialog.log("Auto-like channels updated, refreshed dialog");
         }
       }
       catch(err) {
-        error("Couldn't refresh auto-like channels dialog:", err);
+        loggers.dialog.error("Couldn't refresh auto-like channels dialog:", err);
       }
     });
 
@@ -72,7 +74,7 @@ export async function getAutoLikeDialog() {
       async onImport(data) {
         try {
           const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
-          log("Trying to import auto-like data:", parsed);
+          loggers.dialog.log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
             return await showPrompt({ type: "alert", message: t("import_error.invalid") });
@@ -86,7 +88,7 @@ export async function getAutoLikeDialog() {
           autoLikeExImDialog?.unmount();
         }
         catch(err) {
-          error("Couldn't import auto-like channels data:", err);
+          loggers.dialog.error("Couldn't import auto-like channels data:", err);
         }
       },
       title: () => t("auto_like_export_import_title"),
@@ -101,7 +103,7 @@ export async function getAutoLikeDialog() {
 //#region header
 
 async function renderHeader() {
-  const headerEl = document.createElement("h2");
+  const headerEl = createElement("h2");
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
@@ -114,28 +116,36 @@ async function renderHeader() {
 //#region body
 
 async function renderBody() {
-  const contElem = document.createElement("div");
+  const contElem = createElement("div");
 
-  const descriptionEl = document.createElement("p");
+  const descriptionEl = createElement("p");
   descriptionEl.classList.add("bytm-auto-like-channels-desc");
   descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
   descriptionEl.tabIndex = 0;
   contElem.appendChild(descriptionEl);
 
-  const searchCont = document.createElement("div");
+  const hr1El = createElement("hr");
+  hr1El.classList.add("bytm-hr");
+  contElem.appendChild(hr1El);
+
+  const searchCont = createElement("div");
   searchCont.classList.add("bytm-auto-like-channels-search-cont");
   contElem.appendChild(searchCont);
 
-  const searchContLeftSideEl = document.createElement("div");
+  const hr2El = createElement("hr");
+  hr2El.classList.add("bytm-hr", "less-margin");
+  contElem.appendChild(hr2El);
+
+  const searchContLeftSideEl = createElement("div");
   searchContLeftSideEl.classList.add("left-side");
   searchCont.appendChild(searchContLeftSideEl);
 
-  const searchContRightSideEl = document.createElement("div");
+  const searchContRightSideEl = createElement("div");
   searchContRightSideEl.tabIndex = 0;
   searchContRightSideEl.classList.add("right-side");
   searchCont.appendChild(searchContRightSideEl);
 
-  const searchbarEl = document.createElement("input");
+  const searchbarEl = createElement("input");
 
   const updateCountElem = () => {
     const count = searchbarEl.value.trim().length === 0
@@ -154,11 +164,11 @@ async function renderBody() {
   searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
   searchbarEl.spellcheck = false;
 
+  const sanit = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
   searchbarEl.addEventListener("input", debounce(() => {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
-      const sanit = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
       const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
       const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
       row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
@@ -168,8 +178,8 @@ async function renderBody() {
 
   searchContLeftSideEl.appendChild(searchbarEl);
 
-  const searchClearEl = document.createElement("button");
-  searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
+  const searchClearEl = createElement("button");
+  searchClearEl.classList.add("bytm-btn", "no-min-width");
   searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
   searchClearEl.tabIndex = 0;
   searchClearEl.innerText = "×";
@@ -181,7 +191,7 @@ async function renderBody() {
 
   searchContLeftSideEl.appendChild(searchClearEl);
 
-  const channelListCont = document.createElement("div");
+  const channelListCont = createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
 
   const setChannelEnabled = debounce(
@@ -199,22 +209,22 @@ async function renderBody() {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   for(const { name: chanName, id: chanId, enabled } of sortedChannels) {
-    const rowElem = document.createElement("div");
+    const rowElem = createElement("div");
     rowElem.classList.add("bytm-auto-like-channel-row");
 
-    const leftCont = document.createElement("div");
+    const leftCont = createElement("div");
     leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
 
-    const nameLabelEl = document.createElement("label");
+    const nameLabelEl = createElement("label");
     nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
     nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
     nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
 
     const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
       ? `https://music.youtube.com/channel/${chanId}`
-      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+      : `https://www.youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
 
-    const nameElem = document.createElement("a");
+    const nameElem = createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
     nameElem.ariaLabel = nameElem.textContent = chanName;
     nameElem.href = chanHref;
@@ -222,7 +232,7 @@ async function renderBody() {
     nameElem.rel = "noopener noreferrer";
     nameElem.tabIndex = 0;
 
-    const idElem = document.createElement("a");
+    const idElem = createElement("a");
     idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
     idElem.textContent = idElem.title = chanId;
     idElem.href = chanHref;
@@ -242,7 +252,7 @@ async function renderBody() {
     toggleElem.classList.add("bytm-auto-like-channel-toggle");
     toggleElem.title = toggleElem.ariaLabel = t("auto_like_channel_toggle_tooltip", chanName);
 
-    const btnCont = document.createElement("div");
+    const btnCont = createElement("div");
     btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
 
     const editBtn = await createCircularBtn({
@@ -299,25 +309,25 @@ async function renderBody() {
 //#region footer
 
 function renderFooter() {
-  const wrapperEl = document.createElement("div");
+  const wrapperEl = createElement("div");
   wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
 
-  const addNewBtnElem = document.createElement("button");
+  const addNewBtnElem = createElement("button");
   addNewBtnElem.classList.add("bytm-btn");
   addNewBtnElem.textContent = t("new_entry");
   addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
   wrapperEl.appendChild(addNewBtnElem);
 
-  const rightBtnsCont = document.createElement("div");
+  const rightBtnsCont = createElement("div");
   rightBtnsCont.classList.add("bytm-flex-row");
 
-  const deleteAllBtnElem = document.createElement("button");
+  const deleteAllBtnElem = createElement("button");
   deleteAllBtnElem.classList.add("bytm-btn");
   deleteAllBtnElem.textContent = t("delete_all");
   deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
   rightBtnsCont.appendChild(deleteAllBtnElem);
 
-  const importExportBtnElem = document.createElement("button");
+  const importExportBtnElem = createElement("button");
   importExportBtnElem.classList.add("bytm-btn");
   importExportBtnElem.textContent = t("export_import");
   importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");

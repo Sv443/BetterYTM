@@ -1,7 +1,12 @@
-import { clamp, getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-import { emitInterface } from "@/interface.ts";
-import { error, getDomain } from "@util/index.ts";
-import type { Domain, FeatureConfig } from "@/types.ts";
+import { autoPlural, clamp, type SelectorListenerOptions, SelectorObserver, type SelectorObserverOptions } from "@sv443-network/userutils";
+import { getFeature } from "@/config.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
+import { getDomain } from "@util/domain.ts";
+import { getSelector } from "@util/staticData.ts";
+import { loggers } from "@util/logging.ts";
+import { Logger } from "@util/Logger.ts";
+import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
+import { recordObserverEvent } from "@util/perf.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
@@ -43,7 +48,8 @@ export type YTObserverName =
   | "ytdBrowse"        // channel pages for example
   | "ytAppHeader"      // header of the page
   | "ytWatchFlexy"     // the main content of the /watch page
-  | "ytWatchMetadata"; // the metadata section of the /watch page
+  | "ytWatchMetadata"  // the metadata section of the /watch page
+  | "ytPopupContainer";// container for all popup elements like <tp-yt-iron-dropdown>
 
 //#region vars
 
@@ -82,8 +88,17 @@ export function addSelectorListener<
     globservers[observerName].addListener(selector, options);
   }
   catch(err) {
-    error(`Couldn't add listener to globserver '${observerName}':`, err);
+    loggers.observer.error(`Couldn't add listener to globserver '${observerName}':`, err);
   }
+}
+
+/** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
+function getEnableObsFn(observerName: ObserverName): () => void {
+  return () => {
+    const observer = globservers[observerName];
+    observer.enable();
+    loggers.observer.log(`Enabled SelectorObserver instance '${observerName}' with base element:`, observer.baseElement);
+  };
 }
 
 //#region init
@@ -92,11 +107,47 @@ export function addSelectorListener<
 export function initObservers(cfg: FeatureConfig) {
   /** Options that are applied to every SelectorObserver instance */
   const defaultObserverOptions = {
-    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
-    enableOnAddListener: false,  // important because of strict init order
+    disableOnNoListeners: false, // important because of strict init order
+    enableOnAddListener: false,  // ^
     defaultDebounce: cfg.defaultObserverDebounce,
     defaultDebounceType: "immediate",
   } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
+
+  /**
+   * Hooks into the {@linkcode globservers} events `"checked"` and `"found"` to update the performance report using {@linkcode recordObserverEvent()}, and log a line to the console if the feature `verboseObservers` is on.
+   * @param name The unique name of the instance.
+   * @param obs A reference to the instance, if it hasn't already been added to {@linkcode globservers}.
+   */
+  const hookObsEvents = (name: ObserverName, obs?: SelectorObserver) => {
+    if(!obs)
+      obs = globservers[name];
+    if(!obs)
+      throw new TypeError(`Couldn't find globserver instance with the name '${name}' in initObservers():trackObserver()`);
+
+    const baseElem = typeof obs.baseElement === "string"
+      ? `'${obs.baseElement}'`
+      : Logger.serializeElement(obs.baseElement);
+
+    // re-enable performance flags after initialization is done:
+    if(!obs.isEnabled()) {
+      obs.once("enabled", () => {
+        obs.setOption("disableOnNoListeners", true);
+        obs.setOption("enableOnAddListener", true);
+      });
+    }
+
+    obs.on("checked", () => {
+      if(getFeature("verboseObservers"))
+        loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+      recordObserverEvent(name, "checked");
+    });
+    obs.on("found", (data) => {
+      const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+      if(getFeature("verboseObservers"))
+        loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural("element", elements)}:`, elements.join(", "), LogLevel.Info);
+      recordObserverEvent(name, "found", elements.length);
+    });
+  };
 
   try {
     //#region # both sites
@@ -110,18 +161,20 @@ export function initObservers(cfg: FeatureConfig) {
       subtree: false,
     });
 
+    hookObsEvents("body");
     globservers.body.enable();
 
     //#region bytmDialogContainer
     // -> the container for all BytmDialog instances
     //    enabled immediately
-    const bytmDialogContainerSelector = "#bytm-dialog-container";
+    const bytmDialogContainerSelector = getSelector("observer", "bytmDialogContainer");
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
       defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
       subtree: true,
     });
 
+    hookObsEvents("bytmDialogContainer");
     globservers.bytmDialogContainer.enable();
 
     switch(getDomain()) {
@@ -131,60 +184,64 @@ export function initObservers(cfg: FeatureConfig) {
       //#region browseResponse
       // -> for example the /channel/UC... page
       //    enabled by "body"
-      const browseResponseSelector = "ytmusic-browse-response";
+      const browseResponseSelector = getSelector("observer", "browseResponse");
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
+        defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce / 2), 50, 1000),
         subtree: true,
       });
 
+      hookObsEvents("browseResponse");
       globservers.body.addListener(browseResponseSelector, {
-        listener: () => globservers.browseResponse.enable(),
+        listener: getEnableObsFn("browseResponse"),
       });
 
       //#region searchPage
       // -> the search page
       //    enabled by "body"
-      const searchPageSelector = "ytmusic-search-page";
+      const searchPageSelector = getSelector("observer", "searchPage");
       globservers.searchPage = new SelectorObserver(searchPageSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("searchPage");
       globservers.body.addListener(searchPageSelector, {
-        listener: () => globservers.searchPage.enable(),
+        listener: getEnableObsFn("searchPage"),
       });
 
       //#region navBar
       // -> the navigation / title bar at the top of the page
       //    enabled by "body"
-      const navBarSelector = "ytmusic-nav-bar";
+      const navBarSelector = getSelector("observer", "navBar");
       globservers.navBar = new SelectorObserver(navBarSelector, {
         ...defaultObserverOptions,
         subtree: false,
       });
 
+      hookObsEvents("navBar");
       globservers.body.addListener(navBarSelector, {
-        listener: () => globservers.navBar.enable(),
+        listener: getEnableObsFn("navBar"),
       });
 
       //#region mainPanel
       // -> the main content panel - includes things like the video element
       //    enabled by "body"
-      const mainPanelSelector = "ytmusic-player-page #main-panel";
+      const mainPanelSelector = getSelector("observer", "mainPanel");
       globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("mainPanel");
       globservers.body.addListener(mainPanelSelector, {
-        listener: () => globservers.mainPanel.enable(),
+        listener: getEnableObsFn("mainPanel"),
       });
 
       //#region sideBar
       // -> the sidebar on the left side of the page
       //    enabled by "body"
-      const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
+      const sidebarSelector = getSelector("observer", "sideBar");
       globservers.sideBar = new SelectorObserver(sidebarSelector, {
         ...defaultObserverOptions,
         attributes: true,
@@ -192,31 +249,34 @@ export function initObservers(cfg: FeatureConfig) {
         subtree: true,
       });
 
+      hookObsEvents("sideBar");
       globservers.body.addListener(sidebarSelector, {
-        listener: () => globservers.sideBar.enable(),
+        listener: getEnableObsFn("sideBar"),
       });
 
       //#region sidePanel
       // -> the side panel on the right side of the /watch page
       //    enabled by "body"
-      const sidePanelSelector = "#side-panel";
+      const sidePanelSelector = getSelector("observer", "sidePanel");
       globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("sidePanel");
       globservers.body.addListener(sidePanelSelector, {
-        listener: () => globservers.sidePanel.enable(),
+        listener: getEnableObsFn("sidePanel"),
       });
 
       //#region playerBar
       // -> media controls bar at the bottom of the page
       //    enabled by "body"
-      const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+      const playerBarSelector = getSelector("observer", "playerBar");
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
       });
 
+      hookObsEvents("playerBar");
       globservers.body.addListener(playerBarSelector, {
         listener: () => {
           globservers.playerBar.enable();
@@ -226,54 +286,58 @@ export function initObservers(cfg: FeatureConfig) {
       //#region playerBarInfo
       // -> song title, artist, album, etc. inside the player bar
       //    enabled by "playerBar"
-      const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+      const playerBarInfoSelector = getSelector("observer", "playerBarInfo");
       globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
         ...defaultObserverOptions,
         attributes: true,
         attributeFilter: ["title"],
       });
 
+      hookObsEvents("playerBarInfo");
       globservers.playerBar.addListener(playerBarInfoSelector, {
-        listener: () => globservers.playerBarInfo.enable(),
+        listener: getEnableObsFn("playerBarInfo"),
       });
 
       //#region playerBarMiddleButtons
       // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
       //    enabled by "playerBar"
-      const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
+      const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
       globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("playerBarMiddleButtons");
       globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
-        listener: () => globservers.playerBarMiddleButtons.enable(),
+        listener: getEnableObsFn("playerBarMiddleButtons"),
       });
 
       //#region playerBarRightControls
       // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
       //    enabled by "playerBar"
-      const playerBarRightControls = "#right-controls";
+      const playerBarRightControls = getSelector("observer", "playerBarRightControls");
       globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("playerBarRightControls");
       globservers.playerBar.addListener(playerBarRightControls, {
-        listener: () => globservers.playerBarRightControls.enable(),
+        listener: getEnableObsFn("playerBarRightControls"),
       });
 
       //#region popupContainer
       // -> the container for popups (e.g. the queue popup)
       //    enabled by "body"
-      const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
+      const popupContainerSelector = getSelector("observer", "popupContainer");
       globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("popupContainer");
       globservers.body.addListener(popupContainerSelector, {
-        listener: () => globservers.popupContainer.enable(),
+        listener: getEnableObsFn("popupContainer"),
       });
 
       break;
@@ -284,80 +348,101 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytGuide
       // -> the left sidebar menu
       //    enabled by "body"
-      const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
+      const ytGuideSelector = getSelector("observer", "ytGuide");
       globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("ytGuide");
       globservers.body.addListener(ytGuideSelector, {
-        listener: () => globservers.ytGuide.enable(),
+        listener: getEnableObsFn("ytGuide"),
       });
 
       //#region ytdBrowse
       // -> channel pages for example
       //    enabled by "body"
-      const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
+      const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
       globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("ytdBrowse");
       globservers.body.addListener(ytdBrowseSelector, {
-        listener: () => globservers.ytdBrowse.enable(),
+        listener: getEnableObsFn("ytdBrowse"),
       });
 
       //#region ytAppHeader
       // -> header of the page
       //    enabled by "ytdBrowse"
-      const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
+      const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
         defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
         subtree: true,
       });
 
+      hookObsEvents("ytAppHeader");
       globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
-        listener: () => globservers.ytAppHeader.enable(),
+        listener: getEnableObsFn("ytAppHeader"),
       });
 
       //#region ytWatchFlexy
       // -> the main content of the /watch page
       //    enabled by "body"
-      const ytWatchFlexySelector = "ytd-app ytd-watch-flexy";
+      const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
       globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
         ...defaultObserverOptions,
+        defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce * 3), 100, 300),
         subtree: true,
       });
 
+      hookObsEvents("ytWatchFlexy");
       globservers.body.addListener(ytWatchFlexySelector, {
-        listener: () => globservers.ytWatchFlexy.enable(),
+        listener: getEnableObsFn("ytWatchFlexy"),
       });
 
       //#region ytWatchMetadata
       // -> the metadata section of the /watch page (title, channel, views, description, buttons, etc. but not comments)
       //    enabled by "ytWatchFlexy"
-      const ytWatchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
+      const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
       globservers.ytWatchMetadata = new SelectorObserver(ytWatchMetadataSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("ytWatchMetadata");
       globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
-        listener: () => globservers.ytWatchMetadata.enable(),
+        listener: getEnableObsFn("ytWatchMetadata"),
       });
 
       //#region ytMasthead
       // -> the masthead (title bar) at the top of the page
       //    enabled by "body"
-      const mastheadSelector = "#content ytd-masthead#masthead";
+      const mastheadSelector = getSelector("observer", "ytMasthead");
       globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
+      hookObsEvents("ytMasthead");
       globservers.body.addListener(mastheadSelector, {
-        listener: () => globservers.ytMasthead.enable(),
+        listener: getEnableObsFn("ytMasthead"),
+      });
+
+      //#region ytPopupContainer
+      // -> the popup container that holds all elements like <tp-yt-iron-dropdown>
+      //    enabled by "body"
+      const popupContainerSelector = getSelector("observer", "ytPopupContainer");
+      globservers.ytPopupContainer = new SelectorObserver(popupContainerSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      hookObsEvents("ytPopupContainer");
+      globservers.body.addListener(popupContainerSelector, {
+        listener: getEnableObsFn("ytPopupContainer"),
       });
     }
     }
@@ -366,11 +451,8 @@ export function initObservers(cfg: FeatureConfig) {
 
     globserversReady = true;
     emitInterface("bytm:observersReady");
-
-    //#DEBUG:
-    getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
-    error("Failed to initialize observers:", err);
+    loggers.observer.error("Failed to initialize observers:", err);
   }
 }

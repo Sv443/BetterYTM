@@ -1,28 +1,45 @@
 import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
-import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { isIgnoredInputElement } from "@feat/input.ts";
 import { getFeature } from "@/config.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
-import { getDomain } from "@util/misc.ts";
-import { error, info, log, warn } from "@util/logging.ts";
-import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
+import { getDomain } from "@util/domain.ts";
+import { loggers } from "@util/logging.ts";
+import { LogLevel, type Domain, type FeatKeysOfType, type HotkeyObj } from "@/types.ts";
+import { promptLyricsSearch } from "@feat/lyrics.ts";
+import "./hotkeys.css";
 
 //#region init
 
 export async function initHotkeys() {
-  const promises: Promise<void>[] = [];
+  const inits: [name: string, promise: Promise<void>][] = [];
 
+  // ytm only:
   if(getDomain() === "ytm")
-    promises.push(initLyricsHotkey());
+    inits.push(["initOpenLyricsHotkey", initOpenLyricsHotkey()]);
 
-  promises.push(initLikeDislikeHotkeys());
-  promises.push(initSiteSwitch());
-  promises.push(initProxyHotkeys());
-  promises.push(initSkipToRemTimeHotkey());
-  promises.push(initSearchBarHotkeys());
+  // shared:
+  inits.push(
+    ["initSearchLyricsPromptHotkey", initSearchLyricsPromptHotkey()],
+    ["initLikeDislikeHotkeys", initLikeDislikeHotkeys()],
+    ["initSiteSwitchHotkey", initSiteSwitchHotkey()],
+    ["initProxyHotkeys", initProxyHotkeys()],
+    ["initSkipToRemTimeHotkey", initSkipToRemTimeHotkey()],
+    ["initSearchBarHotkeys", initSearchBarHotkeys()],
+  );
 
-  return await Promise.allSettled(promises);
+  const results = await Promise.allSettled(inits.map(([, promise]) => promise));
+
+  results.forEach((res, i) => {
+    if(res.status === "rejected")
+      loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
+  });
+
+  loggers.hotkey.info("Initialized all hotkey features", LogLevel.Info);
+
+  return results;
 }
 
 //#region utils
@@ -46,12 +63,13 @@ function preventBubble(evt: Event) {
 
 //#region site switch
 
-/** switch sites only if current video time is greater than this value */
+/** Switch sites only if current video time is greater than this value. */
 const videoTimeThreshold = 3;
+/** Global flag that gets turned off by active hotkey input elements. */
 let siteSwitchEnabled = true;
 
-/** Initializes the site switch feature */
-export async function initSiteSwitch() {
+/** Initializes the site switch feature. */
+export async function initSiteSwitchHotkey() {
   const domain = getDomain();
   document.addEventListener("keydown", (e) => {
     if(!getFeature("switchBetweenSites"))
@@ -59,10 +77,14 @@ export async function initSiteSwitch() {
     if(isIgnoredInputElement())
       return;
     if(siteSwitchEnabled) {
-      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey")))
+      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey"))) {
+        preventBubble(e);
         switchSite(domain === "yt" ? "ytm" : "yt", true);
-      else if(hotkeyMatches(e, getFeature("switchSitesHotkey")))
+      }
+      else if(hotkeyMatches(e, getFeature("switchSitesHotkey"))) {
+        preventBubble(e);
         switchSite(domain === "yt" ? "ytm" : "yt");
+      }
     }
   }, { capture: true });
   siteEvents.on("hotkeyInputActive", (hkInputActive) => {
@@ -70,14 +92,16 @@ export async function initSiteSwitch() {
       return;
     siteSwitchEnabled = !hkInputActive;
   });
-  log("Initialized site switch listener");
+  loggers.hotkey.log("Initialized site switch listener");
 }
 
-/** Switches to the other site (between YT and YTM) */
+/** Switches to the other site (between YT and YTM). */
 async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
-    if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-      return warn("Not on a supported page, so the site switch is ignored");
+    if(!(["/watch", "/playlist", "/channel", "/@"].some(v => location.pathname.startsWith(v))))
+      return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
+
+    const isWatchPage = location.pathname.startsWith("/watch");
 
     let subdomain: "music" | "www" | undefined;
     if(newDomain === "ytm")
@@ -88,13 +112,13 @@ async function switchSite(newDomain: Domain, inNewTab = false) {
     if(!subdomain)
       throw new Error(`Unrecognized domain '${newDomain}'`);
 
-    enableDiscardBeforeUnload();
+    !inNewTab && enableDiscardBeforeUnload();
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const time = await getVideoTime(0);
+    const time = isWatchPage ? await getVideoTime(0) : null;
 
-    log(`Found video time of ${time} seconds`);
+    loggers.hotkey.log(`Found video time of ${time} seconds`);
 
     const cleanSearch = search.split("&")
       .filter((param) => !param.match(/^\??(t|time_continue)=/))
@@ -110,14 +134,14 @@ async function switchSite(newDomain: Domain, inNewTab = false) {
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
-    info(`Switching to domain '${newDomain}' at ${newUrl}`);
+    loggers.hotkey.info(`Switching to domain '${newDomain}' at ${newUrl}`);
     if(inNewTab)
       openInNewTab(newUrl, true);
     else
       location.assign(newUrl);
   }
   catch(err) {
-    error("Error while switching site:", err);
+    loggers.hotkey.error("Error while switching site:", err);
   }
 }
 
@@ -136,12 +160,14 @@ async function initLikeDislikeHotkeys() {
       preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
         return;
+      loggers.hotkey.log("Like hotkey pressed, liking the video...");
       likeBtn?.click();
     }
     else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
       preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
         return;
+      loggers.hotkey.log("Dislike hotkey pressed, disliking the video...");
       dislikeBtn?.click();
     }
   }, { capture: true });
@@ -149,7 +175,7 @@ async function initLikeDislikeHotkeys() {
 
 //#region lyrics
 
-async function initLyricsHotkey() {
+async function initOpenLyricsHotkey() {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("currentLyricsHotkeyEnabled"))
       return;
@@ -160,7 +186,24 @@ async function initLyricsHotkey() {
       preventBubble(e);
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+      loggers.hotkey.log("Open song lyrics hotkey pressed, opening page...");
       lyricsBtn?.click();
+    }
+  }, { capture: true });
+}
+
+async function initSearchLyricsPromptHotkey() {
+  document.addEventListener("keydown", async (e) => {
+    if(!getFeature("lyricsSearchPromptHotkeyEnabled"))
+      return;
+    if(isIgnoredInputElement())
+      return;
+
+    if(hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
+      preventBubble(e);
+
+      loggers.hotkey.log("Lyrics search prompt hotkey pressed, opening dialog...");
+      await promptLyricsSearch();
     }
   }, { capture: true });
 }
@@ -177,6 +220,7 @@ async function initSkipToRemTimeHotkey() {
     if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
       preventBubble(e);
 
+      loggers.hotkey.log("Skip to remembered time hotkey pressed, restoring video time...");
       await remTimeTryRestoreTime(true);
     }
   }, { capture: true });
@@ -199,7 +243,7 @@ async function initSearchBarHotkeys() {
 
     getSearchBarInput()?.focus();
 
-    log("Focused on the search bar");
+    loggers.hotkey.log("Focused on the search bar");
   };
 
   const checkClearHotkey = (e: KeyboardEvent) => {
@@ -344,5 +388,5 @@ function dispatchProxyKey(hkProps: DispatchProxyHkOpts) {
     // see https://github.com/Sv443/BetterYTM/issues/18
     view: getUnsafeWindow(),
   }));
-  log("Dispatched proxy hotkey:", hkProps);
+  loggers.hotkey.log("Dispatched proxy hotkey:", hkProps);
 };

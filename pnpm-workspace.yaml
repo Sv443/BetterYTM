@@ -1,0 +1,19 @@
+packages:
+  - .
+  - src/**
+
+# only allow 14+ day old package releases - helps somewhat against supply chain attacks
+minimumReleaseAge: 20160
+minimumReleaseAgeExclude:
+  ["@sv443-network/userutils", "@sv443-network/coreutils"]
+
+ignoreWorkspaceRootCheck: true
+
+saveExact: true
+
+allowBuilds:
+  esbuild: true
+
+# Use the following to locally link the UserUtils library:
+# overrides:
+#   "@sv443-network/userutils": "/path/to/UserUtils"
