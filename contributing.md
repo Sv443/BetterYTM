@@ -220,10 +220,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [`function reloadTab()`](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
   - [`function getSelector()`](#getselector) - Returns the CSS selector of the given identifier from the currently loaded version of `assets/data.json`
 - DOM:
+  - [`function createElement()`](#createelement) - Creates an element in a way that bypasses [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) restrictions and makes it easy to set attributes
   - [`function getBytmDialog()`](#getbytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [`function getExImDialog()`](#geteximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [`function getMarkdownDialog()`](#getmarkdowndialog) - Subclass of BytmDialog for displaying markdown content
   - [`function setInnerHtml()`](#setinnerhtml) - Sets the innerHTML property of an element after sanitizing the string with [DOMPurify](https://github.com/cure53/DOMPurify) and [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
+  - [`function sanitizeHtml()`](#sanitizehtml) - Sanitizes the given HTML string with [DOMPurify](https://github.com/cure53/DOMPurify) and [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
   - [`function addSelectorListener()`](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [`function onInteraction()`](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [`function getVideoTime()`](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -666,7 +668,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Sets the innerHTML property of the specified element to the provided string, after sanitizing it.  
 > This is done for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and to prevent XSS attacks.  
-> Uses the library [DOMPurify](https://github.com/cure53/DOMPurify) on default settings to sanitize the HTML.  
+> Uses the library [DOMPurify](https://github.com/cure53/DOMPurify) to sanitize the HTML.  
+> Internally, this function defers to [`sanitizeHtml()`](#sanitizehtml), which you can also use if you just want the plain HTML string or TrustedTypes object.  
 >   
 > If the browser does not support the Trusted Types API, a regular `.innerHTML` assignment will be done.  
 >   
@@ -683,6 +686,20 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > unsafeWindow.BYTM.setInnerHtml(myElement, htmlString);
 > ```
 > </details>
+
+<br>
+
+> ### sanitizeHtml()
+> Signature:  
+> ```ts
+> function sanitizeHtml(html: string, returnTrustedType = (typeof window?.trustedTypes?.createPolicy === "function")): string;
+> ```
+>   
+> Sanitizes the provided HTML string with [DOMPurify](https://github.com/cure53/DOMPurify), including enhanced support for [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and a[target="_blank"] links. By default, automatically returns a TrustedHTML object if the browser supports it.  
+>   
+> The function [`setInnerHtml()`](#setinnerhtml) can be used to immediately assign the unsafe HTML to an element. It'll pass it through this function to sanitize it, if supported.  
+>   
+> The second parameter specifies whether to return a `TrustedHTML` object or string. By default its value will reflect whether the `trustedTypes.createPolicy` function is defined.
 
 <br>
 
@@ -1745,6 +1762,64 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Returns a function that can be called to unsubscribe all listeners created by this call.  
 >   
 > Please refer to [the method `onMulti()` of the CoreUtils/UserUtils `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) for more information on this function.
+
+<br>
+
+> ### createElement()
+> Signature:  
+> ```ts
+> // using an object to set attributes on the element:
+> function createElement<
+>   TTagName extends keyof HTMLElementTagNameMap,
+>   TElement extends HTMLElementTagNameMap[TTagName],
+> >(
+>   tagName: TTagName,
+>   attributes?: ElementAttributeMap,
+> ): TElement;
+> // using a function to modify the element before returning it:
+> function createElement<
+>   TTagName extends keyof HTMLElementTagNameMap,
+>   TElement extends HTMLElementTagNameMap[TTagName],
+> >(
+>   tagName: TTagName,
+>   modifyElement?: (element: TElement) => TElement,
+> ): TElement;
+> ```
+>   
+> Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass the site's [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) restrictions like `img-src` and `script-src`.  
+> If the grant was disabled by the user, it falls back to the regular [`document.createElement()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement), at the cost of not bypassing the CSP anymore.  
+>   
+> ⚠️ **Make sure you know what you are doing**, as bypassing the CSP is an easy way to let in [XSS attacks.](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)  
+> Also refer to [`sanitizeHtml()`](#sanitizehtml)
+>   
+> The first argument is the same lowercase tag name as in `document.createElement()`.  
+> The second argument can be an optional mapping of attribute names to attribute values to assign to the element, or a function that will be called to modify the element.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // on YT, external assets or scripts might not be loaded due to the `img-src` or `script-src` directive in the Content Security Policy. createElement() will bypass it.
+> const externalImgSrc = "https://some.site.tld/that-is-not-in-the-CSP.png";
+> 
+> const foo = document.createElement("img");
+> foo.src = externalImgSrc;
+> const bar = unsafeWindow.BYTM.createElement("img");
+> bar.src = externalImgSrc;
+> // ^ `foo` and `bar` are essentially the exact same value, but on YT the
+> // `foo` image element may not load depending on the browser environment
+> 
+> // also allows setting attributes directly in the function call:
+> const baz = unsafeWindow.BYTM.createElement("img", {
+>   src: externalImgSrc,
+> });
+> 
+> // or modifying the element with a function:
+> const qux = unsafeWindow.BYTM.createElement("img", (elem) => {
+>   elem.src = externalImgSrc;
+>   return elem;
+> });
+> ```
+> </details>
 
 <br>
 

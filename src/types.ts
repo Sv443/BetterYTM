@@ -264,6 +264,11 @@ export type GHEmojiKey = keyof typeof ghEmojis;
 /** Identifiers that will be replaced by the GitHub emoji URL at build time. See [`https://api.github.com/emojis`](https://api.github.com/emojis) */
 export type GHEmoji = `<$GH_EMOJI_URL:${GHEmojiKey}>`;
 
+/** Object mapping an HTMLElement generic type's attribute keys to values. */
+export type ElementAttributeMap<TElement extends HTMLElement> = {
+  [TAttr in keyof TElement]?: TElement[TAttr];
+};
+
 //#region utility
 
 /** Returns a union of all keys of {@linkcode T} whose values are of type {@linkcode U} */

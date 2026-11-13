@@ -68,7 +68,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getSelector,
 
   // dom:
-  createElement, // TODO: docs
+  createElement,
   setInnerHtml,
   sanitizeHtml,
   addSelectorListener,

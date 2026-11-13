@@ -63,7 +63,7 @@
     - `getSelector()`: Returns a remotely fetched CSS selector for the given category and name. Refer to `assets/data.json` in BYTM's source code for a list of all values.
     - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts whenever possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
     - `preventEvents()`: Prevents the given events' listeners from being called and bubbling, for the given container element, when a predicate function matches.
-    - `createElement()`: Similar to `document.createElement()` but bypasses [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) directives like `img-src`, which is especially important on YT.
+    - `createElement()`: Similar to `document.createElement()` but bypasses [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) directives like `img-src` and `script-src`, which is especially useful on YT as its CSP is quite strict.
   - Added new properties to the object returned by `BYTM.getInternals()`:
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.

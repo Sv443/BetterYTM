@@ -1,11 +1,11 @@
 import { DatedError } from "@sv443-network/userutils";
 import { loggers } from "@util/logging.ts";
+import type { ElementAttributeMap } from "@/types.ts";
 
 /**
- * Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to `document.createElement()`.  
+ * Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to [`document.createElement()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement).  
  * @param tagName Lowercase tag name.
  * @param attributes Optional object mapping any number of the element's attribute keys to their values.
- * @param modifyElement Optional function called to modify the element in a way simple object assignment can't.
  * @returns Returns the created element with the given attributes (or none).
  */
 export function createElement<
@@ -13,11 +13,37 @@ export function createElement<
   TElement extends HTMLElementTagNameMap[TTagName],
 >(
   tagName: TTagName,
-  attributes?: {
-    [TAttr in keyof TElement]?: TElement[TAttr];
-  },
-  modifyElement?: (element: TElement) => TElement,
+  attributes?: ElementAttributeMap<TElement>,
+): TElement;
+/**
+ * Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to [`document.createElement()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement).  
+ * @param tagName Lowercase tag name.
+ * @param modifyElement Optional function called to modify the element.
+ * @returns Returns the created element with the applied modifications (or none).
+ */
+export function createElement<
+  TTagName extends keyof HTMLElementTagNameMap,
+  TElement extends HTMLElementTagNameMap[TTagName],
+>(
+  tagName: TTagName,
+  modifyElement: (element: TElement) => TElement,
+): TElement;
+/**
+ * Creates an element using [`GM_addElement()`](https://www.tampermonkey.net/documentation.php?q=GM_addElement#api:GM_addElement) to bypass [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP). If not available, falls back to [`document.createElement()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement).  
+ * @param tagName Lowercase tag name.
+ * @param attributesOrModifyElementFn Optional object mapping any number of the element's attribute keys to their values, or function called to modify the element.
+ * @returns Returns the created element with the given attributes or applied modifications (or none).
+ */
+export function createElement<
+  TTagName extends keyof HTMLElementTagNameMap,
+  TElement extends HTMLElementTagNameMap[TTagName],
+>(
+  tagName: TTagName,
+  attributesOrModifyElementFn?: ElementAttributeMap<TElement> | ((element: TElement) => TElement),
 ): TElement {
+  const attributes = typeof attributesOrModifyElementFn !== "function" ? attributesOrModifyElementFn : undefined;
+  const modifyElement = typeof attributesOrModifyElementFn === "function" ? attributesOrModifyElementFn : undefined;
+
   try {
     const elem = GM_addElement(tagName, attributes ?? {}) as TElement;
     if(!(elem instanceof HTMLElement))
