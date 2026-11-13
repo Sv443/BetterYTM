@@ -98,5 +98,21 @@
         "overviewRulerColor": "#f43",
       },
     ],
+    "(__[\\w_]+__)": [ // __EXAMPLE_DEFINE__
+      {
+        "backgroundColor": "#fa3",
+        "color": "black",
+      },
+    ],
+    "(<\\$GH_EMOJI_URL:([\\w\\s._-]+)>)": [ // <$GH_EMOJI_URL:example>
+      {
+        "backgroundColor": "#fa3",
+        "color": "black",
+      },
+      {
+        "backgroundColor": "#ee1",
+        "color": "black",
+      },
+    ],
   },
 }
